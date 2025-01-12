@@ -13,8 +13,9 @@ This is a really cool way to turn in assignments. I like this a lot. it makes it
 >  If you are not familiar with Markdown then you should review the [documentation](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) before continuing.
 <details>
 <summary> Notes on Markdown Syntax</summary>
-![A photo of my written notes that I took as I read the GitHub Docs on markdown syntax.](/Written_Notes/mdsyntax.jpg)
-
+    
+![A photo of my written notes that I took as I read the GitHub Docs on markdown syntax.](./Written_Notes/mdsyntax.jpg)
+    
 </details>
 ## 🚀 Specification Deliverable
 <!-- Fill in this sections as the submission artifact for this deliverable. You can refer to this [example](https://github.com/webprogramming260/startup-example/blob/main/README.md) for inspiration.
