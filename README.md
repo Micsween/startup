@@ -9,9 +9,6 @@ This is a really cool way to turn in assignments. I like this a lot. it makes it
 > [!NOTE]
 >  This is a template for your startup application. You must modify this `README.md` file for each phase of your development. You only need to fill in the section for each deliverable when that deliverable is submitted in Canvas. Without completing the section for a deliverable, the TA will not know what to look for when grading your submission. Feel free to add additional information to each deliverable description, but make sure you at least have the list of rubric items and a description of what you did for each item.
 
-> [!NOTE]
->  If you are not familiar with Markdown then you should review the [documentation](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) before continuing.
-<details>
 <summary> Notes on Markdown Syntax</summary>
     
 ![A photo of my written notes that I took as I read the GitHub Docs on markdown syntax.](./writtenNotes/mdsyntax.jpg)
@@ -23,9 +20,9 @@ This is a really cool way to turn in assignments. I like this a lot. it makes it
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [ ] Proper use of Markdown
-- [ ] A concise and compelling elevator pitch
-- [ ] Description of key features
-- [ ] Description of how you will use each technology
+- [x] A concise and compelling elevator pitch
+- [x] Description of key features
+- [x] Description of how you will use each technology
 - [x] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
 
 ### Elevator pitch
@@ -46,22 +43,40 @@ Ever want to play card games with your friends, even when they're not around? Or
 ![Design image](./mockups/creategame.png)
 </details>
 
+This is a backend view of how the game updates as players take their turns.
+```mermaid
+sequenceDiagram
+    actor Player1
+    actor Player2
+    actor Player3
+    actor Player4
+    Player1->>Server: Player1's turn
+    Server -->>Player2: Player1's turn, activates turn
+    Server -->>Player3: Player1's turn
+    Server -->>Player4: Player1's turn
+    Player2 ->>Server: Player2's turn
+    Server -->>Player3: Player2's card, activates turn
+    Server -->>Player1: Player2's turn
+    Server -->>Player4: Player2's turn
+```
+
 ### Key features
 
-- Describe your key feature
-- Describe your key feature
-- Describe your key feature
+- Create and play a Game of UNO
+- Create an account
+- View match history
 
 ### Technologies
 
 I am going to use the required technologies in the following ways.
 
-- **HTML** - Description here
-- **CSS** - Description here
-- **React** - Description here
-- **Service** - Description here
-- **DB/Login** - Description here
-- **WebSocket** - Description here
+- **HTML** - Basic elements, creates the structure of each page.
+- **CSS** - Basic movement of the cards, makes everything look nice
+- **React** - Allows for page navigation and creating components for easy re-use, such as the player profiles displayed in-game, players can click and drag cards.
+- **Service** - Saves the result of each match to each player's profile
+- **Authentication** - A user can log in and view their match history/create a game.
+- **DB/Login** - the Match history page
+- **WebSocket** - game end updates match history, players play their cards in real-time
 
 ## 🚀 AWS deliverable
 
