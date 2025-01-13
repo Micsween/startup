@@ -30,7 +30,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 ### Elevator pitch
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Ever want to play card games with your friends, even when they're not around? Or maybe you've gone on a road trip and forgotten your pack of playing cards. But there's a solution! Online multiplayer UNO! Create a game to play with your friends. Check out your match history to see who has the biggest win-streak! May the best player win. 
 
 ### Design
 
