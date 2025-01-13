@@ -34,16 +34,17 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 ### Design
 
-![Design image](../startup/mockups/signup.png)
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-```mermaid
-sequenceDiagram
-    actor You
-    actor Website
-    You->>Website: Replace this with your design
-```
+<details>  
+<summary>Design Mockups</summary>
+    
+![Design image.](./mockups/signup.png)
+![Design image](./mockups/login.png)
+![Design image](./mockups/joingame.png)
+![Design image](./mockups/matchhistory.png)
+![Design image](./mockups/game.png)
+![Design image](./mockups/home.png)
+![Design image](./mockups/creategame.png)
+</details>
 
 ### Key features
 
