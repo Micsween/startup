@@ -63,7 +63,9 @@ sequenceDiagram
 ### Key features
 
 - Create and play a Game of UNO
+- Login
 - Create an account
+- Ability to click and drag cards
 - View match history
 
 ### Technologies
