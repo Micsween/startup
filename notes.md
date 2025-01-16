@@ -18,6 +18,8 @@ The Caddyfile is the configuration file for your web service gateway. The public
 ```sh
 ➜  ssh -i [key pair file] ubuntu@[ip address]
 ```
+>[!NOTE]
+> MY WEBSITE IP: http://34.228.83.158/
 
 >[!IMPORTANT]
 >Don't forget!!
