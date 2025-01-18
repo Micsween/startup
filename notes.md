@@ -19,6 +19,20 @@ look to google slides from 1/16/24 to set up domain name and restart
 ```sh
 ➜  ssh -i [key pair file] ubuntu@[ip address]
 ```
+## CADDY NOTES
+- **Configuration file**: `~/Caddyfile`
+  This file contains the definitions for routing HTTP requests that Caddy receives. It also determines what files to use based on the domain name given.
+- **HTML Files**: `~/Caddyfile`
+  Okay, so: your website is in a directory. And you can specify what directory to open when there's an HTTP request!! That's what this file is for
+```
+  80 IS THE PORT FOR HTTP REQUESTS SO THATS WHY IT SAYS :80 
+  :80 {
+        root * /usr/share/caddy
+        file_server
+  }
+```
+## What is a port number?
+A port number is a way to identify a process to which a network message is to be forwarded when it arrives at a server. Hypertext Transfer Protocol (HTTP) messages always go to port 80 -- one of the most commonly used ports.
 >[!NOTE]
 > MY WEBSITE IP: http://34.228.83.158/
 
