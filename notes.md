@@ -7,7 +7,7 @@
 - [Course instruction](https://github.com/webprogramming260)
 - [Canvas](https://byu.instructure.com)
 - [MDN](https://developer.mozilla.org)
-- [HTML: Structure Codepen](https://codepen.io/codingdork/pen/EaYdmeP)
+
 
 ## AWS Notes
 From : [Amazon Web Services tutorial](https://github.com/webprogramming260/.github/blob/main/profile/webServers/amazonWebServicesEc2/amazonWebServicesEc2.md)
@@ -54,6 +54,10 @@ h1-9: text heading
 table: Table
 ol: Ordered list
 ul: Unordered list
+
+## Helpful Codepen links
+- [HTML: Structure Codepen](https://codepen.io/codingdork/pen/EaYdmeP)
+- [HTML: Input Codepen](https://codepen.io/codingdork/pen/ZYzqyLW)
 
 Every HTML element may have attributes. Attributes describe the specific details of the element. For example, the id attribute gives a unique ID to the element so that you can distinguish it from other elements. The class attribute is another common element attribute that designates the element as being classified into a named group of elements. Attributes are written inside the element tag with a name followed by an optional value. You can use either single quotes (') or double quotes (") to delimit attribute values.
 
