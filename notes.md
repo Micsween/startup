@@ -7,6 +7,7 @@
 - [Course instruction](https://github.com/webprogramming260)
 - [Canvas](https://byu.instructure.com)
 - [MDN](https://developer.mozilla.org)
+- [HTML: Structure Codepen](https://codepen.io/codingdork/pen/EaYdmeP)
 
 ## AWS Notes
 From : [Amazon Web Services tutorial](https://github.com/webprogramming260/.github/blob/main/profile/webServers/amazonWebServicesEc2/amazonWebServicesEc2.md)
