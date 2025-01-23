@@ -91,7 +91,7 @@ This was relatively easy. Although, I made a mistake in picking BYUno as my doma
 ## 🚀 HTML deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
-
+Examining Simon HTML I more fully understood how the canvas tag works. I also liked that you could tell the page to conform to the width of a device. Seeing a structural version of Simon made me think of how I could display some of my project's features in a way that is easy for playtesting. Such as "X created a game." I believe that will be very useful.
 - [ ] **HTML pages** - I did not complete this part of the deliverable.
 - [ ] **Proper HTML element usage** - I did not complete this part of the deliverable.
 - [ ] **Links** - I did not complete this part of the deliverable.
