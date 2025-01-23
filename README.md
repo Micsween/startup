@@ -1,6 +1,8 @@
-# Your startup name here
 
-[My Notes](notes.md)
+# Multiplayer Uno!
+# Useful links
+- [CSS div styles](https://codepen.io/leesjensen/pen/RwBOPjv)
+- [My Notes](notes.md)
 
 Online Multiplayer UNO! Create an account to log on and play with friends. 
 <!-- This took WAY too much effort to get working LOL Ubuntu is my nemesis so I gave up on using it for this project.-->
@@ -82,14 +84,18 @@ I am going to use the required technologies in the following ways.
 
 ## 🚀 AWS deliverable
 
-For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
+This was relatively easy. Although, I made a mistake in picking BYUno as my domain name. It would've been much easier to pick a more generic name that I could then  use it for another programming project! But I still will. It'd be nice to use it as part of my resume.
 
-- [ ] **Server deployed and accessible with custom domain name** - [My server link](https://yourdomainnamehere.click).
+- [x] **Server deployed and accessible with custom domain name** - [Byuno.click](https://startup.byuno.click/).
 
 ## 🚀 HTML deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
+Examining Simon HTML I more fully understood how the canvas tag works. I also liked that you could tell the page to conform to the width of a device. Seeing a structural version of Simon made me think of how I could display some of my project's features in a way that is easy for playtesting. Such as "X created a game." I believe that will be very useful.
 
+I found out that buttons can submit a get() request to a specific url. I implemented that in the join game page.
+
+I realized that in my initial design, the need to have an entire page dedicated to just navigating to other pages seemed kind of redundant. So I decided to keep the design of using a navbar throughout the entire application, and make the default log-in page your match history. Which is blank, if the profile is new.
 - [ ] **HTML pages** - I did not complete this part of the deliverable.
 - [ ] **Proper HTML element usage** - I did not complete this part of the deliverable.
 - [ ] **Links** - I did not complete this part of the deliverable.
