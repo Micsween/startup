@@ -93,6 +93,8 @@ This was relatively easy. Although, I made a mistake in picking BYUno as my doma
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 Examining Simon HTML I more fully understood how the canvas tag works. I also liked that you could tell the page to conform to the width of a device. Seeing a structural version of Simon made me think of how I could display some of my project's features in a way that is easy for playtesting. Such as "X created a game." I believe that will be very useful.
 
+I found out that buttons can submit a get() request to a specific url. I implemented that in the join game page.
+
 I realized that in my initial design, the need to have an entire page dedicated to just navigating to other pages seemed kind of redundant. So I decided to keep the design of using a navbar throughout the entire application, and make the default log-in page your match history. Which is blank, if the profile is new.
 - [ ] **HTML pages** - I did not complete this part of the deliverable.
 - [ ] **Proper HTML element usage** - I did not complete this part of the deliverable.
