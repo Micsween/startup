@@ -13,17 +13,24 @@
             <nav>
                 <a href="index.html">Login</a> <br><!--STATUS: INCOMPLETE--> 
                 <a href="join.html">Join Game</a> <br><!--STATUS: COMPLETE-->
-                <a href="">Match History(home)</a> <br><!--STATUS: INCOMPLETE-->
+                <a href="match-history.html">Match History(home)</a> <br><!--STATUS: INCOMPLETE-->
                 <a href="lobby.html">Lobby</a> <br><!--STATUS: INCOMPLETE-->
                 <a href="game.html">Game</a> <br><!--STATUS: INCOMPLETE-->
                 <br>
             </nav>
         </header>
             <main>
+                <p>Username</p>
+                <label>Active Games</label>
+                <ul class="active-games">
+                    <li class="active-game">Game ID: GHCW | Host: Username</li>
+                    <li class="active-game">Game ID: SCSZ | Host: Username</li>
+                </ul>
                 <form method="get" action="lobby.html">
                 <input type="text" value ="Enter Game Code" maxlength="4"> <br>
                 <!--input type text with max 4 characters-->
                 <input type="submit" value="Join Game" >
+            
                 </form> 
             </main>
         <footer>
