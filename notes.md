@@ -65,3 +65,7 @@ Embedding a link in HTML:
 ```html
 <a href="https://byu.edu">Go to the Y</a>
 ```
+## CSS Notess
+
+ID: only for one element per page. 
+Class: multiple elements with the same styling rules.

@@ -96,13 +96,15 @@ Examining Simon HTML I more fully understood how the canvas tag works. I also li
 I found out that buttons can submit a get() request to a specific url. I implemented that in the join game page.
 
 I realized that in my initial design, the need to have an entire page dedicated to just navigating to other pages seemed kind of redundant. So I decided to keep the design of using a navbar throughout the entire application, and make the default log-in page your match history. Which is blank, if the profile is new.
-- [ ] **HTML pages** - I did not complete this part of the deliverable.
-- [ ] **Proper HTML element usage** - I did not complete this part of the deliverable.
-- [ ] **Links** - I did not complete this part of the deliverable.
+
+
+- [ ] **HTML pages** I decided to make less elements to navigate to and break down what each page does to avoid redundance.
+- [ ] **Proper HTML element usage** - I think I've learned I should add more divs.
+- [ ] **Links** - linking the buttons to their respective pages was convenient and made the pages feel cooler.
 - [ ] **Text** - I did not complete this part of the deliverable.
 - [ ] **3rd party API placeholder** - I did not complete this part of the deliverable.
 - [ ] **Images** - I did not complete this part of the deliverable.
-- [ ] **Login placeholder** - I did not complete this part of the deliverable.
+- [ ] **Login placeholder** - I have a forgot password placeholder which Ive decided i will implement if I have some extra time.
 - [ ] **DB data placeholder** - I did not complete this part of the deliverable.
 - [ ] **WebSocket placeholder** - I did not complete this part of the deliverable.
 
