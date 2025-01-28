@@ -98,15 +98,15 @@ I found out that buttons can submit a get() request to a specific url. I impleme
 I realized that in my initial design, the need to have an entire page dedicated to just navigating to other pages seemed kind of redundant. So I decided to keep the design of using a navbar throughout the entire application, and make the default log-in page your match history. Which is blank, if the profile is new.
 
 
-- [ ] **HTML pages** I decided to make less elements to navigate to and break down what each page does to avoid redundance.
-- [ ] **Proper HTML element usage** - I think I've learned I should add more divs.
-- [ ] **Links** - linking the buttons to their respective pages was convenient and made the pages feel cooler.
-- [ ] **Text** - I did not complete this part of the deliverable.
-- [ ] **3rd party API placeholder** - I did not complete this part of the deliverable.
-- [ ] **Images** - I did not complete this part of the deliverable.
-- [ ] **Login placeholder** - I have a forgot password placeholder which Ive decided i will implement if I have some extra time.
-- [ ] **DB data placeholder** - I did not complete this part of the deliverable.
-- [ ] **WebSocket placeholder** - I did not complete this part of the deliverable.
+- [x] **HTML pages** I decided to make less elements to navigate to and break down what each page does to avoid redundance.
+- [x] **Proper HTML element usage** - I think I've learned I should add more divs.
+- [x] **Links** - linking the buttons to their respective pages was convenient and made the pages feel cooler.
+- [x] **Text** - Lots of filler text
+- [x] **3rd party API placeholder** - Im going to put inspirational quotes in the match history page.
+- [x] **Images** - I think I'll have 4 default profile pictures that are randomly assigned when a match starts.
+- [x] **Login placeholder** - I have a forgot password placeholder which Ive decided i will implement if I have some extra time.
+- [x] **DB data placeholder** - my website is going to store the history of a player's games
+- [x] **WebSocket placeholder** - You'll see cards being played in real time.
 
 ## 🚀 CSS deliverable
 
