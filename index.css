@@ -1,0 +1,18 @@
+#footer{
+    color: rgba(0, 0, 0, 0.55);
+}
+#content{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    padding-top:1em;
+}
+#login{
+    display:flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+#login >*{
+    margin : 0.5em;
+}
