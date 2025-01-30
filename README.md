@@ -110,8 +110,13 @@ I realized that in my initial design, the need to have an entire page dedicated 
 
 ## 🚀 CSS deliverable
 
-For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
-
+Reading through simon-css I discovered this line of code:
+```
+main {
+      flex: 1 calc(100vh - 110px);
+}
+```
+There were several other things included in the styling for the 'main' tag, but it caught my eye that if I deactivated this in the debugger it caused the whole body to shorten to the size of its content. This would solve a problem I had with my own code! Now I just had to research what calc(100vh - 110px) meant..
 - [ ] **Header, footer, and main content body** - I did not complete this part of the deliverable.
 - [ ] **Navigation elements** - I did not complete this part of the deliverable.
 - [ ] **Responsive to window resizing** - I did not complete this part of the deliverable.
