@@ -25,14 +25,29 @@
             <main>
                 <p>Username</p>
                 <label>Active Games</label>
-                <ul class="active-games">
-                    <li class="active-game">Game ID: GHCW | Host: Username</li>
-                    <li class="active-game">Game ID: SCSZ | Host: Username</li>
-                </ul>
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                        <th scope="col">Game ID </th>
+                        <th scope="col">Host </th>
+                        <th scope="col">Current Players </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <th scope="row"> GHWCW</th>
+                    <td>Username</td>
+                    <td >3</td>
+                  </tbody>
+                  <tbody>
+                    <th scope="row"> SCSZ</th>
+                    <td>Username</td>
+                    <td >2</td>
+                  </tbody>
+                </table>
                 <form method="get" action="lobby.html">
                 <input type="text" value ="Enter Game Code" maxlength="4"> <br>
                 <!--input type text with max 4 characters-->
-                <input type="submit" value="Join Game" >
+                <input class="btn btn-danger" type="submit" value="Join Game" >
             
                 </form> 
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>

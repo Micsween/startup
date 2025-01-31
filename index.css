@@ -1,18 +1,21 @@
 #footer{
     color: rgba(0, 0, 0, 0.55);
 }
+
 #content{
-    align-items: center;
+    height: calc(100vh - 100px);
     display: flex;
+    align-items: center;
     flex-direction: column;
     padding-top:1em;
-}
+} 
 #login{
     display:flex;
     flex-direction: column;
     text-align: center;
     align-items: center;
 }
+   
 #login >*{
     margin : 0.5em;
 }
