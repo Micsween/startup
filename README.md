@@ -117,6 +117,7 @@ main {
 }
 ```
 There were several other things included in the styling for the 'main' tag, but it caught my eye that if I deactivated this in the debugger it caused the whole body to shorten to the size of its content. This would solve a problem I had with my own code! Now I just had to research what calc(100vh - 110px) meant..
+After messing around with it a bit, I figured it out! 100vh means take up 100% of the viewport height, minus 110px (the size of the footer!).
 - [ ] **Header, footer, and main content body** - I did not complete this part of the deliverable.
 - [ ] **Navigation elements** - I did not complete this part of the deliverable.
 - [ ] **Responsive to window resizing** - I did not complete this part of the deliverable.
