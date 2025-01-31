@@ -1,3 +1,21 @@
 #footer{
     color: rgba(0, 0, 0, 0.55);
 }
+*{
+    font-family: monospace;
+    font-size: 1.0em;
+    font-weight: 500;
+}
+#content{
+    height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 1em;
+} 
+#active-games{
+    border: solid .1em black;
+    width: 45%;
+    margin-left: 1em;
+    text-align: center;
+}
