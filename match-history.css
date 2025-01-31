@@ -9,7 +9,19 @@
 #content{
     height: calc(100vh - 80px);
     display: flex;
-    align-items: center;
+    align-items: left;
     flex-direction: column;
     padding-top: 1em;
+    padding-left: 1em;
 } 
+#game-win{
+    color: green;
+}
+#game-loss{
+    color: red;
+}
+#match-history{
+    border: solid .1em black;
+    width: 45%;
+    text-align: left;
+}
