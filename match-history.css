@@ -21,6 +21,9 @@
 #game-loss{
     color: red;
 }
+#quote{
+    margin-right: 20%;
+}
 #match-history{
     background-color: white;
     border: solid .1em black;
