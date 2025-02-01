@@ -6,11 +6,29 @@
     font-size: 1.0em;
     font-weight: 500;
 }
+
 #content{
+    background-color: #dbd9d9;
     height: calc(100vh - 80px);
     display: flex;
-    align-items: left;
+    align-items: right;
     flex-direction: column;
     padding-top: 1em;
-    margin-left: 5em;
 } 
+#player-list{
+    margin: 1em;
+    width: 45%;
+    margin-bottom: 2%;
+}
+#player-list > li{
+    border: solid .1em white;
+    background-color: #1c1a1a !important;
+    color: red !important;
+}
+#player-list > #host{
+    color: yellow !important;
+}
+#start-button{
+    text-align: right;
+    margin-right: 55%;
+}

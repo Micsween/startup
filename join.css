@@ -6,6 +6,7 @@
     font-size: 1.0em;
 }
 #content{
+    background-color: #dbd9d9;
     height: calc(100vh - 80px);
     display: flex;
     align-items: left;
@@ -14,6 +15,7 @@
     padding-left: 1em;
 } 
 #active-games{
+    background-color: white;
     border: solid .1em black;
     width: 45%;
     text-align: left;
