@@ -22,49 +22,53 @@
             </nav>
         </header>
         <main>
-            <div style="border:.01em solid black">
-                <img src="https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg" alt="profile picture" width="40">
-                <p>Player1 :CURRENT TURN:</p>
-                <p> Current cards: 7</p>
-                <table>
-                    <tr>[PLAYERS HAND]</tr>
-                </table>
+            <div id="grid-container">
+                <div class="grid-item main-user">
+                    <img src="https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg" alt="profile picture" width="40">
+                    <p>Player1 :CURRENT TURN:</p>
+                    <p> Current cards: 7</p>
+                    <table>
+                        <tr>[PLAYERS HAND]</tr>
+                    </table>
+                    <br>
+                </div>
                 <br>
-            </div>
-            <br>
-            <div style="border:.01em solid black">
-                <img src="https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg" alt="profile picture" width="40">
-                <p>Player2</p>
-                <p> Current cards: 4</p>
-                <table>
-                    <tr>[PLAYERS HAND]</tr>
-                </table>
+                <div class="grid-item player-left">
+                    <img src="https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg" alt="profile picture" width="40">
+                    <p>Player2</p>
+                    <p> Current cards: 4</p>
+                    <table>
+                        <tr>[PLAYERS HAND]</tr>
+                    </table>
+                    <br>
+                </div>
                 <br>
-            </div>
-            <br>
-
-            <div style="border:.01em solid black">
-                <img src="https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg" alt="profile picture" width="40">
-                <p>Player3</p>
-                <p> Current cards: 6</p>
-                <table>
-                    <tr>[PLAYERS HAND]</tr>
-                </table>
+    
+                <div class="grid-item player-top">
+                    <img src="https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg" alt="profile picture" width="40">
+                    <p>Player3</p>
+                    <p> Current cards: 6</p>
+                    <table>
+                        <tr>[PLAYERS HAND]</tr>
+                    </table>
+                    <br>
+                </div>
                 <br>
-            </div>
-            <br>
-            <div style="border:.01em solid black">
-                <img src="https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg" alt="profile picture" width="40">
-                <p>Player4</p>
-                <p> Current cards: 8</p>
-                <table>
-                    <tr>[PLAYERS HAND]</tr>
-                </table>
+                <div class="grid-item player-right">
+                    <img src="https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg" alt="profile picture" width="40">
+                    <p>Player4</p>
+                    <p> Current cards: 8</p>
+                    <table>
+                        <tr>[PLAYERS HAND]</tr>
+                    </table>
+                    <br>
+                </div>
                 <br>
+                <div class="grid-item draw-discard-piles">
+                    <div>DRAW PILE</div>          
+                    <div>DISCARD PILE</div>      
+                </div>   
             </div>
-            <br>
-            <div style="border: 0.2em solid black">DRAW PILE</div>          
-            <div style="border: 0.2em solid black">DISCARD PILE</div>         
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
         </main>
         <footer id="footer" class="d-flex flex-wrap justify-content-between align-items-center p-1 px-md-4 mb-2 bg-light border-top">

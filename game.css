@@ -14,3 +14,34 @@
     flex-direction: column;
     padding-top: 1em;
 } 
+#grid-container{
+    display: grid;
+    align-items: center;
+    margin: 1em;
+}
+.grid-item{
+    width: 25%;
+    text-align: center;
+    justify-self: center;
+}
+.grid-item.main-user{
+    grid-row-start: 3;
+    grid-column-start: 2;
+}
+.grid-item.player-top{
+    grid-row-start: 1;
+    grid-column-start: 2;
+}
+.grid-item.player-left{
+    grid-row-start: 2;
+    grid-column-start: 1;
+}
+.grid-item.draw-discard-piles{
+    grid-row-start: 2;
+    grid-column-start: 2;
+}
+.grid-item.player-right{
+    grid-row-start: 2;
+    grid-column-start: 3;
+}
+
