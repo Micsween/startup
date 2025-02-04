@@ -38,6 +38,7 @@
 .grid-item.draw-discard-piles{
     grid-row-start: 2;
     grid-column-start: 2;
+    margin:auto;
 }
 .grid-item.player-right{ 
     grid-row-start: 2;
