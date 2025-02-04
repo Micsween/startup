@@ -18,9 +18,10 @@
     display: grid;
     align-items: center;
     margin: 1em;
+    overflow: scroll;
 }
 .grid-item{
-    width: 25%;
+    width: min-content;
     text-align: center;
 }
 .grid-item.main-user{
@@ -62,7 +63,12 @@
 .player-hand    {
     display: flex;
     margin: 10px;
-    width: 20em;
+    width: min-content;
+}
+.player-hand.enemy-hand{
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
 }
 .playing-card{
     width: 73px;
@@ -73,5 +79,17 @@
 }
 
 #card-back{
-    background-image: url(card-images/card-back.svg);
+    margin-top: -70px;
+    transform: rotate(90deg) translateY(-50%);
+    transform-origin: center center;
+    background-image: url(card-images/uno-card-back.png);
 }
+
+
+/*
+z-index: 2;
+    transform: rotate(90deg) translateY(-50%) translateX(20px);
+        z-index: 4;
+    transform: rotate(90deg) translateY(-100%) translateX(-20px);
+    parent object has position:absolute;
+*/
