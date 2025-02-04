@@ -22,7 +22,6 @@
 .grid-item{
     width: 25%;
     text-align: center;
-    justify-self: center;
 }
 .grid-item.main-user{
     grid-row-start: 3;
@@ -40,8 +39,38 @@
     grid-row-start: 2;
     grid-column-start: 2;
 }
-.grid-item.player-right{
+.grid-item.player-right{ 
     grid-row-start: 2;
     grid-column-start: 3;
 }
 
+.player-info{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    width: 10em;
+}
+.player-icon{
+    width: 60px;
+    padding: .5em;
+}
+#player-name{
+    font-weight: 700;
+    padding-right: .2em;
+}
+.player-hand    {
+    display: flex;
+    margin: 10px;
+    width: 20em;
+}
+.playing-card{
+    width: 73px;
+    height: 101px;
+    margin-left:-20px;
+    background-size: 100%;
+    border-radius: 10px;
+}
+
+#card-back{
+    background-image: url(card-images/card-back.svg);
+}

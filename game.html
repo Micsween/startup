@@ -22,53 +22,71 @@
             </nav>
         </header>
         <main>
+            <div id="content">
             <div id="grid-container">
                 <div class="grid-item main-user">
-                    <img src="https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg" alt="profile picture" width="40">
-                    <p>Player1 :CURRENT TURN:</p>
-                    <p> Current cards: 7</p>
-                    <table>
-                        <tr>[PLAYERS HAND]</tr>
-                    </table>
-                    <br>
+                    <div class="player-info">
+                        <img class="player-icon" src="https://overwatchitemtracker.com/resources/heroes/all/icons/kittymari.png" alt="profile picture" width="40">
+                        <p id="player-name">Player1</p>
+                        <p>(7)</p>
+                    </div>
+                    <div class="player-hand">
+                        <img src="card-images/green-3.svg" class="playing-card"> 
+                        <img src="card-images/yellow-3.svg" class="playing-card">
+                        <img src="card-images/green-3.svg" class="playing-card ">
+                        <img src="card-images/yellow-3.svg" class="playing-card">
+                        <img src="card-images/green-3.svg" class="playing-card ">
+                    </div>
                 </div>
-                <br>
+                   <div class="grid-item player-top">
+                    <div class="player-info">
+                        <img class= "player-icon" src="https://overwatchitemtracker.com/resources/heroes/all/icons/kittymari.png" alt="profile picture" width="40">
+                        <p id="player-name">Player3</p>
+                        <p>(6)</p>
+                    </div>
+                    <div class="player-hand">
+                        <img src="card-images/green-3.svg" class="playing-card"> 
+                        <img src="card-images/yellow-3.svg" class="playing-card">
+                        <img src="card-images/green-3.svg" class="playing-card ">
+                        <img src="card-images/yellow-3.svg" class="playing-card">
+                        <img src="card-images/green-3.svg" class="playing-card ">
+                    </div>
+                </div>
                 <div class="grid-item player-left">
-                    <img src="https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg" alt="profile picture" width="40">
-                    <p>Player2</p>
-                    <p> Current cards: 4</p>
-                    <table>
-                        <tr>[PLAYERS HAND]</tr>
-                    </table>
-                    <br>
+                     <div class="player-hand">
+                        <img src="card-images/green-3.svg" class="playing-card"> 
+                        <img src="card-images/yellow-3.svg" class="playing-card">
+                        <img src="card-images/green-3.svg" class="playing-card ">
+                        <img src="card-images/yellow-3.svg" class="playing-card">
+                        <img src="card-images/green-3.svg" class="playing-card ">
+                    </div>
+                    <div class="player-info">
+                        <img class="player-icon" src="https://overwatchitemtracker.com/resources/heroes/all/icons/kittymari.png" alt="profile picture" width="40">
+                        <p id="player-name">Player2</p>
+                        <p>(4)</p>
+                    </div>
                 </div>
-                <br>
-    
-                <div class="grid-item player-top">
-                    <img src="https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg" alt="profile picture" width="40">
-                    <p>Player3</p>
-                    <p> Current cards: 6</p>
-                    <table>
-                        <tr>[PLAYERS HAND]</tr>
-                    </table>
-                    <br>
-                </div>
-                <br>
+        
                 <div class="grid-item player-right">
-                    <img src="https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg" alt="profile picture" width="40">
-                    <p>Player4</p>
-                    <p> Current cards: 8</p>
-                    <table>
-                        <tr>[PLAYERS HAND]</tr>
-                    </table>
-                    <br>
+                    <div class="player-hand">
+                        <img src="card-images/green-3.svg" class="playing-card"> 
+                        <img src="card-images/yellow-3.svg" class="playing-card">
+                        <img src="card-images/green-3.svg" class="playing-card ">
+                        <img src="card-images/yellow-3.svg" class="playing-card">
+                        <img src="card-images/green-3.svg" class="playing-card ">
+                    </div>
+                    <div class="player-info">
+                        <img class= "player-icon"src="https://overwatchitemtracker.com/resources/heroes/all/icons/kittymari.png" alt="profile picture" width="40">
+                        <p id="player-name"> Player4</p>
+                        <p>(8)</p>
+                    </div>
                 </div>
-                <br>
                 <div class="grid-item draw-discard-piles">
                     <div>DRAW PILE</div>          
                     <div>DISCARD PILE</div>      
                 </div>   
             </div>
+        </div>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
         </main>
         <footer id="footer" class="d-flex flex-wrap justify-content-between align-items-center p-1 px-md-4 mb-2 bg-light border-top">
