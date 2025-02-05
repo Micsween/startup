@@ -1,3 +1,6 @@
+body{
+    overflow-x: hidden;
+}
 #footer{
     color: rgba(0, 0, 0, 0.55);
 }
@@ -16,9 +19,12 @@
 } 
 #grid-container{
     display: grid;
+    height: calc(100vh - 80px);
     align-items: center;
     margin: 1em;
-    overflow: scroll;
+    aspect-ratio: 4/3;
+    max-width: 100vw;
+    max-height: 100vh;
 }
 .grid-item{
     width: min-content;
@@ -27,16 +33,19 @@
 .grid-item.main-user{
     grid-row-start: 3;
     grid-column-start: 2;
+    display: flex;
 }
 .grid-item.player-top{
     grid-row-start: 1;
     grid-column-start: 2;
+    display: flex;
 }
 .grid-item.player-left{
     grid-row-start: 2;
     grid-column-start: 1;
 }
 .grid-item.draw-discard-piles{
+    display: flex;
     grid-row-start: 2;
     grid-column-start: 2;
     margin:auto;
@@ -52,6 +61,9 @@
     flex-direction: row;
     width: 10em;
 }
+.player-info.right{
+    transform: translateY(100px);
+}
 .player-icon{
     width: 60px;
     padding: .5em;
@@ -63,7 +75,8 @@
 .player-hand    {
     display: flex;
     margin: 10px;
-    width: min-content;
+    width: auto;
+    height: auto;
 }
 .player-hand.enemy-hand{
     display: flex;
@@ -73,23 +86,17 @@
 .playing-card{
     width: 73px;
     height: 101px;
-    margin-left:-20px;
     background-size: 100%;
     border-radius: 10px;
 }
 
 #card-back{
-    margin-top: -70px;
+    margin-top: -90px;
     transform: rotate(90deg) translateY(-50%);
     transform-origin: center center;
-    background-image: url(card-images/uno-card-back.png);
 }
 
+@media (max-width: 600px) {
+    
 
-/*
-z-index: 2;
-    transform: rotate(90deg) translateY(-50%) translateX(20px);
-        z-index: 4;
-    transform: rotate(90deg) translateY(-100%) translateX(-20px);
-    parent object has position:absolute;
-*/
+  }
