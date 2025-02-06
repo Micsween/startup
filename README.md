@@ -126,6 +126,8 @@ After messing around with it a bit, I figured it out! 100vh means take up 100% o
 - [x] **Application images** - I started with a few placeholder images.
 
 ## 🚀 React part 1: Routing deliverable
+> [!IMPORTANT] 
+> So make sure you include node_modules in your .gitignore file.
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
