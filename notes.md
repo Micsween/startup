@@ -79,6 +79,10 @@ Grid: a grid of objects
   ```
 ## Node.js Notes
 
+For editing files in a terminal, this is a pretty easy command for powershell, because it doesn't like 'nano'
+  ```sh
+  notepad.exe fileName.txt #or .html, .js, .jsx, etc
+  ```
 Debugging with node.js in vscode 
 1. Start by hitting f5
    Theres a debugger in vscode and a debugger in your browser, you can put breakpoints in both and step through your code.
