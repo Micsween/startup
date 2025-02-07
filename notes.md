@@ -65,7 +65,22 @@ Embedding a link in HTML:
 ```html
 <a href="https://byu.edu">Go to the Y</a>
 ```
-## CSS Notess
+## CSS Notes
 
 ID: only for one element per page. 
 Class: multiple elements with the same styling rules.
+
+Grid: a grid of objects
+
+# HOW TO DEPLOY:
+
+  ```sh
+  ./deployFiles.sh -k ~/keys/production.pem -h yourdomain.click -s simon
+  ```
+## Node.js Notes
+
+Debugging with node.js in vscode 
+1. Start by hitting f5
+   Theres a debugger in vscode and a debugger in your browser, you can put breakpoints in both and step through your code.
+   Dont use liveserver ex
+2. node.js will restart every time i hit ctrl+s

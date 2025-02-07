@@ -118,14 +118,16 @@ main {
 ```
 There were several other things included in the styling for the 'main' tag, but it caught my eye that if I deactivated this in the debugger it caused the whole body to shorten to the size of its content. This would solve a problem I had with my own code! Now I just had to research what calc(100vh - 110px) meant..
 After messing around with it a bit, I figured it out! 100vh means take up 100% of the viewport height, minus 110px (the size of the footer!).
-- [ ] **Header, footer, and main content body** - I did not complete this part of the deliverable.
-- [ ] **Navigation elements** - I did not complete this part of the deliverable.
-- [ ] **Responsive to window resizing** - I did not complete this part of the deliverable.
-- [ ] **Application elements** - I did not complete this part of the deliverable.
-- [ ] **Application text content** - I did not complete this part of the deliverable.
-- [ ] **Application images** - I did not complete this part of the deliverable.
+- [x] **Header, footer, and main content body** - This part was relatively simple. 
+- [x] **Navigation elements** - I liked making it look pretty and added a collapsable header if the window is to small.
+- [x] **Responsive to window resizing** - it's responsive to an extent. theres a point where it would be too hard to see the objects if they got too much smaller, so I didn't add that.
+- [x] **Application elements** - Lots of tables! The game page took me the most amount of time.
+- [x] **Application text content** - This didn't take too long.
+- [x] **Application images** - I started with a few placeholder images.
 
 ## 🚀 React part 1: Routing deliverable
+> [!IMPORTANT] 
+> So make sure you include node_modules in your .gitignore file.
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
