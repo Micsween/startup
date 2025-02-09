@@ -88,3 +88,7 @@ Debugging with node.js in vscode
    Theres a debugger in vscode and a debugger in your browser, you can put breakpoints in both and step through your code.
    Dont use liveserver ex
 2. node.js will restart every time i hit ctrl+s
+3. 
+
+## Svelte Notes
+When you want to bundle your application so that you can deploy to a production environment you need to run npm run build.
