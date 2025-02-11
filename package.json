@@ -1,0 +1,18 @@
+{
+  "name": "startup",
+  "version": "1.0.0",
+  "description": "The best game of UNO ever.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://github.com/Micsween/startup#readme",
+  "dependencies": {
+    "vite": "^6.1.0"
+  }
+}
