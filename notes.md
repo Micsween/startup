@@ -104,6 +104,10 @@ for (let i = 0; i < 1000000; i++) {}
 console.timeEnd('demo time');
 console.log(doMath((a,b) => a-b, 5))
 
+function makeClosure(init){
+  let closureValue = init;
+  return () => `closure ${++closureValue}`;
+}
 //(parameters) => return statement
 // if you add curly braces you need to add the statement "return"
 ```
