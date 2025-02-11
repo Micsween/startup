@@ -103,13 +103,20 @@ console.time('demo time');
 for (let i = 0; i < 1000000; i++) {}
 console.timeEnd('demo time');
 console.log(doMath((a,b) => a-b, 5))
-
-function makeClosure(init){
-  let closureValue = init;
-  return () => `closure ${++closureValue}`;
-}
 //(parameters) => return statement
 // if you add curly braces you need to add the statement "return"
 ```
+
+```sh
+function makeClosure(init){
+  let closureValue = init;
+  return () => `closure ${++closureValue}`;
+
+const closure = makeClosure(0);
+console.log(closure()); #prints 1
+console.log(closure()); #prints 2
+}
+```
+This function will remember whatever you orignally passed in.
 ## React Notes
 When you want to bundle your application so that you can deploy to a production environment you need to run npm run build.
