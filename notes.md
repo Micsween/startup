@@ -93,5 +93,19 @@ Debugging with node.js in vscode
 
 > [!IMPORTANT]
 > Learn how to use the vscode debugger (using ctrl+shift+p)
+
+```sh
+
+console.log('Bye, world!');
+console.log('Hello, world!');
+
+console.time('demo time');
+for (let i = 0; i < 1000000; i++) {}
+console.timeEnd('demo time');
+console.log(doMath((a,b) => a-b, 5))
+
+//(parameters) => return statement
+// if you add curly braces you need to add the statement "return"
+```
 ## React Notes
 When you want to bundle your application so that you can deploy to a production environment you need to run npm run build.
