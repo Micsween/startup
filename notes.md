@@ -90,5 +90,8 @@ Debugging with node.js in vscode
 2. node.js will restart every time i hit ctrl+s
 3. 
 
-## Svelte Notes
+
+> [!IMPORTANT]
+> Learn how to use the vscode debugger
+## React Notes
 When you want to bundle your application so that you can deploy to a production environment you need to run npm run build.
