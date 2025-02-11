@@ -92,6 +92,6 @@ Debugging with node.js in vscode
 
 
 > [!IMPORTANT]
-> Learn how to use the vscode debugger
+> Learn how to use the vscode debugger (using ctrl+shift+p)
 ## React Notes
 When you want to bundle your application so that you can deploy to a production environment you need to run npm run build.
