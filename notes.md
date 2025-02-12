@@ -123,3 +123,6 @@ console.log(closure()); #prints 2
 This function will remember whatever you orignally passed in.
 ## React Notes
 When you want to bundle your application so that you can deploy to a production environment you need to run npm run build.
+
+
+Global Scope of CSS: When you include a CSS file in your React project, its styles are applied globally unless you're using a scoping mechanism like CSS Modules or styled-components. I ran into this problem when I was two stylesheets had the same name for their "content" div. So i renamed the id's to be the name of the component
