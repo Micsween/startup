@@ -90,5 +90,33 @@ Debugging with node.js in vscode
 2. node.js will restart every time i hit ctrl+s
 3. 
 
-## Svelte Notes
+
+> [!IMPORTANT]
+> Learn how to use the vscode debugger (using ctrl+shift+p)
+
+```sh
+
+console.log('Bye, world!');
+console.log('Hello, world!');
+
+console.time('demo time');
+for (let i = 0; i < 1000000; i++) {}
+console.timeEnd('demo time');
+console.log(doMath((a,b) => a-b, 5))
+//(parameters) => return statement
+// if you add curly braces you need to add the statement "return"
+```
+
+```sh
+function makeClosure(init){
+  let closureValue = init;
+  return () => `closure ${++closureValue}`;
+
+const closure = makeClosure(0);
+console.log(closure()); #prints 1
+console.log(closure()); #prints 2
+}
+```
+This function will remember whatever you orignally passed in.
+## React Notes
 When you want to bundle your application so that you can deploy to a production environment you need to run npm run build.
