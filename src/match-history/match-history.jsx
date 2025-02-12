@@ -4,6 +4,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./match-history.css";
 
 /*YOU NEED TO UPATE TIME TAGS TO BE JAVASCRIPT DATE OBJECTS ONCE YOU HAVE YOUR DATABASE*/
+/*Also add a feature where you can route to different matchHistory pages depending on the player you select */
 export function MatchHistory() {
   return (
     <main>
@@ -197,7 +198,7 @@ export function MatchHistory() {
       <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-        crossorigin="anonymous"
+        crossOrigin="anonymous"
       ></script>
     </main>
   );

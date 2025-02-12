@@ -20,9 +20,9 @@ export default function App() {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <div className="navbar-nav me-auto mb-2 mb-lg-0">
-                        <NavLink className="nav-link" to="join">Join Game</NavLink>
-                        <NavLink className="nav-link" to="match-history">Match History</NavLink>                     
                         <NavLink className="nav-link" to="/">Login</NavLink>
+                        <NavLink className="nav-link" to="match-history">Match History</NavLink>                     
+                        <NavLink className="nav-link" to="join">Join Game</NavLink>
                         <NavLink className="nav-link" to="lobby">Lobby</NavLink>
                         <NavLink className="nav-link" to="game">Game</NavLink>
                     </div>

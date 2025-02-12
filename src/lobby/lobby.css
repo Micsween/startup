@@ -8,7 +8,7 @@
 }
     */
 
-#content{
+#lobby{
     background-color: #dbd9d9;
     height: calc(100vh - 80px);
     display: flex;

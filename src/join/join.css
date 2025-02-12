@@ -1,16 +1,8 @@
-/*#footer{
-    color: rgba(0, 0, 0, 0.55);
-}
-*{
-    font-family: monospace;
-    font-size: 1.0em;
-}
-    */
-#content{
+
+#join{
     background-color: #dbd9d9;
     height: calc(100vh - 80px);
     display: flex;
-    align-items: left;
     flex-direction: column;
     padding-top: 1em;
     padding-left: 1em;
@@ -20,5 +12,11 @@
     background-color: white;
     border: solid .1em black;
     width: 45%;
-    text-align: left;
+    text-align: center;
+}
+#join-button{
+    margin: .25em;
+}
+#username{
+    margin-top: .25em;
 }
