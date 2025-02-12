@@ -9,6 +9,8 @@
 - [MDN](https://developer.mozilla.org)
 
 
+## VScode Notes
+alt + <- arrow keys : swaps the current line of code with the one beneath it.
 ## AWS Notes
 From : [Amazon Web Services tutorial](https://github.com/webprogramming260/.github/blob/main/profile/webServers/amazonWebServicesEc2/amazonWebServicesEc2.md)
 <!-- I don't quite understand this yet so I'm going to save it for later.-->
