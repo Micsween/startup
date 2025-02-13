@@ -11,10 +11,6 @@ This is a really cool way to turn in assignments. I like this a lot. it makes it
 > [!NOTE]
 >  This is a template for your startup application. You must modify this `README.md` file for each phase of your development. You only need to fill in the section for each deliverable when that deliverable is submitted in Canvas. Without completing the section for a deliverable, the TA will not know what to look for when grading your submission. Feel free to add additional information to each deliverable description, but make sure you at least have the list of rubric items and a description of what you did for each item.
 
-<summary> Notes on Markdown Syntax</summary>
-    
-![A photo of my written notes that I took as I read the GitHub Docs on markdown syntax.](./writtenNotes/mdsyntax.jpg)
-    
 </details>
 ## 🚀 Specification Deliverable
 <!-- Fill in this sections as the submission artifact for this deliverable. You can refer to this [example](https://github.com/webprogramming260/startup-example/blob/main/README.md) for inspiration.
@@ -129,11 +125,9 @@ After messing around with it a bit, I figured it out! 100vh means take up 100% o
 > [!IMPORTANT] 
 > So make sure you include node_modules in your .gitignore file.
 
-For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
-
-- [ ] **Bundled using Vite** - I did not complete this part of the deliverable.
-- [ ] **Components** - I did not complete this part of the deliverable.
-- [ ] **Router** - Routing between login and voting components.
+- [x] **Bundled using Vite** - This was relatively easy! Vite was very easy to install.
+- [x] **Components** - I made all the components. I had some difficulty with the css because I had some id's with the same name. which
+- [x] **Router** - Routers are so nice! The website loads so much smoother now.
 
 ## 🚀 React part 2: Reactivity
 
