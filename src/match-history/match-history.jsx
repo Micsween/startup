@@ -48,7 +48,7 @@ export function MatchHistory() {
   React.useEffect(() => {
     setMatches(JSON.parse(localStorage.getItem('matches')))
     }, []);
-
+//
   const matchHistory = [];
   if (matches.length) {
     for (const [index, match] of matches.entries()) {
@@ -78,14 +78,14 @@ export function MatchHistory() {
       );
     }
   } else {
-    <tbody>
+    matchHistory.push(
+    <tbody> 
         <tr>
           <td>
             Play a game to see your match History!
           </td>
         </tr>
-        </tbody>
-
+    </tbody>);
   }
 
   return (
@@ -93,9 +93,7 @@ export function MatchHistory() {
       <div id="content">
         <h1>{username}'s Match History</h1>
         <table id="match-history" className="table table-striped ">
-
             {matchHistory}
-  
         </table>
         <div id="quote" className="card">
           <div className="card-body">
