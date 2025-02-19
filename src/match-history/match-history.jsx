@@ -6,14 +6,19 @@ import "./match-history.css";
 /*YOU NEED TO UPATE TIME TAGS TO BE JAVASCRIPT DATE OBJECTS ONCE YOU HAVE YOUR DATABASE*/
 /*Also add a feature where you can route to different matchHistory pages depending on the player you select */
 
+  // const opponentList = opponents.map((opponent) => 
+  //   <li key={opponent.userID}>{opponent.username}</li>
+  // );
+
 function getOpponentList(opponents) {
   const opponentList = [];
+
   if (opponents != null) {
-    for (const [index, opponentName] of opponents.entries()) {
+    for (const [index, opponent] of opponents.entries()) {
       opponentList.push(
-        <li key={opponentName}>
+        <li key={opponent.userID}>
           <a className="dropdown-item" href="#" >
-            {opponentName}
+            {opponent.username}
           </a>
         </li>
       );
@@ -21,6 +26,7 @@ function getOpponentList(opponents) {
   }
   return opponentList;
 }
+  
 
 export function MatchHistory() {
   const [quote, setQuote] = React.useState("No quote yet");
@@ -37,32 +43,11 @@ export function MatchHistory() {
   React.useEffect(() => {
     setUsername("Autobotkilla");
   }, []);
-  //should make a match object to make this easier
-  //matches is an array of match objects
-  const [matches, setMatches] = React.useState([
-    {
-      gameName: "The best Game",
-      result: "Win",
-      date: "2/19/2025",
-      oponents: [
-        "Player2's username",
-        "Player3's username",
-        "Player4's username",
-      ],
-    },
-  ]);
-  //const listItems = items.map((item) => 
-  //<li key={item.id}>{item.text}</li>
-//);
-  //update this later to update the values of gameName, result, etc.
+
+  const [matches, setMatches] = React.useState([]);
   React.useEffect(() => {
-    //a match has: a game name
-    //a result (win or loss)
-    //a date
-    //a list of opponents
-    //{gameName: "The best Game", result: "Win", date : new Date(2/19/25), oponents: ["Player2's username", "Player3's username", "Player4's username"]}
-  }, []);
-  //replace USERNAMe with the actual username
+    setMatches(JSON.parse(localStorage.getItem('matches')))
+    }, []);
 
   const matchHistory = [];
   if (matches.length) {
@@ -75,7 +60,6 @@ export function MatchHistory() {
           <td>{match.date}</td>
           <td>
             {" "}
-            {/* I got rid of a div here so be careful*/}
             <button
               className="btn btn-warning dropdown-toggle"
               type="button"
@@ -94,6 +78,14 @@ export function MatchHistory() {
       );
     }
   } else {
+    <tbody>
+        <tr>
+          <td>
+            Play a game to see your match History!
+          </td>
+        </tr>
+        </tbody>
+
   }
 
   return (
@@ -103,136 +95,7 @@ export function MatchHistory() {
         <table id="match-history" className="table table-striped ">
 
             {matchHistory}
-    
-          <tbody>
-            <tr>
-              <th scope="row"> Game 2</th>
-              <td id="game-loss">Loss</td>
-              <td>
-                {" "}
-                <time> 1/26/2025</time>
-              </td>
-              <td>
-                <div>
-                  <button
-                    className="btn btn-warning dropdown-toggle"
-                    type="button"
-                    id="dropdownMenuButton1"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    Opponents
-                  </button>
-                  <ul
-                    className="dropdown-menu"
-                    aria-labelledby="dropdownMenuButton1"
-                  >
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        Player2's username
-                      </a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        Player3's username
-                      </a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        Player4's username
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-          <tbody>
-            <tr>
-              <th scope="row"> Game 3</th>
-              <td id="game-win">Win</td>
-              <td>
-                {" "}
-                <time> 1/28/2025</time>
-              </td>
-              <td>
-                <div>
-                  <button
-                    className="btn btn-warning dropdown-toggle"
-                    type="button"
-                    id="dropdownMenuButton1"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    Opponents
-                  </button>
-                  <ul
-                    className="dropdown-menu"
-                    aria-labelledby="dropdownMenuButton1"
-                  >
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        Player2's username
-                      </a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        Player3's username
-                      </a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        Player4's username
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-          <tbody>
-            <tr>
-              <th scope="row"> Game 5</th>
-              <td id="game-loss">Loss</td>
-              <td>
-                {" "}
-                <time> 1/30/2025</time>
-              </td>
-              <td>
-                <div>
-                  <button
-                    className="btn btn-warning dropdown-toggle"
-                    type="button"
-                    id="dropdownMenuButton1"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    Opponents
-                  </button>
-                  <ul
-                    className="dropdown-menu"
-                    aria-labelledby="dropdownMenuButton1"
-                  >
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        Player2's username
-                      </a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        Player3's username
-                      </a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        Player4's username
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </td>
-            </tr>
-          </tbody>
+  
         </table>
         <div id="quote" className="card">
           <div className="card-body">
@@ -253,3 +116,67 @@ export function MatchHistory() {
     </main>
   );
 }
+/*
+for setting up local storage:
+let matches = [
+  {
+        gameName: "The best Game",
+        result: "Win",
+        date: "2/19/2025",
+        opponents: [
+          { 
+            username: "Player2's username", 
+            userID: 1234
+          },
+          { 
+            username: "Player3's username", 
+            userID: 5678
+          },
+          { 
+            username: "Player4's username", 
+            userID: 1000
+          },
+        ],
+      },
+      {
+        gameName: "The second best Game",
+        result: "Win",
+        date: "2/20/2025",
+        opponents: [
+          { 
+            username: "Player2's username", 
+            userID: 1234
+          },
+          { 
+            username: "Player3's username", 
+            userID: 5678
+          },
+          { 
+            username: "Player4's username", 
+            userID: 1000
+          },
+        ],
+      },
+      {
+        gameName: "The third best Game",
+        result: "lose",
+        date: "2/20/2000",
+        opponents: [
+          { 
+            username: "Player2's username", 
+            userID: 1234
+          },
+          { 
+            username: "Player3's username", 
+            userID: 5678
+          },
+          { 
+            username: "Player4's username", 
+            userID: 1000
+          },
+        ],
+      },
+]
+localStorage.setItem('matches',JSON.stringify(matches));
+console.log(JSON.parse(localStorage.getItem('matches')));
+*/
