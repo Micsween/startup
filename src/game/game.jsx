@@ -132,3 +132,6 @@ export function Game() {
     </main>
   );
 }
+
+//make a card a property
+//make a playericon property

@@ -6,6 +6,15 @@ import "./match-history.css";
 /*YOU NEED TO UPATE TIME TAGS TO BE JAVASCRIPT DATE OBJECTS ONCE YOU HAVE YOUR DATABASE*/
 /*Also add a feature where you can route to different matchHistory pages depending on the player you select */
 export function MatchHistory() {
+  const[quote, setQuote] = React.useState("No quote yet");
+  const[quoteAuthor, setQuoteAuthor] = React.useState("idk, some dude.");
+  const[movie, setMovie] = React.useState("From the best movie ever");
+
+  React.useEffect(() => {
+    setQuote("Do or do not. There is no try.");
+    setQuoteAuthor("Yoda");
+    setMovie("Star Wars");
+  }, []);
   return (
     <main>
       <div id="content">
@@ -187,9 +196,9 @@ export function MatchHistory() {
         <div id="quote" className="card">
           <div className="card-body">
             <blockquote className="blockquote mb-0">
-              <p>"Do or do not. There is no try."</p>
+              <p>{quote}</p>
               <footer className="blockquote-footer">
-                Someone famous in <cite title="Source Title">Star Wars</cite>
+                {quoteAuthor} <cite title="Source Title">({movie})</cite>
               </footer>
             </blockquote>
           </div>
