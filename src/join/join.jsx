@@ -30,24 +30,28 @@ export function Join() {
     }
     return gameList;
   }
-  async function joinGame(gameCode){
+  async function joinGame(gameCode) {
     // let games = [];
     // let storedGames = ((localStorage.getItem('games')));
     // if(storedGames){
     //   games = JSON.parse(storedGames);
     // }
     //THE KEYWORD AWAIT HERE IS TO WAIT UNTIL localStorage.getItem is FINISHED
-    let games = await(JSON.parse(localStorage.getItem('games')));
-    const foundGame = games.find((game) => game.gameCode === gameCode);
-    
-    if(foundGame){
+    //turn this into a try/catch block
+    try {
+      let games = await JSON.parse(localStorage.getItem("games"));
+      const foundGame = games.find((game) => game.gameCode === gameCode);
+      if (foundGame) {
         alert("Success!");
-    }else{
-      alert("Incorrect game code")
+      } else {
+        alert("Incorrect game code");
+      }
+    } catch (err) {
+      console.log(err);
     }
     return joinGame;
   }
-  function createGame(){
+  function createGame() {
     //creates a code of 4 random letters/numbers
     //creates a new game object with username as the host
     //players is just the player that joined
@@ -75,7 +79,7 @@ export function Join() {
               type="text"
               maxLength="4"
               placeholder="Enter Game Code"
-              value = {gameCode}
+              value={gameCode}
               onChange={(e) => setGameCode(e.target.value)}
             />
             {/*
@@ -84,9 +88,11 @@ export function Join() {
             <Button
               className="btn btn-danger join-button"
               disabled={!gameCode}
-              onClick={() =>{
-                joinGame(gameCode)
-                {/*alert(gameCode)*/}
+              onClick={() => {
+                joinGame(gameCode);
+                {
+                  /*alert(gameCode)*/
+                }
               }}
             >
               Join Game
@@ -98,9 +104,7 @@ export function Join() {
               className="btn btn-dark"
               type="submit"
               value="Create Game"
-              onClick={() =>{
-                
-              }}
+              onClick={() => {}}
             />
           </div>
         </form>
