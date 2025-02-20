@@ -14,7 +14,7 @@
     width: 45%;
     text-align: center;
 }
-#join-button{
+.join-button{
     margin: .25em;
 }
 #username{
