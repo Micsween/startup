@@ -31,9 +31,16 @@ export function Join() {
     return gameList;
   }
   async function joinGame(gameCode){
-    const games = JSON.parse((localStorage.getItem('games')));
-    const game = games.find(game => game.gameCode === gameCode);
-    if(game){
+    // let games = [];
+    // let storedGames = ((localStorage.getItem('games')));
+    // if(storedGames){
+    //   games = JSON.parse(storedGames);
+    // }
+    //THE KEYWORD AWAIT HERE IS TO WAIT UNTIL localStorage.getItem is FINISHED
+    let games = await(JSON.parse(localStorage.getItem('games')));
+    const foundGame = games.find((game) => game.gameCode === gameCode);
+    
+    if(foundGame){
         alert("Success!");
     }else{
       alert("Incorrect game code")
@@ -77,7 +84,10 @@ export function Join() {
             <Button
               className="btn btn-danger join-button"
               disabled={!gameCode}
-              onClick={joinGame}
+              onClick={() =>{
+                joinGame(gameCode)
+                {/*alert(gameCode)*/}
+              }}
             >
               Join Game
             </Button>
