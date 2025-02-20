@@ -30,12 +30,8 @@ export function Join() {
     }
     return gameList;
   }
+  //RETURNS A PROMISE
   async function joinGame(gameCode) {
-    // let games = [];
-    // let storedGames = ((localStorage.getItem('games')));
-    // if(storedGames){
-    //   games = JSON.parse(storedGames);
-    // }
     //THE KEYWORD AWAIT HERE IS TO WAIT UNTIL localStorage.getItem is FINISHED
     //turn this into a try/catch block
     try {
