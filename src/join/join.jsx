@@ -6,6 +6,31 @@ import Button from "react-bootstrap/Button";
 import { useNavigate } from 'react-router-dom';
 //FINISH JOIN GAME BUTTON
 //FINISH CREATE GAME BUTTON
+function listGames(games) {
+  const gameList = [];
+  for (const [index, game] of games.entries()) {
+    gameList.push(
+      <tr>
+        <td>{game.gameCode}</td>
+        <td>{game.host}</td>
+        <td>{game.players.length}</td>
+      </tr>
+    );
+  }
+  return gameList;
+}
+async function getGames(gameCode){
+  return await JSON.parse(localStorage.getItem("games"));
+}
+function findGame(games, gameCode) {
+  return games.find((game) => game.gameCode === gameCode);
+}
+function updateGame(gameCode){
+  let games = getGames(games, gameCode);
+  let foundGame = findGame(games, gameCode);
+  foundGame.players.push({username: username, userID: 1980});
+}
+
 export function Join({ setGameCode, gameCode }) {
   //const [gameCode, setGameCode] = React.useState("");
   const navigate = useNavigate();
@@ -14,32 +39,16 @@ export function Join({ setGameCode, gameCode }) {
   React.useEffect(() => {
     setUsername("Autobotkilla");
   }, []);
-
   React.useEffect(() => {
     setGames(JSON.parse(localStorage.getItem("games")));
   }, []);
-  function listGames(games) {
-    const gameList = [];
-    for (const [index, game] of games.entries()) {
-      gameList.push(
-        <tr>
-          <td>{game.gameCode}</td>
-          <td>{game.host}</td>
-          <td>{game.players.length}</td>
-        </tr>
-      );
-    }
-    return gameList;
-  }
-  //RETURNS A PROMISE
+ 
   async function joinGame(gameCode) {
-    //THE KEYWORD AWAIT HERE IS TO WAIT UNTIL localStorage.getItem is FINISHED
-    //turn this into a try/catch block
     try {
-      let games = await JSON.parse(localStorage.getItem("games"));
-      const foundGame = games.find((game) => game.gameCode === gameCode);
+      let games = await getGames();
+      const foundGame = findGame(games, gameCode)
       if (foundGame) {
-        navigate("/lobby");
+        navigate('/lobby');
       } else {
         alert("Incorrect game code");
       }
@@ -54,12 +63,6 @@ export function Join({ setGameCode, gameCode }) {
     //players is just the player that joined
     return;
   }
-  //  function enterKeyPress(event){
-  //   if (event.key === "Enter") {
-  //     setGameCode(event.target.value);
-  //     joinGame(gameCode);
-  //   }
-
   return (
     <main>
       <div id="join">
