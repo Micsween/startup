@@ -10,6 +10,8 @@ import { MatchHistory } from './match-history/match-history';
 
 
 export default function App() {
+    const [gameCode, setGameCode] = React.useState("");
+    /*Include username */
     return (
     <BrowserRouter>
     <div>
@@ -29,12 +31,24 @@ export default function App() {
                 </div>
             </nav>
         </header>
+        {/*onAuthChange={(userName, authState) => {
+                  setAuthState(authState);
+                  setUserName(userName);
+                }}*/}
         <Routes>
-            <Route path='/' element={<Login />} exact /> 
-            <Route path='/join' element={<Join />} />
+            <Route path='/' element={
+                <Login/>} exact /> 
+            <Route path='/join' element={<Join
+                 setGameCode={setGameCode}
+                 gameCode={gameCode}
+                  />} exact />
             <Route path='/match-history' element={<MatchHistory />} />
-            <Route path='/lobby' element={<Lobby />} />
-            <Route path='/game' element={<Game />} />
+            <Route path='/lobby' element={<Lobby
+                gameCode={gameCode}
+            />} />
+            <Route path='/game' element={<Game
+                gameCode={gameCode}
+            />} />
             <Route path='*' element={<NotFound />} />
         </Routes>
         <footer id="footer" className="d-flex flex-wrap justify-content-between align-items-center p-1 px-md-4 mb-2 bg-light border-top">

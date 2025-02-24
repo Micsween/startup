@@ -3,11 +3,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./join.css";
 import Button from "react-bootstrap/Button";
-import { Alert } from "bootstrap/dist/js/bootstrap.bundle.min.js";
+import { useNavigate } from 'react-router-dom';
 //FINISH JOIN GAME BUTTON
 //FINISH CREATE GAME BUTTON
-export function Join() {
-  const [gameCode, setGameCode] = React.useState("");
+export function Join({ setGameCode, gameCode }) {
+  //const [gameCode, setGameCode] = React.useState("");
+  const navigate = useNavigate();
   const [username, setUsername] = React.useState("Username");
   const [games, setGames] = React.useState([]);
   React.useEffect(() => {
@@ -38,7 +39,7 @@ export function Join() {
       let games = await JSON.parse(localStorage.getItem("games"));
       const foundGame = games.find((game) => game.gameCode === gameCode);
       if (foundGame) {
-        alert("Success!");
+        navigate("/lobby");
       } else {
         alert("Incorrect game code");
       }
@@ -53,6 +54,11 @@ export function Join() {
     //players is just the player that joined
     return;
   }
+  //  function enterKeyPress(event){
+  //   if (event.key === "Enter") {
+  //     setGameCode(event.target.value);
+  //     joinGame(gameCode);
+  //   }
 
   return (
     <main>
@@ -68,7 +74,7 @@ export function Join() {
           </thead>
           <tbody>{listGames(games)}</tbody>
         </table>
-        <form method="get" action="lobby">
+        <form>
           <p id="username">{username}</p>
           <div>
             <input
@@ -86,9 +92,6 @@ export function Join() {
               disabled={!gameCode}
               onClick={() => {
                 joinGame(gameCode);
-                {
-                  /*alert(gameCode)*/
-                }
               }}
             >
               Join Game

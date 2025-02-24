@@ -3,13 +3,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./lobby.css";
 
-export function Lobby() {
+export function Lobby({gameCode}) {
   return (
     <main>
       <div id="lobby">
         <form method="get" action="game">
           <ul id="player-list" className="list-group">
-            <h1>Game Code: GHCW</h1>
+            <h1>Game Code: {gameCode}</h1>
             <li id="host" className="list-group-item">
               Player 1 👑
             </li>
