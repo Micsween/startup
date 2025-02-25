@@ -11,6 +11,10 @@ import { MatchHistory } from './match-history/match-history';
 
 export default function App() {
     const [gameCode, setGameCode] = React.useState("");
+    const [username, setUsername] = React.useState("Oblivion Phoenix");
+    /*  React.useEffect(() => {
+        setUsername("Autobotkilla");
+      }, []); */
     /*Include username */
     return (
     <BrowserRouter>
@@ -41,8 +45,11 @@ export default function App() {
             <Route path='/join' element={<Join
                  setGameCode={setGameCode}
                  gameCode={gameCode}
+                 username={username}
                   />} exact />
-            <Route path='/match-history' element={<MatchHistory />} />
+            <Route path='/match-history' element={<MatchHistory
+                username={username}
+            />} />
             <Route path='/lobby' element={<Lobby
                 gameCode={gameCode}
             />} />

@@ -9,7 +9,7 @@ import "./match-history.css";
 // const opponentList = opponents.map((opponent) =>
 //   <li key={opponent.userID}>{opponent.username}</li>
 // );
-export function MatchHistory() {
+export function MatchHistory({username}) {
   const [quote, setQuote] = React.useState("No quote yet");
   const [quoteAuthor, setQuoteAuthor] = React.useState("idk, some dude.");
   const [movie, setMovie] = React.useState("From the best movie ever");
@@ -20,10 +20,7 @@ export function MatchHistory() {
     setMovie("Star Wars");
   }, []);
 
-  const [username, setUsername] = React.useState("Oblivion Phoenix");
-  React.useEffect(() => {
-    setUsername("Autobotkilla");
-  }, []);
+  
 
   return (
     <main>

@@ -25,29 +25,25 @@ async function getGames(gameCode){
 function findGame(games, gameCode) {
   return games.find((game) => game.gameCode === gameCode);
 }
-function updateGame(gameCode){
-  let games = getGames(games, gameCode);
-  let foundGame = findGame(games, gameCode);
-  foundGame.players.push({username: username, userID: 1980});
+function updateGame(){
+  //for now, this does nothing. but once I have a database it will update the database with a new player
 }
 
-export function Join({ setGameCode, gameCode }) {
+export function Join({ username, setGameCode, gameCode }) {
   //const [gameCode, setGameCode] = React.useState("");
   const navigate = useNavigate();
-  const [username, setUsername] = React.useState("Username");
   const [games, setGames] = React.useState([]);
-  React.useEffect(() => {
-    setUsername("Autobotkilla");
-  }, []);
+
   React.useEffect(() => {
     setGames(JSON.parse(localStorage.getItem("games")));
   }, []);
  
   async function joinGame(gameCode) {
     try {
-      let games = await getGames();
-      const foundGame = findGame(games, gameCode)
+      let games = getGames();
+      const foundGame = await findGame(games, gameCode)
       if (foundGame) {
+        await updateGame(games, foundGame);
         navigate('/lobby');
       } else {
         alert("Incorrect game code");
