@@ -19,12 +19,8 @@ function listGames(games) {
   }
   return gameList;
 }
-async function getGames(gameCode){
-  return await JSON.parse(localStorage.getItem("games"));
-}
-function findGame(games, gameCode) {
-  return games.find((game) => game.gameCode === gameCode);
-}
+
+
 function updateGame(){
   //for now, this does nothing. but once I have a database it will update the database with a new player
 }
@@ -40,8 +36,8 @@ export function Join({ username, setGameCode, gameCode }) {
  
   async function joinGame(gameCode) {
     try {
-      let games = getGames();
-      const foundGame = await findGame(games, gameCode)
+      let games = await JSON.parse(localStorage.getItem("games"));
+      const foundGame = games.find((game) => game.gameCode === gameCode)
       if (foundGame) {
         await updateGame(games, foundGame);
         navigate('/lobby');
