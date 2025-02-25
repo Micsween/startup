@@ -5,13 +5,17 @@ import "./game.css";
 import { DrawPile } from './draw-pile';
 
 export function Game() {
+  const [lastCard, setLastCard]  = React.useState("none");
   const [players, setPlayers] = React.useState(["Michelle", "Lauren", "Eryn", "James"]);
   const [hand, setHand] = React.useState([]);
   React.useState(() => {
-    let cardPath = "card-images/red-uno-cards/"
+    let cardPath = "card-images/red-cards/"
     let cards = [];
     for(let i = 1; i <= 10; i++) {
       cards.push(`${cardPath}` + `${i}.png`);
+    }
+    for(let i = 1; i <= 10; i++) {
+      cards.push("card-images/blue-cards/" + `${i}.png`);
     }
     //iterate 1-10
     //make an array with the card path + number.png
@@ -64,7 +68,7 @@ export function Game() {
                 alt="profile picture"
                 width="40"
               />
-              <p id="player-name">Player1 (7)</p>
+              <p id="player-name">Player1 (7) {lastCard}</p>
             </div>
             <div className="player-hand main-user">
               {hand}
@@ -117,7 +121,8 @@ export function Game() {
             </div>
           </div>
           <div className="grid-item draw-discard-piles">
-           <DrawPile />
+           <DrawPile
+             setLastCard={setLastCard} />
             <img src="card-images/yellow-3.svg" className="playing-card" />
           </div>
         </div>

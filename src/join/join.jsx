@@ -20,12 +20,12 @@ function listGames(games) {
 }
 function createGameCode() {
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  let gameCode = "";
+  let newGameCode = "";
   for (let i = 0; i < 4; i++) {
     const random = Math.floor(Math.random() * alphabet.length);
-    gameCode += alphabet[random];
+    newGameCode += alphabet[random];
   }
-  return gameCode;
+  return newGameCode;
 }
 function updateGame() {
   //for now, this does nothing. but once I have a database it will update the database with a new player
@@ -33,17 +33,16 @@ function updateGame() {
 
 export function Join({ username, setGameCode, gameCode }) {
   const [shouldCreateGame, setShouldCreateGame] = React.useState(false);
-  
+  const navigate = useNavigate();
+  const [games, setGames] = React.useState([]);
+
   React.useEffect(() => {
     if (shouldCreateGame && gameCode) {
       createGame();
-      navigate("/lobby");
       setShouldCreateGame(false);
     }
   }, [shouldCreateGame, gameCode]);
   
-  const navigate = useNavigate();
-  const [games, setGames] = React.useState([]);
 
   React.useEffect(() => {
     setGames(JSON.parse(localStorage.getItem("games")));
@@ -73,6 +72,9 @@ export function Join({ username, setGameCode, gameCode }) {
     }]));
     const games = JSON.parse(localStorage.getItem("games"));
     const foundGame = games.find((game) => game.gameCode === gameCode);
+    console.log("This is found game: " + foundGame.gameCode);
+    console.log("This is game code: " + gameCode);
+;    joinGame(foundGame.gameCode);
   }
 
  
