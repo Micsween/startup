@@ -3,9 +3,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./join.css";
 import Button from "react-bootstrap/Button";
-import { useNavigate } from 'react-router-dom';
-//FINISH JOIN GAME BUTTON
-//FINISH CREATE GAME BUTTON
+import { useNavigate } from "react-router-dom";
+
 function listGames(games) {
   const gameList = [];
   for (const [index, game] of games.entries()) {
@@ -20,27 +19,25 @@ function listGames(games) {
   return gameList;
 }
 
-
-function updateGame(){
+function updateGame() {
   //for now, this does nothing. but once I have a database it will update the database with a new player
 }
 
 export function Join({ username, setGameCode, gameCode }) {
-  //const [gameCode, setGameCode] = React.useState("");
   const navigate = useNavigate();
   const [games, setGames] = React.useState([]);
 
   React.useEffect(() => {
     setGames(JSON.parse(localStorage.getItem("games")));
   }, []);
- 
+
   async function joinGame(gameCode) {
     try {
       let games = await JSON.parse(localStorage.getItem("games"));
-      const foundGame = games.find((game) => game.gameCode === gameCode)
+      const foundGame = games.find((game) => game.gameCode === gameCode);
       if (foundGame) {
         await updateGame(games, foundGame);
-        navigate('/lobby');
+        navigate("/lobby");
       } else {
         alert("Incorrect game code");
       }
@@ -50,11 +47,29 @@ export function Join({ username, setGameCode, gameCode }) {
     return joinGame;
   }
   function createGame() {
+    const newGameCode = createGameCode();
+    localStorage.setItem("games", JSON.stringify([{
+      gameName: "Another Game",
+      gameCode: newGameCode,
+      host: username,
+      players: [],
+    }]));
+    setGameCode(newGameCode);
+    joinGame(newGameCode);
     //creates a code of 4 random letters/numbers
     //creates a new game object with username as the host
-    //players is just the player that joined
-    return;
+    //empty list of players 
   }
+  function createGameCode() {
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let gameCode = "";
+    for (let i = 0; i < 4; i++) {
+      const random = Math.floor(Math.random() * alphabet.length);
+      gameCode += alphabet[random];
+    }
+    return gameCode;
+  }
+ 
   return (
     <main>
       <div id="join">
@@ -98,7 +113,9 @@ export function Join({ username, setGameCode, gameCode }) {
               className="btn btn-dark"
               type="submit"
               value="Create Game"
-              onClick={() => {}}
+              onClick={() => {
+                createGame();
+              }}
             />
           </div>
         </form>
