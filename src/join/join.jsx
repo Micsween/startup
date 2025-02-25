@@ -18,12 +18,30 @@ function listGames(games) {
   }
   return gameList;
 }
-
+function createGameCode() {
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let gameCode = "";
+  for (let i = 0; i < 4; i++) {
+    const random = Math.floor(Math.random() * alphabet.length);
+    gameCode += alphabet[random];
+  }
+  return gameCode;
+}
 function updateGame() {
   //for now, this does nothing. but once I have a database it will update the database with a new player
 }
 
 export function Join({ username, setGameCode, gameCode }) {
+  const [shouldCreateGame, setShouldCreateGame] = React.useState(false);
+  
+  React.useEffect(() => {
+    if (shouldCreateGame && gameCode) {
+      createGame();
+      navigate("/lobby");
+      setShouldCreateGame(false);
+    }
+  }, [shouldCreateGame, gameCode]);
+  
   const navigate = useNavigate();
   const [games, setGames] = React.useState([]);
 
@@ -47,34 +65,16 @@ export function Join({ username, setGameCode, gameCode }) {
     return joinGame;
   }
   function createGame() {
-    const newGameCode = createGameCode();
     localStorage.setItem("games", JSON.stringify([{
       gameName: "Another Game",
-      gameCode: newGameCode,
+      gameCode: gameCode,
       host: username,
       players: [],
     }]));
-    setGameCode(newGameCode);
     const games = JSON.parse(localStorage.getItem("games"));
-    const foundGame = games.find((game) => game.gameCode === newGameCode);
-    if(foundGame){
-      navigate("/lobby");
-    }
-    
-   
-    //creates a code of 4 random letters/numbers
-    //creates a new game object with username as the host
-    //empty list of players 
+    const foundGame = games.find((game) => game.gameCode === gameCode);
   }
-  function createGameCode() {
-    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    let gameCode = "";
-    for (let i = 0; i < 4; i++) {
-      const random = Math.floor(Math.random() * alphabet.length);
-      gameCode += alphabet[random];
-    }
-    return gameCode;
-  }
+
  
   return (
     <main>
@@ -120,7 +120,9 @@ export function Join({ username, setGameCode, gameCode }) {
               type="submit"
               value="Create Game"
               onClick={() => {
-                createGame();
+                const newCode = createGameCode();
+                setGameCode(newCode);
+                setShouldCreateGame(true);
               }}
             />
           </div>

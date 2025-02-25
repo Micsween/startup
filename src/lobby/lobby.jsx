@@ -46,12 +46,14 @@ export function Lobby({ gameCode }) {
         Invite your friends!
       </li>]);
   React.useEffect(() => {
-    getPlayerList(gameCode).then((playerList) => {
+    getPlayerList(gameCode)
+    .then((playerList) => {
       setPlayers(playerList);
-  }).catch((error) => {
-    console.log("Error:" + error)}
+    })
+    .catch((error) => {
+      console.log("Error:" + error)}
     );
-  }, [gameCode]);
+  }, []);
 
   return (
     <main>
