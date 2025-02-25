@@ -9,14 +9,23 @@ export function Game() {
   const [players, setPlayers] = React.useState(["Michelle", "Lauren", "Eryn", "James"]);
   const [hand, setHand] = React.useState([]);
   React.useState(() => {
-    let cardPath = "card-images/red-cards/"
     let cards = [];
-    for(let i = 1; i <= 10; i++) {
-      cards.push(`${cardPath}` + `${i}.png`);
+    let cardTypes = ["red", "blue", "yellow", "green"];
+    for(let i = 0; i < 4; i++) {
+        let cardPath = "card-images/" + cardTypes[i] + "-cards/";
+      for(let i = 1; i <= 10; i++) {
+        cards.push(`${cardPath}` + `${i}.png`);
+      }
     }
-    for(let i = 1; i <= 10; i++) {
-      cards.push("card-images/blue-cards/" + `${i}.png`);
-    }
+    // for(let i = 1; i <= 10; i++) {
+    //   cards.push("card-images/blue-cards/" + `${i}.png`);
+    // }
+    // for(let i = 1; i <= 10; i++) {
+    //   cards.push("card-images/yellow-cards/" + `${i}.png`);
+    // }
+    // for(let i = 1; i <= 10; i++) {
+    //   cards.push("card-images/green-cards/" + `${i}.png`);
+    // }
     //iterate 1-10
     //make an array with the card path + number.png
     //let cards = ["card-images/green-3.svg", "card-images/yellow-3.svg", "card-images/green-3.svg","card-images/yellow-3.svg", "card-images/green-3.svg"];
