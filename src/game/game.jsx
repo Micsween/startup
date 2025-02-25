@@ -2,6 +2,8 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./game.css";
+import { DrawPile } from './draw-pile';
+
 export function Game() {
   const [players, setPlayers] = React.useState(["Michelle", "Lauren", "Eryn", "James"]);
   const [hand, setHand] = React.useState([]);
@@ -85,7 +87,7 @@ export function Game() {
           </div>
           <div className="grid-item player-left">
             <div className="player-hand enemy-hand">
-           {enemySideHand}
+            {enemySideHand}
             </div>
             <div className="player-info">
               <img
@@ -115,7 +117,7 @@ export function Game() {
             </div>
           </div>
           <div className="grid-item draw-discard-piles">
-            <img src="card-images/card-back.svg" className="playing-card" />
+           <DrawPile />
             <img src="card-images/yellow-3.svg" className="playing-card" />
           </div>
         </div>
