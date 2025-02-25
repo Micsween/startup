@@ -40,7 +40,6 @@ function getPlayerList(gameCode) {
   });
 }
 
-
 export function Lobby({ gameCode }) {
   const [players, setPlayers] = React.useState([<li className="list-group-item">
         Invite your friends!
@@ -75,11 +74,4 @@ export function Lobby({ gameCode }) {
     </main>
   );
 }
-/*
- <li id="host" className="list-group-item">
-              Player 1 👑
-            </li>
-            <li className="list-group-item">Player 2</li>
-            <li className="list-group-item">Player 3</li>
-            <li className="list-group-item">Player 4</li>
-*/
+
