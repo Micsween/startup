@@ -55,7 +55,13 @@ export function Join({ username, setGameCode, gameCode }) {
       players: [],
     }]));
     setGameCode(newGameCode);
-    joinGame(newGameCode);
+    const games = JSON.parse(localStorage.getItem("games"));
+    const foundGame = games.find((game) => game.gameCode === newGameCode);
+    if(foundGame){
+      navigate("/lobby");
+    }
+    
+   
     //creates a code of 4 random letters/numbers
     //creates a new game object with username as the host
     //empty list of players 
