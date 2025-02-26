@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-export function DrawPile({setLastCard}) {
+export function DrawPile({setLastCard, hand, setHand}) {
     const [drawPile, setDrawPile] = React.useState([]);
     
       function shuffleCards(cards){
@@ -29,18 +29,12 @@ export function DrawPile({setLastCard}) {
         });
         setDrawPile(shuffledDeck);
       });
-      React.useState(() => {
-        const cards = [];
-        let drawPile = [];
-        cards.forEach(card => {
-          drawPile.push(<img src={card} className="playing-card" id="card-back"/>);
-        });
-        setDrawPile(drawPile);
-      }); 
+
     
     function drawCard() {
-        setLastCard("drew");
-        alert("This is a draw pile.");
+        setLastCard(drawPile[0]);
+        setHand(hand.concat(drawPile[0]));
+        setDrawPile(drawPile.slice(1));
     }
     return (
         <img 

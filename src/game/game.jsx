@@ -50,7 +50,7 @@ export function Game() {
                 alt="profile picture"
                 width="40"
               />
-              <p id="player-name">Player1 (7) {lastCard}</p>
+              <p id="player-name">Player1 (7)</p>
             </div>
             <div className="player-hand main-user">
               {hand}
@@ -104,7 +104,10 @@ export function Game() {
           </div>
           <div className="grid-item draw-discard-piles">
            <DrawPile
-             setLastCard={setLastCard} />
+             setLastCard={setLastCard} 
+             hand = {hand}
+             setHand = {setHand}
+             />
             <img src="card-images/yellow-3.svg" className="playing-card" />
           </div>
         </div>
