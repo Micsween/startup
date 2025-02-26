@@ -9,26 +9,7 @@ export function Game() {
   const [players, setPlayers] = React.useState(["Michelle", "Lauren", "Eryn", "James"]);
   const [hand, setHand] = React.useState([]);
   React.useState(() => {
-    let cards = [];
-    let cardTypes = ["red", "blue", "yellow", "green"];
-    for(let i = 0; i < 4; i++) {
-        let cardPath = "card-images/" + cardTypes[i] + "-cards/";
-      for(let i = 1; i <= 10; i++) {
-        cards.push(`${cardPath}` + `${i}.png`);
-      }
-    }
-    // for(let i = 1; i <= 10; i++) {
-    //   cards.push("card-images/blue-cards/" + `${i}.png`);
-    // }
-    // for(let i = 1; i <= 10; i++) {
-    //   cards.push("card-images/yellow-cards/" + `${i}.png`);
-    // }
-    // for(let i = 1; i <= 10; i++) {
-    //   cards.push("card-images/green-cards/" + `${i}.png`);
-    // }
-    //iterate 1-10
-    //make an array with the card path + number.png
-    //let cards = ["card-images/green-3.svg", "card-images/yellow-3.svg", "card-images/green-3.svg","card-images/yellow-3.svg", "card-images/green-3.svg"];
+    let cards = ["card-images/blue-cards/1.png", "card-images/blue-cards/7.png", "card-images/green-cards/3.png", "card-images/yellow-cards/8.png"];
     let newHand = [];
     cards.forEach(card => {
       newHand.push(<img src={card} className="playing-card" />);
@@ -56,15 +37,7 @@ export function Game() {
     setEnemySideHand(newHand);
   });
 
-  const [drawPile, setDrawPile] = React.useState([]);
-  React.useState(() => {
-    const cards = [];
-    let drawPile = [];
-    cards.forEach(card => {
-      drawPile.push(<img src={card} className="playing-card" id="card-back"/>);
-    });
-    setDrawPile(drawPile);
-  }); 
+
   return (
     <main>
       <div id="game">
