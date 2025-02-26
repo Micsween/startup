@@ -5,7 +5,7 @@ import "./game.css";
 import { DrawPile } from "./draw-pile";
 import { DiscardPile } from "./discard-pile";
 import { useNavigate } from "react-router-dom";
-
+import { PlayerInfo } from "./player-info";
 export function Game() {
   const navigate = useNavigate();
   const [lastCard, setLastCard] = React.useState("card-images/card-back.svg");
@@ -72,7 +72,7 @@ export function Game() {
     });
     setEnemyHand(newHand);
   });
-
+  
   const [enemySideHand, setEnemySideHand] = React.useState([]);
   React.useState(() => {
     let cards = [
@@ -87,24 +87,38 @@ export function Game() {
     });
     setEnemySideHand(newHand);
   });
-
   return (
     <main>
       <div id="game">
         <div id="grid-container">
           <div className="grid-item main-user">
-            <div className="player-info main-user">
-              <img
-                className="player-icon"
-                src="https://overwatchitemtracker.com/resources/heroes/all/icons/kittymari.png"
-                alt="profile picture"
-                width="40"
-              />
-              <p id="player-name">Player1 (7)</p>
-            </div>
+            <PlayerInfo/>
             <div className="player-hand main-user">{hand}</div>
           </div>
           <div className="grid-item player-top">
+            <PlayerInfo/>
+          <div className="player-hand top-user">{enemyHand}</div>
+          </div>
+          <div className="grid-item player-left">
+            <div className="player-hand enemy-hand">{enemySideHand}</div>
+            <PlayerInfo/>
+          </div>
+          <div className="grid-item player-right">
+            <div className="player-hand enemy-hand">{enemySideHand}</div>
+            <PlayerInfo/>
+          </div>
+          <div className="grid-item draw-discard-piles">
+            <DrawPile hand={hand} setHand={setHand} setLastCard={setLastCard} />
+            <DiscardPile lastCard={lastCard} />
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}
+//<div className="grid-item _____"> //main user, player top, player left, player right,
+
+{/* <div className="grid-item player-top">
             <div className="player-info top">
               <img
                 className="player-icon"
@@ -142,17 +156,6 @@ export function Game() {
               />
               <p id="player-name"> Player4</p>
               <p>(8)</p>
-            </div>
-          </div>
-          <div className="grid-item draw-discard-piles">
-            <DrawPile hand={hand} setHand={setHand} />
-            <DiscardPile lastCard={lastCard} />
-          </div>
-        </div>
-      </div>
-    </main>
-  );
-}
-
+            </div> */}
 //make a card a property
 //make a playericon property
