@@ -18,7 +18,7 @@ export function DrawPile({ hand, setHand}) {
         let cardTypes = ["red", "blue", "yellow", "green"];
         for(let i = 0; i < 4; i++) {
             let cardPath = "card-images/" + cardTypes[i] + "-cards/";
-          for(let i = 1; i <= 10; i++) {
+          for(let i = 0; i <= 9; i++) {
             cards.push(`${cardPath}` + `${i}.png`);
           }
         }
