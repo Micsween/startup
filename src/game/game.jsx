@@ -117,6 +117,8 @@ export function Game() {
   );
 }
 //<div className="grid-item _____"> //main user, player top, player left, player right,
+//<hand> component
+//</div>
 
 {/* <div className="grid-item player-top">
             <div className="player-info top">
