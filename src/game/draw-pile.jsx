@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-export function DrawPile({setLastCard, hand, setHand}) {
+export function DrawPile({ hand, setHand}) {
     const [drawPile, setDrawPile] = React.useState([]);
     
       function shuffleCards(cards){
@@ -32,14 +32,14 @@ export function DrawPile({setLastCard, hand, setHand}) {
 
     
     function drawCard() {
-        setLastCard(drawPile[0]);
+        //setLastCard(drawPile[0]);
         setHand(hand.concat(drawPile[0]));
         setDrawPile(drawPile.slice(1));
     }
     return (
         <img 
         src="card-images/card-back.svg" 
-        className="playing-card"
+        className="playing-card user-card"
         onClick={drawCard} />
     );
 };

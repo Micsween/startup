@@ -33,47 +33,17 @@ function createGame(gameCode) {
 }
 
 async function findOrCreateGame(gameCode) {
-  if (!gameCode) {
+  if (!gameCode || gameCode === undefined) {
     gameCode = createGameCode();
   }
+  console.log(gameCode);
   let game = findGame(gameCode);
   if (!game) {
     game = createGame(gameCode);
   }
   return Promise.resolve(game);
 }
-
-function getPlayerList(gameCode) {
-  return findGame(gameCode).then((foundGame) => {
-    const playerList = [];
-    if (
-      foundGame &&
-      foundGame.players != null &&
-      foundGame.players != undefined
-    ) {
-      const host = foundGame.host;
-      playerList.push(
-        <li id="host" className="list-group-item">
-          {host} 👑
-        </li>
-      );
-
-      const players = foundGame.players;
-      players.forEach((player) => {
-        playerList.push(
-          <li key={player.userID} className="list-group-item">
-            {player.username}
-          </li>
-        );
-      });
-    } else {
-      playerList.push(
-        <li className="list-group-item">Invite your friends!</li>
-      );
-    }
-    return playerList;
-  });
-}
+ 
 function listPlayers(players){
   const playerList = [];
   players.forEach((player) => {
@@ -96,12 +66,13 @@ function listPlayers(players){
     
 
 export function Lobby() {
-  const { gameCode } = useParams();
+  let { gameCode } = useParams();
   console.log("I am here");
   const [players, setPlayers] = React.useState([]);
   React.useEffect(() => {
     findOrCreateGame(gameCode).then((game) =>{
       console.log(game);
+      gameCode = game.gameCode;
       setPlayers(game.players ?? []);
     });
   }, []);

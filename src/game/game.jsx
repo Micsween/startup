@@ -3,9 +3,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./game.css";
 import { DrawPile } from './draw-pile';
-
+import { DiscardPile } from './discard-pile';
 export function Game() {
-  const [lastCard, setLastCard]  = React.useState("none");
+  const [lastCard, setLastCard] = React.useState("card-images/card-back.svg");
   const [players, setPlayers] = React.useState(["Michelle", "Lauren", "Eryn", "James"]);
   const [hand, setHand] = React.useState([]);
   const [isHovered, setIsHovered] = React.useState(false);
@@ -14,6 +14,11 @@ export function Game() {
     let newHand = [];
     cards.forEach(card => {
       newHand.push(<img src={card} className="user-card" 
+        onClick={(e) => {
+          setLastCard(e.target.getAttribute("src"));
+          newHand = newHand.filter((card) => card.props.src !== e.target.getAttribute("src"));
+          setHand(newHand)
+        }}
       onHover={() => {
         setIsHovered(true);
       }}/>);
@@ -108,11 +113,13 @@ export function Game() {
           </div>
           <div className="grid-item draw-discard-piles">
            <DrawPile
-             setLastCard={setLastCard} 
              hand = {hand}
              setHand = {setHand}
              />
-            <img src="card-images/yellow-3.svg" className="playing-card" />
+             <DiscardPile
+              lastCard = {lastCard}
+             />
+            
           </div>
         </div>
       </div>

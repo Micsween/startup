@@ -18,25 +18,18 @@ function listGames(games) {
   }
   return gameList;
 }
-function createGameCode() {
-  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  let newGameCode = "";
-  for (let i = 0; i < 4; i++) {
-    const random = Math.floor(Math.random() * alphabet.length);
-    newGameCode += alphabet[random];
-  }
-  return newGameCode;
-}
 function updateGame() {
   //for now, this does nothing. but once I have a database it will update the database with a new player
 }
 
-export function Join({ username, setGameCode, gameCode }) {
+export function Join({ username }) {
+  const [gameCode, setGameCode] = React.useState("");
   const navigate = useNavigate();
+  
   const [games, setGames] = React.useState([]);
 
   React.useEffect(() => {
-    setGames(JSON.parse(localStorage.getItem("games")));
+    setGames(JSON.parse(localStorage.getItem("games") ?? '[]'));
   }, []);
 
  
@@ -84,8 +77,7 @@ export function Join({ username, setGameCode, gameCode }) {
               type="submit"
               value="Create Game"
               onClick={() => {
-                const newCode = createGameCode();
-                navigate(`/lobby/${newCode}`);
+                navigate(`/lobby`);
               }}
             />
           </div>
