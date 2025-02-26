@@ -101,7 +101,15 @@
     background-size: 100%;
     border-radius: 10px;
 }
-
+.user-card{
+    width: 73px;
+    height: 101px;
+    background-size: 100%;
+    border-radius: 10px;
+}
+.user-card:hover {
+    border: 2px solid rgb(255, 255, 255);
+  }
 #card-back{
     margin-top: -90px;
     transform: rotate(90deg) translateY(-50%);

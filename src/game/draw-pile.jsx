@@ -25,7 +25,7 @@ export function DrawPile({setLastCard, hand, setHand}) {
         const shuffledDeck = [];
 
         shuffleCards(cards).forEach(card => {
-          shuffledDeck.push(<img src={card} className="playing-card" />);
+          shuffledDeck.push(<img src={card} className="user-card" />);
         });
         setDrawPile(shuffledDeck);
       });

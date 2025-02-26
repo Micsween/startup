@@ -8,11 +8,15 @@ export function Game() {
   const [lastCard, setLastCard]  = React.useState("none");
   const [players, setPlayers] = React.useState(["Michelle", "Lauren", "Eryn", "James"]);
   const [hand, setHand] = React.useState([]);
+  const [isHovered, setIsHovered] = React.useState(false);
   React.useState(() => {
     let cards = ["card-images/blue-cards/1.png", "card-images/blue-cards/7.png", "card-images/green-cards/3.png", "card-images/yellow-cards/8.png"];
     let newHand = [];
     cards.forEach(card => {
-      newHand.push(<img src={card} className="playing-card" />);
+      newHand.push(<img src={card} className="user-card" 
+      onHover={() => {
+        setIsHovered(true);
+      }}/>);
     });
     setHand(newHand);
   });

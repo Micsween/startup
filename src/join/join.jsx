@@ -32,50 +32,12 @@ function updateGame() {
 }
 
 export function Join({ username, setGameCode, gameCode }) {
-  const [shouldCreateGame, setShouldCreateGame] = React.useState(false);
   const navigate = useNavigate();
   const [games, setGames] = React.useState([]);
 
   React.useEffect(() => {
-    if (shouldCreateGame && gameCode) {
-      createGame();
-      setShouldCreateGame(false);
-    }
-  }, [shouldCreateGame, gameCode]);
-  
-
-  React.useEffect(() => {
     setGames(JSON.parse(localStorage.getItem("games")));
   }, []);
-
-  async function joinGame(gameCode) {
-    try {
-      let games = await JSON.parse(localStorage.getItem("games"));
-      const foundGame = games.find((game) => game.gameCode === gameCode);
-      if (foundGame) {
-        await updateGame(games, foundGame);
-        navigate("/lobby");
-      } else {
-        alert("Incorrect game code");
-      }
-    } catch (err) {
-      console.log(err);
-    }
-    return joinGame;
-  }
-  function createGame() {
-    localStorage.setItem("games", JSON.stringify([{
-      gameName: "Another Game",
-      gameCode: gameCode,
-      host: username,
-      players: [],
-    }]));
-    const games = JSON.parse(localStorage.getItem("games"));
-    const foundGame = games.find((game) => game.gameCode === gameCode);
-    console.log("This is found game: " + foundGame.gameCode);
-    console.log("This is game code: " + gameCode);
-;    joinGame(foundGame.gameCode);
-  }
 
  
   return (
@@ -109,7 +71,7 @@ export function Join({ username, setGameCode, gameCode }) {
               className="btn btn-danger join-button"
               disabled={!gameCode}
               onClick={() => {
-                joinGame(gameCode);
+                navigate(`/lobby/${gameCode}`);
               }}
             >
               Join Game
@@ -123,8 +85,7 @@ export function Join({ username, setGameCode, gameCode }) {
               value="Create Game"
               onClick={() => {
                 const newCode = createGameCode();
-                setGameCode(newCode);
-                setShouldCreateGame(true);
+                navigate(`/lobby/${newCode}`);
               }}
             />
           </div>

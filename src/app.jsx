@@ -50,8 +50,7 @@ export default function App() {
             <Route path='/match-history' element={<MatchHistory
                 username={username}
             />} />
-            <Route path='/lobby' element={<Lobby
-                gameCode={gameCode}
+            <Route path='/lobby/:gameCode' element={<Lobby
             />} />
             <Route path='/game' element={<Game
                 gameCode={gameCode}
