@@ -21,29 +21,13 @@ export function DrawPile({ hand, setHand,setLastCard }) {
         cards.push(`${cardPath}` + `${i}.png`);
       }
     }
-    const shuffledDeck = [];
-
-    shuffleCards(cards).forEach((card) => {
-      shuffledDeck.push(
-        <img
-          src={card}
-          className="user-card"
-          onClick={(e) => {
-            setLastCard(e.target.getAttribute("src"));
-            let newHand = hand.filter(
-              (card) => card.props.src !== e.target.getAttribute("src")
-            );
-            console.log(card);
-            setHand(newHand);
-          }}
-        />
-      );
-    });
+    const shuffledDeck = shuffleCards(cards)
     setDrawPile(shuffledDeck);
   });
 
   function drawCard() {
     //setLastCard(drawPile[0]);
+    //alert(drawPile[0].props.src);
     setHand(hand.concat(drawPile[0]));
     setDrawPile(drawPile.slice(1));
   }

@@ -16,7 +16,7 @@ export function Game() {
     "James",
   ]);
   const [hand, setHand] = React.useState([]);
-  const [setIsHovered] = React.useState(false);
+  const [isHovered, setIsHovered] = React.useState(false);
 
   // React.useEffect(() =>{
   //   if(hand.length === 0) {
@@ -24,8 +24,8 @@ export function Game() {
   //     setTimeout(function() {
   //       navigate('/join');
   //     }, 2000);
-      
-  //   }   
+
+  //   }
   // }, [hand])
   React.useState(() => {
     let cards = [
@@ -34,29 +34,28 @@ export function Game() {
       "card-images/green-cards/3.png",
       "card-images/yellow-cards/8.png",
     ];
-    let newHand = [];
-    cards.forEach((card) => {
-      newHand.push(
-        <img
-          src={card}
-          className="user-card"
-          onClick={(e) => {
-            setLastCard(e.target.getAttribute("src"));
-            newHand = newHand.filter(
-              (card) => card.props.src !== e.target.getAttribute("src")
-            );
-            console.log(card);
-            setHand(newHand);
-          }}
-          onHover={() => {
-            setIsHovered(true);
-          }}
-        />
-      );
-    });
-    setHand(newHand);
-  });
+    setHand(cards);
+  }, []);
 
+  // let newHand = [];
+  // cards.forEach((card) => {
+  //   newHand.push(
+  //     <img
+  //       src={card}
+  //       className="user-card"
+  //       onClick={(e) => {
+  //         setLastCard(e.target.getAttribute("src"));
+  //         setHand(hand.filter(
+  //           (card) => card.props.src !== e.target.getAttribute("src")
+  //         ));
+  //       }}
+  //       onHover={() => {
+  //         setIsHovered(true);
+  //       }}
+  //     />
+  //   );
+  // });
+  // setHand(newHand);
   const [enemyHand, setEnemyHand] = React.useState([]);
   React.useState(() => {
     let cards = [
@@ -72,7 +71,7 @@ export function Game() {
     });
     setEnemyHand(newHand);
   });
-  
+
   const [enemySideHand, setEnemySideHand] = React.useState([]);
   React.useState(() => {
     let cards = [
@@ -92,20 +91,34 @@ export function Game() {
       <div id="game">
         <div id="grid-container">
           <div className="grid-item main-user">
-            <PlayerInfo/>
-            <div className="player-hand main-user">{hand}</div>
+            <PlayerInfo />
+            <div className="player-hand main-user">
+              {hand.map((card, index) => (
+                <img
+                  key={index}
+                  src={card}
+                  className="user-card"
+                  onClick={(e) => {
+                    setLastCard(card);
+                    setHand(hand.filter((c) => c !== card));
+                  }}
+                  onMouseEnter={() => setIsHovered(true)}
+                  onMouseLeave={() => setIsHovered(false)}
+                />
+              ))}
+            </div>
           </div>
           <div className="grid-item player-top">
-            <PlayerInfo/>
-          <div className="player-hand top-user">{enemyHand}</div>
+            <PlayerInfo />
+            <div className="player-hand top-user">{enemyHand}</div>
           </div>
           <div className="grid-item player-left">
             <div className="player-hand enemy-hand">{enemySideHand}</div>
-            <PlayerInfo/>
+            <PlayerInfo />
           </div>
           <div className="grid-item player-right">
             <div className="player-hand enemy-hand">{enemySideHand}</div>
-            <PlayerInfo/>
+            <PlayerInfo />
           </div>
           <div className="grid-item draw-discard-piles">
             <DrawPile hand={hand} setHand={setHand} setLastCard={setLastCard} />
@@ -120,7 +133,8 @@ export function Game() {
 //<hand> component
 //</div>
 
-{/* <div className="grid-item player-top">
+{
+  /* <div className="grid-item player-top">
             <div className="player-info top">
               <img
                 className="player-icon"
@@ -158,6 +172,7 @@ export function Game() {
               />
               <p id="player-name"> Player4</p>
               <p>(8)</p>
-            </div> */}
+            </div> */
+}
 //make a card a property
 //make a playericon property
