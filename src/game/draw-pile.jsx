@@ -12,7 +12,7 @@ export function DrawPile({ hand, setHand,setLastCard }) {
     return shuffledDeck;
   }
 
-  React.useState(() => {
+  React.useEffect(() => {
     let cards = [];
     let cardTypes = ["red", "blue", "yellow", "green"];
     for (let i = 0; i < 4; i++) {
@@ -23,7 +23,7 @@ export function DrawPile({ hand, setHand,setLastCard }) {
     }
     const shuffledDeck = shuffleCards(cards)
     setDrawPile(shuffledDeck);
-  });
+  }, []);
 
   function drawCard() {
     //setLastCard(drawPile[0]);
