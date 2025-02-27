@@ -2,11 +2,16 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./game.css";
-import { DrawPile } from "./draw-pile";
 import { DiscardPile } from "./discard-pile";
 import { useNavigate } from "react-router-dom";
 import { PlayerInfo } from "./player-info";
+import { UnoGame } from "../server.js";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+let game;
 export function Game() {
+  let { gameCode } = useParams();
+  const [state, setState] = useState();
   const navigate = useNavigate();
   const [lastCard, setLastCard] = React.useState("card-images/card-back.svg");
   const [players, setPlayers] = React.useState([
@@ -17,7 +22,15 @@ export function Game() {
   ]);
   const [hand, setHand] = React.useState([]);
   const [isHovered, setIsHovered] = React.useState(false);
-
+  useEffect(() => {
+    game = new UnoGame();
+    game.joinGame("Michelle");
+    const gameState = game.startGame();
+    setState(gameState);
+  }, []);
+  // useEffect(() => {
+  //   setState(gameState);
+  // }, [gameState]);
   // React.useEffect(() =>{
   //   if(hand.length === 0) {
   //     setHand(["Game Won!"]);
@@ -66,8 +79,8 @@ export function Game() {
       "card-images/card-back.svg",
     ];
     let newHand = [];
-    cards.forEach((card) => {
-      newHand.push(<img src={card} className="playing-card" />);
+    cards.forEach((card, index) => {
+      newHand.push(<img key={index} src={card} className="playing-card" />);
     });
     setEnemyHand(newHand);
   });
@@ -81,11 +94,16 @@ export function Game() {
       "card-images/card-back.svg",
     ];
     let newHand = [];
-    cards.forEach((card) => {
-      newHand.push(<img src={card} className="playing-card" id="card-back" />);
+    cards.forEach((card, index) => {
+      newHand.push(
+        <img key={index} src={card} className="playing-card" id="card-back" />
+      );
     });
     setEnemySideHand(newHand);
   });
+  if (!state) {
+    return <div>Loading...</div>;
+  }
   return (
     <main>
       <div id="game">
@@ -93,18 +111,18 @@ export function Game() {
           <div className="grid-item main-user">
             <PlayerInfo />
             <div className="player-hand main-user">
-              {hand.map((card, index) => (
-                <img
-                  key={index}
-                  src={card}
-                  className="user-card"
-                  onClick={(e) => {
-                    setLastCard(card);
-                    setHand(hand.filter((c) => c !== card));
-                  }}
-                  onMouseEnter={() => setIsHovered(true)}
-                  onMouseLeave={() => setIsHovered(false)}
-                />
+              {state.players[state.turn].hand.map((card, index) => (
+                <Card card={card} />
+                //   key={index}
+                //   src={card}
+                //   className="user-card"
+                //   onClick={(e) => {
+                //     setLastCard(card);
+                //     setHand(hand.filter((c) => c !== card));
+                //   }}
+                //   onMouseEnter={() => setIsHovered(true)}
+                //   onMouseLeave={() => setIsHovered(false)}
+                // />
               ))}
             </div>
           </div>
@@ -121,8 +139,15 @@ export function Game() {
             <PlayerInfo />
           </div>
           <div className="grid-item draw-discard-piles">
-            <DrawPile hand={hand} setHand={setHand} setLastCard={setLastCard} />
-            <DiscardPile lastCard={lastCard} />
+            <DrawPile
+              drawPile={state.drawPile}
+              onDrawCard={async () => {
+                //when i have a server add async
+
+                setState(await game.drawCard());
+              }}
+            />
+            <DiscardPile />
           </div>
         </div>
       </div>
@@ -133,46 +158,24 @@ export function Game() {
 //<hand> component
 //</div>
 
-{
-  /* <div className="grid-item player-top">
-            <div className="player-info top">
-              <img
-                className="player-icon"
-                src="https://overwatchitemtracker.com/resources/heroes/all/icons/kittymari.png"
-                alt="profile picture"
-                width="40"
-              />
-              <p id="player-name">Player3</p>
-              <p>(6)</p>
-            </div>
-            <div className="player-hand top-user">{enemyHand}</div>
-          </div>
-          <div className="grid-item player-left">
-            <div className="player-hand enemy-hand">{enemySideHand}</div>
-            <div className="player-info">
-              <img
-                className="player-icon"
-                src="https://overwatchitemtracker.com/resources/heroes/all/icons/kittymari.png"
-                alt="profile picture"
-                width="40"
-              />
-              <p id="player-name">Player2</p>
-              <p>(4)</p>
-            </div>
-          </div>
-
-          <div className="grid-item player-right">
-            <div className="player-hand enemy-hand">{enemySideHand}</div>
-            <div className="player-info">
-              <img
-                className="player-icon"
-                src="https://overwatchitemtracker.com/resources/heroes/all/icons/kittymari.png"
-                alt="profile picture"
-                width="40"
-              />
-              <p id="player-name"> Player4</p>
-              <p>(8)</p>
-            </div> */
+export function DrawPile({ drawPile, onDrawCard }) {
+  return (
+    <div>
+      <p>{drawPile.length}</p>
+      <img
+        src="/card-images/card-back.svg"
+        className="playing-card user-card"
+        onClick={onDrawCard}
+      />
+    </div>
+  );
 }
-//make a card a property
-//make a playericon property
+export function Card({ card, onCardClick }) {
+  return (
+    <img
+      src={`/card-images/${card.color}-cards/${card.number}.png`}
+      className="playing-card user-card"
+      onClick={onCardClick}
+    />
+  );
+}

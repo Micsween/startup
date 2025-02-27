@@ -4,12 +4,12 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./join.css";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
-
+import { createGameCode } from "../lobby/lobby";
 function listGames(games) {
   const gameList = [];
   for (const [index, game] of games.entries()) {
     gameList.push(
-      <tr>
+      <tr key={index}>
         <td>{game.gameCode}</td>
         <td>{game.host}</td>
         <td>{game.players.length}</td>
@@ -25,14 +25,13 @@ function updateGame() {
 export function Join({ username }) {
   const [gameCode, setGameCode] = React.useState("");
   const navigate = useNavigate();
-  
+
   const [games, setGames] = React.useState([]);
 
   React.useEffect(() => {
-    setGames(JSON.parse(localStorage.getItem("games") ?? '[]'));
+    setGames(JSON.parse(localStorage.getItem("games") ?? "[]"));
   }, []);
 
- 
   return (
     <main>
       <div id="join">
@@ -77,7 +76,8 @@ export function Join({ username }) {
               type="submit"
               value="Create Game"
               onClick={() => {
-                navigate(`/lobby`);
+                let newCode = createGameCode();
+                navigate(`/lobby/${newCode}`);
               }}
             />
           </div>

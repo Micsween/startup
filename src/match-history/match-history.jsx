@@ -9,7 +9,7 @@ import "./match-history.css";
 // const opponentList = opponents.map((opponent) =>
 //   <li key={opponent.userID}>{opponent.username}</li>
 // );
-export function MatchHistory({username}) {
+export function MatchHistory({ username }) {
   const [quote, setQuote] = React.useState("No quote yet");
   const [quoteAuthor, setQuoteAuthor] = React.useState("idk, some dude.");
   const [movie, setMovie] = React.useState("From the best movie ever");
@@ -20,14 +20,12 @@ export function MatchHistory({username}) {
     setMovie("Star Wars");
   }, []);
 
-  
-
   return (
     <main>
       <div id="content">
         <h1>{username}'s Match History</h1>
         <table id="match-history" className="table table-striped ">
-          {listMatchHistory()}
+          <tbody>{listMatchHistory()}</tbody>
         </table>
         <div id="quote" className="card">
           <div className="card-body">
@@ -54,40 +52,33 @@ function listMatchHistory() {
   if (matches.length) {
     for (const [index, match] of matches.entries()) {
       matchHistory.push(
-        <tbody>
-          <tr>
-            <th scope="row"> {match.gameName}</th>
-            <td id="game-win">{match.result}</td>
-            <td>{match.date}</td>
-            <td>
-              {" "}
-              <button
-                className="btn btn-warning dropdown-toggle"
-                type="button"
-                id="dropdownMenuButton1"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Opponents
-              </button>
-              <ul
-                className="dropdown-menu"
-                aria-labelledby="dropdownMenuButton1"
-              >
-                {getOpponentList(match.opponents)}
-              </ul>
-            </td>
-          </tr>
-        </tbody>
+        <tr key={index}>
+          <th scope="row"> {match.gameName}</th>
+          <td id="game-win">{match.result}</td>
+          <td>{match.date}</td>
+          <td>
+            {" "}
+            <button
+              className="btn btn-warning dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton1"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Opponents
+            </button>
+            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              {getOpponentList(match.opponents)}
+            </ul>
+          </td>
+        </tr>
       );
     }
   } else {
     matchHistory.push(
-      <tbody>
-        <tr>
-          <td>Play a game to see your match History!</td>
-        </tr>
-      </tbody>
+      <tr key="0">
+        <td>Play a game to see your match History!</td>
+      </tr>
     );
   }
   return matchHistory;
@@ -99,7 +90,7 @@ function getOpponentList(opponents) {
   if (opponents != null) {
     for (const [index, opponent] of opponents.entries()) {
       opponentList.push(
-        <li key={opponent.userID}>
+        <li key={index}>
           <a className="dropdown-item" href="#">
             {opponent.username}
           </a>
