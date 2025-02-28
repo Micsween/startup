@@ -26,7 +26,7 @@ function updateGame() {
 
 export function Join() {
   const location = useLocation();
-  const { username } = location.state;
+  const { username } = location ? location.state : "";
   const [gameCode, setGameCode] = React.useState("");
   const navigate = useNavigate();
 

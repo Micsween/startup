@@ -18,7 +18,7 @@ export function Login({ username, setUsername, authState, setAuthState }) {
           <h1> Welcome to Online Multiplayer Uno!</h1>
         )}
         <Unauthenticated
-          username={username}
+          username={username ?? ""}
           setUsername={setUsername}
           onLogin={(loginUsername) => {
             setAuthState(AuthState.Authenticated);

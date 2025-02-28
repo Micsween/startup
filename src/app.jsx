@@ -33,18 +33,22 @@ export default function App() {
                 <NavLink className="nav-link" to="/">
                   Login
                 </NavLink>
-                <NavLink className="nav-link" to="match-history">
-                  Match History
-                </NavLink>
-                <NavLink className="nav-link" to="join">
-                  Join Game
-                </NavLink>
-                <NavLink className="nav-link" to="lobby">
+                {authState === AuthState.Authenticated && (
+                  <NavLink className="nav-link" to="match-history">
+                    Match History
+                  </NavLink>
+                )}
+                {authState === AuthState.Authenticated && (
+                  <NavLink className="nav-link" to="join">
+                    Join Game
+                  </NavLink>
+                )}
+                {/*<NavLink className="nav-link" to="lobby">
                   Lobby
                 </NavLink>
                 <NavLink className="nav-link" to="game">
                   Game
-                </NavLink>
+                </NavLink>*/}
               </div>
             </div>
           </nav>
