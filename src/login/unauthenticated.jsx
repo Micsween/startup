@@ -5,24 +5,32 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 
-export function Unauthenticated({ username, setUsername, onLogin }) {
+export function getUser() {
+  return localStorage.getItem("username");
+}
+
+export function logoutUser() {
+  return localStorage.removeItem("username");
+}
+export function Unauthenticated({ onLogin }) {
   const navigate = useNavigate();
+  const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
 
   async function loginUser() {
     localStorage.setItem("username", username);
-    console.log(username);
+    onLogin(username);
   }
   async function createUser() {
     localStorage.setItem("username", username);
+    onLogin(username);
   }
 
   return (
     <div id="login-form">
       <div>
-        <label for="username">Username:</label>
+        <label htmlFor="username">Username:</label>
         <input
-          value={username.username}
           onChange={(e) => {
             setUsername(e.target.value);
           }}
@@ -31,7 +39,7 @@ export function Unauthenticated({ username, setUsername, onLogin }) {
         />
       </div>
       <div>
-        <label for="password">Password:</label>
+        <label htmlFor="password">Password:</label>
         <input
           placeholder={password}
           type="password"

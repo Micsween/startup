@@ -1,17 +1,34 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./app.css";
-import { BrowserRouter, NavLink, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  NavLink,
+  Route,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
 import { Game } from "./game/game";
 import { Join } from "./join/join";
 import { Lobby } from "./lobby/lobby";
 import { Login } from "./login/login";
 import { MatchHistory } from "./match-history/match-history";
-import { AuthState } from "./login/authState";
+import { getUser, logoutUser } from "./login/unauthenticated";
+import Button from "react-bootstrap/Button";
 
 export default function App() {
   const [username, setUsername] = React.useState("");
-  const [authState, setAuthState] = React.useState(AuthState.Unauthenticated);
+  function onLogin(username) {
+    setUsername(username);
+  }
+  function onLogout() {
+    logoutUser();
+    setUsername("");
+    location = "/";
+  }
+  React.useEffect(() => {
+    setUsername(getUser());
+  }, []);
   return (
     <BrowserRouter>
       <div>
@@ -30,19 +47,25 @@ export default function App() {
               id="navbarSupportedContent"
             >
               <div className="navbar-nav me-auto mb-2 mb-lg-0">
-                <NavLink className="nav-link" to="/">
-                  Login
-                </NavLink>
-                {authState === AuthState.Authenticated && (
-                  <NavLink className="nav-link" to="match-history">
-                    Match History
+                {!username && (
+                  <NavLink className="nav-link" to="/">
+                    Login
                   </NavLink>
                 )}
-                {authState === AuthState.Authenticated && (
-                  <NavLink className="nav-link" to="join">
-                    Join Game
-                  </NavLink>
+                {username && (
+                  <>
+                    <NavLink className="nav-link" to="match-history">
+                      Match History
+                    </NavLink>
+                    <NavLink className="nav-link" to="join">
+                      Join Game
+                    </NavLink>
+                    <Button variant="danger" onClick={onLogout}>
+                      Logout
+                    </Button>
+                  </>
                 )}
+
                 {/*<NavLink className="nav-link" to="lobby">
                   Lobby
                 </NavLink>
@@ -53,28 +76,14 @@ export default function App() {
             </div>
           </nav>
         </header>
-        {/*onAuthChange={(userName, authState) => {
-                  setAuthState(authState);
-                  setUserName(userName);
-                }}*/}
         <Routes>
-          <Route
-            path="/"
-            element={
-              <Login
-                username={username}
-                setUsername={setUsername}
-                setAuthState={setAuthState}
-              />
-            }
-            exact
-          />
+          <Route path="/" element={<Login onLogin={onLogin} />} exact />
           <Route path="/join" element={<Join username={username} />} exact />
           <Route
             path="/match-history"
             element={<MatchHistory username={username} />}
           />
-          <Route path="/lobby" element={<Join />} />
+          <Route path="/lobby" element={<Join username={username} />} />
           <Route path="/lobby/:gameCode" element={<Lobby />} />
           <Route path="/game/:gameCode" element={<Game />} />
           <Route path="*" element={<NotFound />} />
