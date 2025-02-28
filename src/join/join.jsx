@@ -5,6 +5,8 @@ import "./join.css";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import { createGameCode } from "../lobby/lobby";
+import { useLocation } from "react-router-dom";
+
 function listGames(games) {
   const gameList = [];
   for (const [index, game] of games.entries()) {
@@ -22,7 +24,9 @@ function updateGame() {
   //for now, this does nothing. but once I have a database it will update the database with a new player
 }
 
-export function Join({ username }) {
+export function Join() {
+  const location = useLocation();
+  const { username } = location.state;
   const [gameCode, setGameCode] = React.useState("");
   const navigate = useNavigate();
 

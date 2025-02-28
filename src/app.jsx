@@ -7,13 +7,11 @@ import { Join } from "./join/join";
 import { Lobby } from "./lobby/lobby";
 import { Login } from "./login/login";
 import { MatchHistory } from "./match-history/match-history";
+import { AuthState } from "./login/authState";
 
 export default function App() {
-  const [username, setUsername] = React.useState("Oblivion Phoenix");
-  /*  React.useEffect(() => {
-        setUsername("Autobotkilla");
-      }, []); */
-  /*Include username */
+  const [username, setUsername] = React.useState("");
+  const [authState, setAuthState] = React.useState(AuthState.Unauthenticated);
   return (
     <BrowserRouter>
       <div>
@@ -56,7 +54,17 @@ export default function App() {
                   setUserName(userName);
                 }}*/}
         <Routes>
-          <Route path="/" element={<Login />} exact />
+          <Route
+            path="/"
+            element={
+              <Login
+                username={username}
+                setUsername={setUsername}
+                setAuthState={setAuthState}
+              />
+            }
+            exact
+          />
           <Route path="/join" element={<Join username={username} />} exact />
           <Route
             path="/match-history"
