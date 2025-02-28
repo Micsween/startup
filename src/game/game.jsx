@@ -2,7 +2,6 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./game.css";
-import { DiscardPile } from "./discard-pile";
 import { useNavigate } from "react-router-dom";
 import { PlayerInfo } from "./player-info";
 import { UnoGame } from "../server.js";
@@ -112,7 +111,14 @@ export function Game() {
             <PlayerInfo />
             <div className="player-hand main-user">
               {state.players[state.turn].hand.map((card, index) => (
-                <Card card={card} />
+                <Card
+                  card={card}
+                  onCardClick={async () => {
+                    console.log("I am being clicked!!!");
+                    console.log(card);
+                    setState(await game.playCard(card));
+                  }}
+                />
                 //   key={index}
                 //   src={card}
                 //   className="user-card"
@@ -143,11 +149,10 @@ export function Game() {
               drawPile={state.drawPile}
               onDrawCard={async () => {
                 //when i have a server add async
-
                 setState(await game.drawCard());
               }}
             />
-            <DiscardPile />
+            <DiscardPile discardPile={state.discardPile} />
           </div>
         </div>
       </div>
@@ -170,9 +175,19 @@ export function DrawPile({ drawPile, onDrawCard }) {
     </div>
   );
 }
+export function DiscardPile({ discardPile }) {
+  return (
+    <img
+      src={`/card-images/${discardPile[0].color}-cards/${discardPile[0].number}.png`}
+      className="playing-card"
+    />
+  );
+}
 export function Card({ card, onCardClick }) {
   return (
     <img
+      color={`${card.color}`}
+      number={`${card.number}`}
       src={`/card-images/${card.color}-cards/${card.number}.png`}
       className="playing-card user-card"
       onClick={onCardClick}

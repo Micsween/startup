@@ -43,7 +43,14 @@ export class UnoGame {
   serializeState() {
     return JSON.parse(JSON.stringify(this.state));
   }
-
+  deserializeJSON(jsonString) {
+    try {
+      return JSON.parse(jsonString);
+    } catch (error) {
+      console.error("Error parsing JSON:", error.message);
+      return null;
+    }
+  }
   joinGame(username) {
     let player = {
       username,
@@ -84,10 +91,8 @@ export class UnoGame {
 
   drawCard() {
     //setHand(hand.concat(drawPile[0]));
-    console.log("before pop: " + this.state.drawPile.length);
     let player = this.state.players[this.state.turn];
     player.hand.push(this.state.drawPile.pop());
-    console.log("After pop: " + this.state.drawPile.length);
     return this.serializeState();
   }
 
@@ -95,9 +100,23 @@ export class UnoGame {
     this.state.players.forEach((player) => {
       player.hand = this.state.drawPile.splice(0, 7);
     });
+
+    this.state.discardPile = this.state.drawPile.splice(0, 1);
+    console.log(
+      `The discard pile after all cards have been dealt:${this.state.discardPile[0].color} ${this.state.discardPile[0].number}`
+    );
   }
 
-  playCard(card) {}
+  playCard(cardToRemove) {
+    let currentHand = this.state.players[this.state.turn].hand;
+    this.state.players[this.state.turn].hand = currentHand.filter(
+      (card) =>
+        card.color !== cardToRemove.color || card.number !== cardToRemove.number
+    );
+    this.state.discardPile.unshift(cardToRemove);
+    console.log(`the discard pile: ${this.state.discardPile.length}`); //add the card to the TOP of the discard pile
+    return this.serializeState();
+  }
 }
 
 //drawPile
