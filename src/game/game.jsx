@@ -8,6 +8,7 @@ import { UnoGame } from "../server.js";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 let game;
+//LATER YOU NEED TO UPDATE THIS SO THAT
 export function Game() {
   let { gameCode } = useParams();
   const [state, setState] = useState();
@@ -24,6 +25,9 @@ export function Game() {
   useEffect(() => {
     game = new UnoGame();
     game.joinGame("Michelle");
+    game.joinGame("Lauren");
+    game.joinGame("Eryn");
+    game.joinGame("James");
     const gameState = game.startGame();
     setState(gameState);
   }, []);
@@ -109,9 +113,10 @@ export function Game() {
         <div id="grid-container">
           <div className="grid-item main-user">
             <PlayerInfo />
-            <div className="player-hand main-user">
-              {state.players[state.turn].hand.map((card, index) => (
+            <div className="player-hand top-user">
+              {state.players[0].hand.map((card, index) => (
                 <Card
+                  key={index}
                   card={card}
                   onCardClick={async () => {
                     console.log("I am being clicked!!!");
@@ -119,29 +124,61 @@ export function Game() {
                     setState(await game.playCard(card));
                   }}
                 />
-                //   key={index}
-                //   src={card}
-                //   className="user-card"
-                //   onClick={(e) => {
-                //     setLastCard(card);
-                //     setHand(hand.filter((c) => c !== card));
-                //   }}
-                //   onMouseEnter={() => setIsHovered(true)}
-                //   onMouseLeave={() => setIsHovered(false)}
-                // />
               ))}
             </div>
           </div>
+          <div className="grid-item player-left">
+            <div className="player-hand top-user">
+              {" "}
+              {/*Removed enemy-hand from className */}
+              {state.players[1].hand.map((card, index) => (
+                <Card
+                  key={index}
+                  card={card}
+                  onCardClick={async () => {
+                    console.log("I am being clicked!!!");
+                    console.log(card);
+                    setState(await game.playCard(card));
+                  }}
+                />
+              ))}
+            </div>
+            <PlayerInfo />
+          </div>
           <div className="grid-item player-top">
             <PlayerInfo />
-            <div className="player-hand top-user">{enemyHand}</div>
-          </div>
-          <div className="grid-item player-left">
-            <div className="player-hand enemy-hand">{enemySideHand}</div>
-            <PlayerInfo />
+            <div className="player-hand top-user">
+              {" "}
+              {/*Removed enemy-hand from className */}
+              {state.players[2].hand.map((card, index) => (
+                <Card
+                  key={index}
+                  card={card}
+                  onCardClick={async () => {
+                    console.log("I am being clicked!!!");
+                    console.log(card);
+                    setState(await game.playCard(card));
+                  }}
+                />
+              ))}
+            </div>
           </div>
           <div className="grid-item player-right">
-            <div className="player-hand enemy-hand">{enemySideHand}</div>
+            <div className="player-hand top-user">
+              {" "}
+              {/*Removed enemy-hand from className */}
+              {state.players[1].hand.map((card, index) => (
+                <Card
+                  key={index}
+                  card={card}
+                  onCardClick={async () => {
+                    console.log("I am being clicked!!!");
+                    console.log(card);
+                    setState(await game.playCard(card));
+                  }}
+                />
+              ))}
+            </div>
             <PlayerInfo />
           </div>
           <div className="grid-item draw-discard-piles">
@@ -166,7 +203,6 @@ export function Game() {
 export function DrawPile({ drawPile, onDrawCard }) {
   return (
     <div>
-      <p>{drawPile.length}</p>
       <img
         src="/card-images/card-back.svg"
         className="playing-card user-card"
