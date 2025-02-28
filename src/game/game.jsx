@@ -123,6 +123,7 @@ export function Game() {
                     console.log(card);
                     setState(await game.playCard(card));
                   }}
+                  isTurn={0 === state.turn}
                 />
               ))}
             </div>
@@ -140,6 +141,7 @@ export function Game() {
                     console.log(card);
                     setState(await game.playCard(card));
                   }}
+                  isTurn={1 === state.turn}
                 />
               ))}
             </div>
@@ -159,6 +161,7 @@ export function Game() {
                     console.log(card);
                     setState(await game.playCard(card));
                   }}
+                  isTurn={2 === state.turn}
                 />
               ))}
             </div>
@@ -167,8 +170,9 @@ export function Game() {
             <div className="player-hand top-user">
               {" "}
               {/*Removed enemy-hand from className */}
-              {state.players[1].hand.map((card, index) => (
+              {state.players[3].hand.map((card, index) => (
                 <Card
+                  turn={3}
                   key={index}
                   card={card}
                   onCardClick={async () => {
@@ -176,6 +180,7 @@ export function Game() {
                     console.log(card);
                     setState(await game.playCard(card));
                   }}
+                  isTurn={3 === state.turn}
                 />
               ))}
             </div>
@@ -219,14 +224,15 @@ export function DiscardPile({ discardPile }) {
     />
   );
 }
-export function Card({ card, onCardClick }) {
+export function Card({ card, onCardClick, isTurn }) {
   return (
     <img
       color={`${card.color}`}
       number={`${card.number}`}
       src={`/card-images/${card.color}-cards/${card.number}.png`}
       className="playing-card user-card"
-      onClick={onCardClick}
+      onClick={isTurn ? onCardClick : undefined}
+      style={{ cursor: isTurn ? "pointer" : "not-allowed" }}
     />
   );
 }

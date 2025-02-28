@@ -88,11 +88,17 @@ export class UnoGame {
       ];
     }
   }
-
+  updateTurn() {
+    this.state.turn++;
+    if (this.state.turn === 4) {
+      this.state.turn = 0;
+    }
+  }
   drawCard() {
     //setHand(hand.concat(drawPile[0]));
     let player = this.state.players[this.state.turn];
     player.hand.push(this.state.drawPile.pop());
+    this.updateTurn();
     return this.serializeState();
   }
 
@@ -108,13 +114,21 @@ export class UnoGame {
   }
 
   playCard(cardToRemove) {
+    console.log(`current turn: ${this.state.turn}`);
     let currentHand = this.state.players[this.state.turn].hand;
     this.state.players[this.state.turn].hand = currentHand.filter(
       (card) =>
         card.color !== cardToRemove.color || card.number !== cardToRemove.number
     );
     this.state.discardPile.unshift(cardToRemove);
-    console.log(`the discard pile: ${this.state.discardPile.length}`); //add the card to the TOP of the discard pile
+    console.log(
+      `current player's hand: ${
+        this.state.players[this.state.turn].hand.length
+      }`
+    );
+
+    this.updateTurn();
+    console.log(`current turn: ${this.state.turn}`); //add the card to the TOP of the discard pile
     return this.serializeState();
   }
 }
