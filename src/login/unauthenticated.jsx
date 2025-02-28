@@ -12,11 +12,9 @@ export function Unauthenticated({ username, setUsername, onLogin }) {
   async function loginUser() {
     localStorage.setItem("username", username);
     console.log(username);
-    onLogin(username);
   }
   async function createUser() {
     localStorage.setItem("username", username);
-    onLogin(username);
   }
 
   return (
@@ -49,7 +47,7 @@ export function Unauthenticated({ username, setUsername, onLogin }) {
           type="submit"
           onClick={(e) => {
             loginUser();
-            navigate("/lobby", { state: { username: username } });
+            navigate("/join", { state: { username: username } });
           }}
           disabled={!username || !password}
         >
