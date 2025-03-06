@@ -99,6 +99,10 @@ export class UnoGame {
     let player = this.state.players[this.state.turn];
     player.hand.push(this.state.drawPile.pop());
     this.updateTurn();
+    if (drawPile.isEmpty()) {
+      drawPile.createDeck();
+      drawPile.shuffleDeck();
+    }
     return this.serializeState();
   }
 
