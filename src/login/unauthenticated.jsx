@@ -22,6 +22,18 @@ export function Unauthenticated({ onLogin }) {
     onLogin(username);
   }
   async function createUser() {
+    let url = "http://localhost:4000/api/user/create";
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify({ username: username, password: password }),
+      });
+      console.log(response);
+    } catch (error) {
+      console.error(error.message);
+    }
+
     localStorage.setItem("username", username);
     onLogin(username);
   }

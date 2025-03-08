@@ -1,31 +1,72 @@
-function shuffleCards(cards) {
-  let shuffledDeck = [];
-  for (let i = 0; i < cards.length; i++) {
-    let random = Math.floor(Math.random() * cards.length);
-    shuffledDeck.push(cards[random]);
-  }
-  return shuffledDeck;
-}
-//   type Card {
-//       color: string,
-//       number: number;
-//   }
-//
-//  type Player {
-//      username: string,
-//      hand: Card[],
-//  }
-//
-//  type GameState {
-//    gameCode: string,
-//    host: string,
-//    players: Player[],
-//    discardPile: Card[],
-//    drawPile: Card[],
-//    turn: number,
-//  }
-//
-//
+import express from "express";
+import CookieParser from "cookie-parser";
+import bcrypt from "bcryptjs";
+import { v4 as UUID } from "uuid";
+const app = express();
+const port = 4000;
+
+const cookieParser = CookieParser();
+const bcryptjs = bcrypt;
+const uuid = UUID();
+
+let users = [];
+let matches = [];
+
+app.use(express.json());
+let apiRouter = express.Router();
+app.use(`/api`, apiRouter);
+
+// app.post("/login/create-user", (req, res) => {
+//   let user = { username: req.body.username, password: req.body.password };
+//   users.push(user);
+//   res.status(200);
+//   res.send(user);
+// });\
+//find the user
+//if it it exists, dont create the acct and throw an error
+// otherwise create the accoutn
+
+apiRouter.post("/user/create", async (req, res) => {
+  const user = {
+    username: req.body.username,
+    password: req.body.password,
+    authToken: 1234,
+  };
+  users.push(user);
+  res.send(user);
+});
+
+apiRouter.post("/user/login", async (req, res) => {
+  const user = {
+    username: req.body.username,
+    password: req.body.password,
+    authToken: "1234",
+  };
+  let newAuthToken = "5678";
+  users.forEach((registeredUser) => {
+    if (
+      registeredUser.username == user.username &&
+      registeredUser.password == user.password
+    ) {
+      //create a new authToken on logins
+      registeredUser.authToken = newAuthToken;
+    }
+  });
+  res.send(newAuthToken);
+});
+
+apiRouter.delete("/user/logout", async (req, res) => {
+  const user = {
+    username: req.body.username,
+    password: req.body.password,
+    authToken: 1234,
+  };
+  users.find(user).authToken = null;
+});
+
+app.listen(port, () => {
+  console.log(`App is listening on port ${port}`);
+});
 
 export class UnoGame {
   constructor(gameCode, host) {
@@ -137,22 +178,27 @@ export class UnoGame {
   }
 }
 
-//drawPile
-//players
-//every player has a:
-//  hand, username, handsize
-//  game (whose turn it is)
-// cards
-//    discard (what can/cannot be played)
-//    dr
-
-//   createDeck() {
-//     let cardTypes = ["red", "blue", "yellow", "green"];
-//     for (let i = 0; i < 4; i++) {
-//       let cardPath = "card-images/" + cardTypes[i] + "-cards/";
-//       for (let i = 0; i <= 9; i++) {
-//         this.state.cards.push(`${cardPath}` + `${i}.png`);
-//       }
-//     }
-
+//you can use fetch requests to get the gamestate
+//   type Card {
+//       color: string,
+//       number: number;
 //   }
+//
+//  type Player {
+//      username: string,
+//      hand: Card[],
+//  }
+//
+//  type GameState {
+//    gameCode: string,
+//    host: string,
+//    players: Player[],
+//    discardPile: Card[],
+//    drawPile: Card[],
+//    turn: number,
+//  }
+//
+
+//ENDPOINT TESTS:
+//curl -X POST -H "Content-Type: application/json" -d '{"username":"firstuser", "password":"firstpassword"}' http://localhost:4000/user/create
+//curl -X POST -H "Content-Type: application/json" -d '{"username":"firstuser", "password":"firstpassword"}' http://localhost:4000/api/user/login

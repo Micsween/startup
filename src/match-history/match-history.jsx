@@ -13,7 +13,7 @@ export function MatchHistory({ username }) {
   const [quote, setQuote] = React.useState("No quote yet");
   const [quoteAuthor, setQuoteAuthor] = React.useState("idk, some dude.");
   const [movie, setMovie] = React.useState("From the best movie ever");
-
+  //turn this into a fetch request for star wars quotes
   React.useEffect(() => {
     setQuote("Do or do not. There is no try.");
     setQuoteAuthor("Yoda");

@@ -4,7 +4,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./game.css";
 import { useNavigate } from "react-router-dom";
 import { PlayerInfo } from "./player-info";
-import { UnoGame } from "../server.js";
+import { UnoGame } from "./uno-game.js";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 let game;
