@@ -130,17 +130,27 @@ Global Scope of CSS: When you include a CSS file in your React project, its styl
 ## Service Endpoints
 curl requests for testing endpoints:
 
+Register:
+- creates a user if it does not already exists
+- sets an authCookie
 ```sh
 //REGISTER ENDPOINT:
 curl -X POST -H "Content-Type: application/json" -d '{"username":"firstuser", "password":"firstpassword"}' http://localhost:4000/user/create
 
 ```
-
+Login:
+- verifies user
+- authenticates user (by setting a new authCookie)
 ```sh
 //LOGIN ENDPOINT:
 curl -X POST -H "Content-Type: application/json" -d '{"username":"firstuser", "password":"firstpassword"}' http://localhost:4000/api/user/login
 ```
-
+Logout:
+- takes the authCookie thats been stored
+- finds the user associated with the authCookie's key
+- deletes the authToken of the associated user
+- and the authCookie from the browser.
 ```sh
 //DELETE ENDPOINT:
 curl -X DELETE -H "Content-Type: application/json" -d '{"username":"firstuser", "password":"firstpassword"}' http://localhost:4000/api/user/logout```
+```
