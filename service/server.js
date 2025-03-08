@@ -59,9 +59,19 @@ apiRouter.delete("/user/logout", async (req, res) => {
   const user = {
     username: req.body.username,
     password: req.body.password,
-    authToken: 1234,
+    authToken: 5678,
   };
-  users.find(user).authToken = null;
+
+  users.forEach((registeredUser) => {
+    if (
+      registeredUser.username == user.username &&
+      registeredUser.password == user.password
+    ) {
+      //create a new authToken on logins
+      registeredUser.authToken = null;
+    }
+  });
+  res.send(users);
 });
 
 app.listen(port, () => {
@@ -198,7 +208,3 @@ export class UnoGame {
 //    turn: number,
 //  }
 //
-
-//ENDPOINT TESTS:
-//curl -X POST -H "Content-Type: application/json" -d '{"username":"firstuser", "password":"firstpassword"}' http://localhost:4000/user/create
-//curl -X POST -H "Content-Type: application/json" -d '{"username":"firstuser", "password":"firstpassword"}' http://localhost:4000/api/user/login
