@@ -138,6 +138,9 @@ curl -X POST -H "Content-Type: application/json" -d '{"username":"firstuser", "p
 
 ```sh
 //LOGIN ENDPOINT:
-//curl -X POST -H "Content-Type: application/json" -d '{"username":"firstuser", "password":"firstpassword"}' http://localhost:4000/api/user/login
-
+curl -X POST -H "Content-Type: application/json" -d '{"username":"firstuser", "password":"firstpassword"}' http://localhost:4000/api/user/login
 ```
+
+```sh
+//DELETE ENDPOINT:
+curl -X DELETE -H "Content-Type: application/json" -d '{"username":"firstuser", "password":"firstpassword"}' http://localhost:4000/api/user/logout```
