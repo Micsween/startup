@@ -126,3 +126,18 @@ When you want to bundle your application so that you can deploy to a production 
 
 
 Global Scope of CSS: When you include a CSS file in your React project, its styles are applied globally unless you're using a scoping mechanism like CSS Modules or styled-components. I ran into this problem when I was two stylesheets had the same name for their "content" div. So i renamed the id's to be the name of the component
+
+## Service Endpoints
+curl requests for testing endpoints:
+
+```sh
+//REGISTER ENDPOINT:
+curl -X POST -H "Content-Type: application/json" -d '{"username":"firstuser", "password":"firstpassword"}' http://localhost:4000/user/create
+
+```
+
+```sh
+//LOGIN ENDPOINT:
+//curl -X POST -H "Content-Type: application/json" -d '{"username":"firstuser", "password":"firstpassword"}' http://localhost:4000/api/user/login
+
+```
