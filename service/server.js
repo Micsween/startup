@@ -1,82 +1,91 @@
 import express from "express";
-import CookieParser from "cookie-parser";
+import cookieParser from "cookie-parser";
 import bcrypt from "bcryptjs";
-import { v4 as UUID } from "uuid";
+import { v4 } from "uuid";
 const app = express();
 const port = 4000;
 
-const cookieParser = CookieParser();
 const bcryptjs = bcrypt;
-const uuid = UUID();
-
+const authCookieName = "authCookie";
 let users = [];
+let liveGames = [];
 let matches = [];
 
 app.use(express.json());
+app.use(cookieParser());
 let apiRouter = express.Router();
-app.use(`/api`, apiRouter);
-
-// app.post("/login/create-user", (req, res) => {
-//   let user = { username: req.body.username, password: req.body.password };
-//   users.push(user);
-//   res.status(200);
-//   res.send(user);
-// });\
-//find the user
-//if it it exists, dont create the acct and throw an error
-// otherwise create the accoutn
 
 apiRouter.post("/user/create", async (req, res) => {
-  const user = {
-    username: req.body.username,
-    password: req.body.password,
-    authToken: 1234,
-  };
-  users.push(user);
-  res.send(user);
+  console.log("Creating account..");
+  if (!findUser("username", req.username)) {
+    const user = createUser(req.body.username, req.body.password);
+    setCookie(res, user.authToken);
+    res.send(user);
+  } else {
+    res.status(401).send({ msg: "User already exists" });
+  }
 });
 
 apiRouter.post("/user/login", async (req, res) => {
-  const user = {
-    username: req.body.username,
-    password: req.body.password,
-    authToken: "1234",
-  };
-  let newAuthToken = "5678";
-  users.forEach((registeredUser) => {
-    if (
-      registeredUser.username == user.username &&
-      registeredUser.password == user.password
-    ) {
-      //create a new authToken on logins
-      registeredUser.authToken = newAuthToken;
-    }
-  });
-  res.send(newAuthToken);
+  console.log("Loggin in..");
+  const user = verifyUser(req.body.username, req.body.password);
+  if (user) {
+    user.authToken = v4();
+    setCookie(res, user.authToken);
+  } else {
+    res.status(401).send({ msg: "User not verified." });
+  }
 });
+//make a function that finds a user by the authToken
 
 apiRouter.delete("/user/logout", async (req, res) => {
-  const user = {
-    username: req.body.username,
-    password: req.body.password,
-    authToken: 5678,
-  };
-
+  console.log("Logging out...");
+  const authCookie = req.cookies[authCookieName];
   users.forEach((registeredUser) => {
-    if (
-      registeredUser.username == user.username &&
-      registeredUser.password == user.password
-    ) {
-      //create a new authToken on logins
+    if (registeredUser.authToken == authCookie) {
+      res.clearCookie(authCookieName);
       registeredUser.authToken = null;
     }
   });
   res.send(users);
 });
 
+app.use(`/api`, apiRouter);
+
+app.use((err, req, res, next) => {
+  res.status(500).json({ error: err.message });
+});
+
 app.listen(port, () => {
   console.log(`App is listening on port ${port}`);
 });
+
+function createUser(username, password) {
+  let user = {
+    username: username,
+    password: password,
+    authToken: v4(),
+  };
+  users.push(user);
+  return user;
+}
+function setCookie(res, authToken) {
+  res.cookie(authCookieName, authToken, {
+    //httpOnly: true;
+    //secure: true
+    sameSite: "strict",
+  });
+}
+
+function findUser(field, value) {
+  return !value ? null : users.find((u) => u[field] === value);
+}
+
+//verifies a user and returns the user that was found
+function verifyUser(username, password) {
+  const user = findUser("username", username);
+  return user && user.password == password ? user : null;
+}
 
 export class UnoGame {
   constructor(gameCode, host) {

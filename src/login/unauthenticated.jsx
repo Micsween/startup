@@ -9,9 +9,17 @@ export function getUser() {
   return localStorage.getItem("username");
 }
 
-export function logoutUser() {
-  return localStorage.removeItem("username");
+export async function logoutUser() {
+  let url = "/api/user/logout";
+  try {
+    const response = await fetch(url, {
+      method: "DELETE",
+      body: JSON.stringify({ username: "username", password: "password" }),
+    });
+  } catch (error) {}
+  localStorage.removeItem("username");
 }
+
 export function Unauthenticated({ onLogin }) {
   const navigate = useNavigate();
   const [username, setUsername] = React.useState("");
@@ -19,25 +27,31 @@ export function Unauthenticated({ onLogin }) {
 
   async function loginUser() {
     localStorage.setItem("username", username);
-    onLogin(username);
-  }
-  async function createUser() {
-    let url = "http://localhost:4000/api/user/create";
+    let url = "/api/user/login";
     try {
       const response = await fetch(url, {
         method: "POST",
-        mode: "no-cors",
         body: JSON.stringify({ username: username, password: password }),
       });
-      console.log(response);
-    } catch (error) {
-      console.error(error.message);
-    }
-
-    localStorage.setItem("username", username);
+    } catch (error) {}
     onLogin(username);
   }
 
+  async function createUser() {
+    let url = "/api/user/create";
+    console.log(JSON.stringify({ username: username, password: password }));
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify({ username: username, password: password }),
+      });
+      navigate("/join", { state: { username: username } });
+      onLogin(username);
+    } catch (error) {
+      console.error(error.message);
+    }
+    //localStorage.setItem("username", username);
+  }
   return (
     <div id="login-form">
       <div>
