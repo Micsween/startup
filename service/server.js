@@ -82,6 +82,17 @@ apiRouter.get("/matches", async (req, res) => {
     res.status(401).send({ message: "User not verified." });
   }
 });
+apiRouter.get("/quote", async (req, res) => {
+  let url = "https://zenquotes.io/api/random";
+  let response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  let quoteData = await response.json();
+  res.send(quoteData);
+});
 
 app.use(`/api`, apiRouter);
 
