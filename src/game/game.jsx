@@ -3,15 +3,18 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./game.css";
 import { useNavigate } from "react-router-dom";
-import { PlayerInfo } from "./player-info";
+import { PlayerInfo, UserInfo } from "./player-info";
 import { UnoGame } from "./uno-game.js";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { getUser, getGameState, drawCard, playCard } from "../client.js";
 let game;
 //LATER YOU NEED TO UPDATE THIS SO THAT
+
 export function Game() {
   let { gameCode } = useParams();
   const [state, setState] = useState();
+  const [user, setUser] = useState();
   const navigate = useNavigate();
   const [lastCard, setLastCard] = React.useState("card-images/card-back.svg");
   const [players, setPlayers] = React.useState([
@@ -22,27 +25,21 @@ export function Game() {
   ]);
   const [hand, setHand] = React.useState([]);
   const [isHovered, setIsHovered] = React.useState(false);
-  useEffect(() => {
-    game = new UnoGame();
-    game.joinGame("Michelle");
-    game.joinGame("Lauren");
-    game.joinGame("Eryn");
-    game.joinGame("James");
-    const gameState = game.startGame();
-    setState(gameState);
-  }, []);
-  // useEffect(() => {
-  //   setState(gameState);
-  // }, [gameState]);
-  // React.useEffect(() =>{
-  //   if(hand.length === 0) {
-  //     setHand(["Game Won!"]);
-  //     setTimeout(function() {
-  //       navigate('/join');
-  //     }, 2000);
 
-  //   }
-  // }, [hand])
+  useEffect(() => {
+    //game = new UnoGame();
+    getGameState(gameCode).then((state) => {
+      console.log(state);
+      setState(state);
+    });
+    getUser().then(setUser);
+
+    // game.joinGame("Michelle");
+    // game.joinGame("Lauren");
+    // game.joinGame("Eryn");
+    // const gameState = game.startGame();
+    // setState(gameState);
+  }, []);
   React.useState(() => {
     let cards = [
       "card-images/blue-cards/1.png",
@@ -53,25 +50,6 @@ export function Game() {
     setHand(cards);
   }, []);
 
-  // let newHand = [];
-  // cards.forEach((card) => {
-  //   newHand.push(
-  //     <img
-  //       src={card}
-  //       className="user-card"
-  //       onClick={(e) => {
-  //         setLastCard(e.target.getAttribute("src"));
-  //         setHand(hand.filter(
-  //           (card) => card.props.src !== e.target.getAttribute("src")
-  //         ));
-  //       }}
-  //       onHover={() => {
-  //         setIsHovered(true);
-  //       }}
-  //     />
-  //   );
-  // });
-  // setHand(newHand);
   const [enemyHand, setEnemyHand] = React.useState([]);
   React.useState(() => {
     let cards = [
@@ -104,94 +82,64 @@ export function Game() {
     });
     setEnemySideHand(newHand);
   });
-  if (!state) {
+  if (!state || !user) {
     return <div>Loading...</div>;
   }
+
+  const thisPlayer = state.players.find(
+    (player) => player.username == user.username
+  );
+  const otherPlayers = state.players.filter(
+    (player) => player.username != user.username
+  );
+
   return (
     <main>
       <div id="game">
         <div id="grid-container">
           <div className="grid-item main-user">
-            <PlayerInfo />
+            <UserInfo user={user} />
             <div className="player-hand top-user">
-              {state.players[0].hand.map((card, index) => (
+              {thisPlayer.hand.map((card, index) => (
                 <Card
                   key={index}
                   card={card}
                   onCardClick={async () => {
-                    console.log("I am being clicked!!!");
-                    console.log(card);
-                    setState(await game.playCard(card));
+                    // console.log("I am being clicked!!!");
+                    // console.log(card);
+                    console.log(gameCode);
+                    setState(await playCard(gameCode, card));
                   }}
-                  isTurn={0 === state.turn}
+                  isTurn={thisPlayer.position === state.turn}
                 />
               ))}
             </div>
           </div>
-          <div className="grid-item player-left">
-            <div className="player-hand top-user">
-              {" "}
-              {/*Removed enemy-hand from className */}
-              {state.players[1].hand.map((card, index) => (
-                <Card
-                  key={index}
-                  card={card}
-                  onCardClick={async () => {
-                    console.log("I am being clicked!!!");
-                    console.log(card);
-                    setState(await game.playCard(card));
-                  }}
-                  isTurn={1 === state.turn}
-                />
-              ))}
+          {otherPlayers.map((player, index) => (
+            <div className={`grid-item ${playerPosition(index)}`}>
+              <div className="player-hand top-user">
+                {player.hand.map((card, index) => (
+                  <Card
+                    key={index}
+                    card={card}
+                    onCardClick={async () => {
+                      console.log("I am being clicked!!!");
+                      console.log(card);
+                      setState(await playCard(gameCode, card));
+                    }}
+                    isTurn={player.position === state.turn}
+                  />
+                ))}
+              </div>
+              <PlayerInfo player={player} />
             </div>
-            <PlayerInfo />
-          </div>
-          <div className="grid-item player-top">
-            <PlayerInfo />
-            <div className="player-hand top-user">
-              {" "}
-              {/*Removed enemy-hand from className */}
-              {state.players[2].hand.map((card, index) => (
-                <Card
-                  key={index}
-                  card={card}
-                  onCardClick={async () => {
-                    console.log("I am being clicked!!!");
-                    console.log(card);
-                    setState(await game.playCard(card));
-                  }}
-                  isTurn={2 === state.turn}
-                />
-              ))}
-            </div>
-          </div>
-          <div className="grid-item player-right">
-            <div className="player-hand top-user">
-              {" "}
-              {/*Removed enemy-hand from className */}
-              {state.players[3].hand.map((card, index) => (
-                <Card
-                  turn={3}
-                  key={index}
-                  card={card}
-                  onCardClick={async () => {
-                    console.log("I am being clicked!!!");
-                    console.log(card);
-                    setState(await game.playCard(card));
-                  }}
-                  isTurn={3 === state.turn}
-                />
-              ))}
-            </div>
-            <PlayerInfo />
-          </div>
+          ))}
           <div className="grid-item draw-discard-piles">
             <DrawPile
               drawPile={state.drawPile}
               onDrawCard={async () => {
                 //when i have a server add async
-                setState(await game.drawCard());
+                setState(await drawCard(gameCode));
               }}
             />
             <DiscardPile discardPile={state.discardPile} />
@@ -201,10 +149,16 @@ export function Game() {
     </main>
   );
 }
-//<div className="grid-item _____"> //main user, player top, player left, player right,
-//<hand> component
-//</div>
 
+function playerPosition(index) {
+  if (index == 0) {
+    return "player-left";
+  } else if (index == 1) {
+    return "player-top";
+  } else if (index == 2) {
+    return "player-right";
+  }
+}
 export function DrawPile({ drawPile, onDrawCard }) {
   return (
     <div>

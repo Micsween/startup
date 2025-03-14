@@ -5,6 +5,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./lobby.css";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { startGame } from "../client";
 
 export function createGameCode() {
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -15,15 +16,6 @@ export function createGameCode() {
   }
   return newGameCode;
 }
-
-// async function findGame(gameCode) {
-//   let url = `/api/game/${gameCode}`;
-//   let response = await fetch(url, {
-//     method: "GET",
-//     headers: { "Content-Type": "Application.json" },
-//   });
-//   return response;
-// }
 
 async function getGame(gameCode) {
   if (!gameCode || gameCode === undefined) {
@@ -82,8 +74,8 @@ export function Lobby() {
             className="btn btn-danger"
             type="submit"
             value="Start Game"
-            onClick={() => {
-              console.log(gameCode);
+            onClick={async () => {
+              await startGame(gameCode);
               navigate(`/game/${gameCode}`);
             }}
           />

@@ -73,16 +73,6 @@ export function Join({ username }) {
   );
 }
 
-async function getUser() {
-  const url = "/api/user/";
-  let response = await fetch(url, {
-    method: "GET",
-    headers: { "Content-Type": "Application.json" },
-  });
-  console.log(response);
-  return response;
-}
-
 async function joinGame(gameCode) {
   const url = "/api/game";
   let response = await fetch(url, {

@@ -35,7 +35,7 @@ let match2 = {
 };
 let matches = [match, match2];
 
-let game1 = {
+let lobby1 = {
   gameCode: "MEEP",
   host: "Some dude",
   players: [
@@ -46,7 +46,7 @@ let game1 = {
   ],
 };
 
-let game2 = {
+let lobby2 = {
   gameCode: "GHWC",
   host: "My guy",
   players: [
@@ -64,7 +64,8 @@ let game2 = {
     },
   ],
 };
-let games = [game1, game2];
+let lobbies = [lobby1, lobby2];
+let games = [];
 
 app.use(express.json());
 app.use(cookieParser());
@@ -162,7 +163,7 @@ apiRouter.put("/game", async (req, res) => {
   const authCookie = req.cookies[authCookieName];
   if (authCookie) {
     let user = users.find((user) => user.authToken == authCookie);
-    let game = games.find((game) => game.gameCode == req.body.gameCode);
+    let game = lobbies.find((game) => game.gameCode == req.body.gameCode);
     if (game) {
       if (
         game.players.find((player) => player.username == user.username) == null
@@ -182,7 +183,7 @@ apiRouter.get("/game/:gameCode", async (req, res) => {
   console.log("Getting game...");
   const authCookie = req.cookies[authCookieName];
   const gameCode = req.params.gameCode;
-  let game = games.find((game) => game.gameCode == gameCode);
+  let game = lobbies.find((game) => game.gameCode == gameCode);
   if (authCookie && game) {
     res.send(game);
   } else {
@@ -190,11 +191,68 @@ apiRouter.get("/game/:gameCode", async (req, res) => {
   }
 });
 
+apiRouter.post("/game/:gameCode/start", async (req, res) => {
+  console.log("Starting game...");
+  const authCookie = req.cookies[authCookieName];
+  const gameCode = req.params.gameCode;
+  let lobby = lobbies.find((lobby) => lobby.gameCode == gameCode);
+
+  if (authCookie && lobby) {
+    let unoGame = new UnoGame(lobby);
+    let gameState = unoGame.startGame();
+    games.push(unoGame);
+    res.send(gameState);
+  } else {
+    res.status(401).send({ message: "User not verified." });
+  }
+});
+
+apiRouter.get("/game/:gameCode/state", async (req, res) => {
+  console.log("Getting game state...");
+  const authCookie = req.cookies[authCookieName];
+  const gameCode = req.params.gameCode;
+
+  let game = games.find((game) => game.state.gameCode == gameCode);
+  console.log(authCookie);
+  console.log(games);
+  if (authCookie && game) {
+    res.send(game.state);
+  } else {
+    res.status(401).send({ message: "User not verified." });
+  }
+});
+
+apiRouter.post("/game/:gameCode/take-turn", async (req, res) => {
+  console.log("taking a turn...");
+  const authCookie = req.cookies[authCookieName];
+  const gameCode = req.params.gameCode;
+
+  if (!authCookie) {
+    res.status(401).send({ message: "User not verified." });
+    return;
+  }
+
+  let game = games.find((game) => game.state.gameCode == gameCode);
+
+  if (!game) {
+    res.status(404).send({ message: "Game not found." });
+  }
+
+  let turn = req.body;
+  console.log(turn);
+  if (turn.action == "drawCard") {
+    game.drawCard();
+  } else if (turn.action == "playCard") {
+    game.playCard(turn.card);
+  }
+  res.send(game.state);
+});
+
 apiRouter.get("/games", async (req, res) => {
   console.log("Getting games...");
   const authCookie = req.cookies[authCookieName];
   if (authCookie) {
-    res.send(games);
+    res.send(lobbies);
   } else {
     res.status(401).send({ message: "User not verified." });
   }
@@ -238,11 +296,11 @@ function verifyUser(username, password) {
 }
 
 export class UnoGame {
-  constructor(gameCode, host) {
+  constructor(lobby) {
     this.state = {
-      gameCode: gameCode,
-      host: host,
-      players: [],
+      gameCode: lobby.gameCode,
+      host: lobby.host,
+      players: lobby.players,
       discardPile: [],
       drawPile: [],
       turn: 0,
@@ -263,6 +321,7 @@ export class UnoGame {
   }
   joinGame(username) {
     let player = {
+      position,
       username,
       hand: [],
     };
@@ -274,6 +333,9 @@ export class UnoGame {
     this.createDeck();
     this.shuffleDeck();
     this.deal();
+    this.state.players.forEach((player, index) => {
+      player.position = index;
+    });
     this.state.turn = 0;
     return this.serializeState();
   }
@@ -300,7 +362,7 @@ export class UnoGame {
   }
   updateTurn() {
     this.state.turn++;
-    if (this.state.turn === 4) {
+    if (this.state.turn === this.state.players.length) {
       this.state.turn = 0;
     }
   }
