@@ -140,11 +140,11 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Node.js/Express HTTP service** - I did not complete this part of the deliverable.
-- [ ] **Static middleware for frontend** - I did not complete this part of the deliverable.
-- [ ] **Calls to third party endpoints** - I did not complete this part of the deliverable.
-- [ ] **Backend service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Frontend calls service endpoints** - I did not complete this part of the deliverable.
+- [x] **Node.js/Express HTTP service** - Node.js was very easy to implement.
+- [x] **Static middleware for frontend** - I added middleware for my "public" directory
+- [x] **Calls to third party endpoints** - I added an inspirational quote api to my matchHistory page
+- [x] **Backend service endpoints** - I added endpoints for all current functionality.
+- [x] **Frontend calls service endpoints** - I added a client.js file that makes all the calls to the service endpoints.
 
 ## 🚀 DB/Login deliverable
 
