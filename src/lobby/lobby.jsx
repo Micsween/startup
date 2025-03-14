@@ -16,33 +16,22 @@ export function createGameCode() {
   return newGameCode;
 }
 
-function findGame(gameCode) {
-  const foundGame = JSON.parse(localStorage.getItem(`game-${gameCode}`));
-  return foundGame;
-}
+// async function findGame(gameCode) {
+//   let url = `/api/game/${gameCode}`;
+//   let response = await fetch(url, {
+//     method: "GET",
+//     headers: { "Content-Type": "Application.json" },
+//   });
+//   return response;
+// }
 
-function createGame(gameCode) {
-  let game = {
-    gameName: "Another Game",
-    gameCode: gameCode,
-    host: "Potato",
-    players: ["Potato's friend"],
-  };
-
-  localStorage.setItem(`game-${gameCode}`, JSON.stringify(game));
-  return game;
-}
-
-async function findOrCreateGame(gameCode) {
+async function getGame(gameCode) {
   if (!gameCode || gameCode === undefined) {
-    gameCode = createGameCode();
+    alert("Missing game Code");
+    location = "/join";
   }
-  console.log(gameCode);
-  let game = findGame(gameCode);
-  if (!game) {
-    game = createGame(gameCode);
-  }
-  return Promise.resolve(game);
+  let response = await fetch(`/api/game/${gameCode}`);
+  return await response.json();
 }
 
 function listPlayers(players) {
@@ -51,13 +40,13 @@ function listPlayers(players) {
     if (playerList.length === 0) {
       playerList.push(
         <li key={index} id="host" className="list-group-item">
-          {player} 👑
+          {player.username} 👑
         </li>
       );
     } else {
       playerList.push(
         <li key={index} className="list-group-item">
-          {player}
+          {player.username}
         </li>
       );
     }
@@ -71,9 +60,8 @@ export function Lobby() {
   console.log("I am here");
   const [players, setPlayers] = React.useState([]);
   React.useEffect(() => {
-    findOrCreateGame(gameCode).then((game) => {
+    getGame(gameCode).then((game) => {
       console.log(game);
-      gameCode = game.gameCode;
       setPlayers(game.players ?? []);
     });
   }, []);

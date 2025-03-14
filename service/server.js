@@ -164,11 +164,27 @@ apiRouter.put("/game", async (req, res) => {
     let user = users.find((user) => user.authToken == authCookie);
     let game = games.find((game) => game.gameCode == req.body.gameCode);
     if (game) {
-      game.players.push({ username: user.username, userID: user.userID });
+      if (
+        game.players.find((player) => player.username == user.username) == null
+      ) {
+        game.players.push({ username: user.username, userID: user.userID });
+      }
       res.send(game);
     } else {
       res.status(404).send({ message: "Game not found" });
     }
+  } else {
+    res.status(401).send({ message: "User not verified." });
+  }
+});
+
+apiRouter.get("/game/:gameCode", async (req, res) => {
+  console.log("Getting game...");
+  const authCookie = req.cookies[authCookieName];
+  const gameCode = req.params.gameCode;
+  let game = games.find((game) => game.gameCode == gameCode);
+  if (authCookie && game) {
+    res.send(game);
   } else {
     res.status(401).send({ message: "User not verified." });
   }
