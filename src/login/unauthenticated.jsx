@@ -31,8 +31,16 @@ export function Unauthenticated({ onLogin }) {
     try {
       const response = await fetch(url, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ username: username, password: password }),
       });
+      if (response.ok) {
+        navigate("/join", { state: { username: username } });
+      } else if (response.status == 401) {
+        alert((await response.json()).message);
+      }
     } catch (error) {}
     onLogin(username);
   }
@@ -43,6 +51,9 @@ export function Unauthenticated({ onLogin }) {
     try {
       const response = await fetch(url, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ username: username, password: password }),
       });
       navigate("/join", { state: { username: username } });
@@ -81,7 +92,6 @@ export function Unauthenticated({ onLogin }) {
           type="submit"
           onClick={(e) => {
             loginUser();
-            navigate("/join", { state: { username: username } });
           }}
           disabled={!username || !password}
         >

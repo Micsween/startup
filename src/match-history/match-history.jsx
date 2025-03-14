@@ -9,15 +9,40 @@ import "./match-history.css";
 // const opponentList = opponents.map((opponent) =>
 //   <li key={opponent.userID}>{opponent.username}</li>
 // );
+async function getQuote() {
+  let url = "https://zenquotes.io/api";
+  let response = await fetch(url, {
+    mode: "no-cors",
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  console.log(response.json());
+  return response;
+}
 export function MatchHistory({ username }) {
   const [quote, setQuote] = React.useState("No quote yet");
   const [quoteAuthor, setQuoteAuthor] = React.useState("idk, some dude.");
   const [movie, setMovie] = React.useState("From the best movie ever");
   //turn this into a fetch request for star wars quotes
+  //const response = await fetch(url, {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify({ username: username, password: password }),
+  // });
   React.useEffect(() => {
-    setQuote("Do or do not. There is no try.");
-    setQuoteAuthor("Yoda");
-    setMovie("Star Wars");
+    getQuote()
+      .then((response) => response.json())
+      .then((data) => {
+        setQuote(data.q);
+        setQuoteAuthor(data.a);
+      });
+    // setQuote("Do or do not. There is no try.");
+    // setQuoteAuthor("Yoda");
+    // setMovie("Star Wars");
   }, []);
 
   return (
@@ -45,15 +70,22 @@ export function MatchHistory({ username }) {
 function listMatchHistory() {
   const [matches, setMatches] = React.useState([]);
   React.useEffect(() => {
-    setMatches(JSON.parse(localStorage.getItem("matches")));
+    let url = "/api/matches";
+    const response = fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => setMatches(json));
   }, []);
 
   const matchHistory = [];
-  if (matches.length) {
+  if (matches) {
     for (const [index, match] of matches.entries()) {
       matchHistory.push(
         <tr key={index}>
-          <th scope="row"> {match.gameName}</th>
           <td id="game-win">{match.result}</td>
           <td>{match.date}</td>
           <td>
@@ -100,68 +132,3 @@ function getOpponentList(opponents) {
   }
   return opponentList;
 }
-
-/*
-for setting up local storage:
-let matches = [
-  {
-        gameName: "The best Game",
-        result: "Win",
-        date: "2/19/2025",
-        opponents: [
-          { 
-            username: "Player2's username", 
-            userID: 1234
-          },
-          { 
-            username: "Player3's username", 
-            userID: 5678
-          },
-          { 
-            username: "Player4's username", 
-            userID: 1000
-          },
-        ],
-      },
-      {
-        gameName: "The second best Game",
-        result: "Win",
-        date: "2/20/2025",
-        opponents: [
-          { 
-            username: "Player2's username", 
-            userID: 1234
-          },
-          { 
-            username: "Player3's username", 
-            userID: 5678
-          },
-          { 
-            username: "Player4's username", 
-            userID: 1000
-          },
-        ],
-      },
-      {
-        gameName: "The third best Game",
-        result: "lose",
-        date: "2/20/2000",
-        opponents: [
-          { 
-            username: "Player2's username", 
-            userID: 1234
-          },
-          { 
-            username: "Player3's username", 
-            userID: 5678
-          },
-          { 
-            username: "Player4's username", 
-            userID: 1000
-          },
-        ],
-      },
-]
-localStorage.setItem('matches',JSON.stringify(matches));
-console.log(JSON.parse(localStorage.getItem('matches')));
-*/

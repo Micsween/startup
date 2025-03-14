@@ -9,7 +9,25 @@ const bcryptjs = bcrypt;
 const authCookieName = "authCookie";
 let users = [];
 let liveGames = [];
-let matches = [];
+let match = {
+  result: "Win",
+  date: "2/19/2025",
+  opponents: [
+    { username: "Player2", userID: "1234" },
+    { username: "Player3", userID: "5678" },
+    { username: "Player4", userID: "91011" },
+  ],
+};
+let match2 = {
+  result: "Lose",
+  date: "10/07/2003",
+  opponents: [
+    { username: "username2", userID: "7777" },
+    { username: "username3", userID: "8888" },
+    { username: "username4", userID: "9999" },
+  ],
+};
+let matches = [match, match2];
 
 app.use(express.json());
 app.use(cookieParser());
@@ -17,7 +35,8 @@ let apiRouter = express.Router();
 
 apiRouter.post("/user/create", async (req, res) => {
   console.log("Creating account..");
-  if (!findUser("username", req.username)) {
+  console.dir(req.body);
+  if (!findUser("username", req.body.username)) {
     const user = createUser(req.body.username, req.body.password);
     setCookie(res, user.authToken);
     res.send(user);
@@ -32,8 +51,9 @@ apiRouter.post("/user/login", async (req, res) => {
   if (user) {
     user.authToken = v4();
     setCookie(res, user.authToken);
+    res.send(user.authToken);
   } else {
-    res.status(401).send({ msg: "User not verified." });
+    res.status(401).send({ message: "User not verified." });
   }
 });
 //make a function that finds a user by the authToken
@@ -48,6 +68,19 @@ apiRouter.delete("/user/logout", async (req, res) => {
     }
   });
   res.send(users);
+});
+
+apiRouter.get("/matches", async (req, res) => {
+  console.log("Loading matches..");
+  //verify the user
+  //get match history, which for now is stored on the server
+  const authCookie = req.cookies[authCookieName];
+  //add a function that checks if the authtoken is valid
+  if (authCookie) {
+    res.send(matches);
+  } else {
+    res.status(401).send({ message: "User not verified." });
+  }
 });
 
 app.use(`/api`, apiRouter);
