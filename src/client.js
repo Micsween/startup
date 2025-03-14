@@ -56,3 +56,12 @@ export async function getGames() {
   });
   return response;
 }
+
+export async function getGame(gameCode) {
+  if (!gameCode || gameCode === undefined) {
+    alert("Missing game Code");
+    location = "/join";
+  }
+  let response = await fetch(`/api/game/${gameCode}`);
+  return await response.json();
+}

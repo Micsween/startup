@@ -77,16 +77,6 @@ export function Join({ username }) {
   );
 }
 
-// async function getGames() {
-//   //fetch request to api to get the list of active games
-//   let url = "/api/games";
-//   let response = await fetch(url, {
-//     method: "GET",
-//     headers: { "Content-Type": "Application.json" },
-//   });
-//   return response;
-// }
-
 function listGames(games) {
   const gameList = [];
   for (const [index, game] of games.entries()) {

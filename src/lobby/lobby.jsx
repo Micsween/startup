@@ -5,7 +5,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./lobby.css";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { startGame } from "../client";
+import { startGame, getGame } from "../client";
 
 export function createGameCode() {
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -15,15 +15,6 @@ export function createGameCode() {
     newGameCode += alphabet[random];
   }
   return newGameCode;
-}
-
-async function getGame(gameCode) {
-  if (!gameCode || gameCode === undefined) {
-    alert("Missing game Code");
-    location = "/join";
-  }
-  let response = await fetch(`/api/game/${gameCode}`);
-  return await response.json();
 }
 
 function listPlayers(players) {
