@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import { v4 } from "uuid";
 import { parsePath } from "react-router-dom";
 const app = express();
-const port = 4000;
+const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
 const bcryptjs = bcrypt;
 const authCookieName = "authCookie";

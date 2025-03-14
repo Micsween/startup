@@ -38,3 +38,12 @@ export async function takeTurn(turn) {
   });
   return await response.json();
 }
+export async function joinGame(gameCode) {
+  const url = "/api/game";
+  let response = await fetch(url, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ gameCode: gameCode }),
+  });
+  return response.ok;
+}
