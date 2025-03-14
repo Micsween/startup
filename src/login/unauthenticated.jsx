@@ -90,8 +90,8 @@ export function Unauthenticated({ onLogin }) {
         <Button
           variant="dark"
           type="submit"
-          onClick={(e) => {
-            createUser();
+          onClick={async (e) => {
+            await createUser();
           }}
           disabled={!username || !password}
         >

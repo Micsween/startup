@@ -146,18 +146,6 @@ apiRouter.get("/quote", async (req, res) => {
   res.send(quoteData[0]);
 });
 
-// apiRouter.post("/game", async (req, res) => {
-//   console.log("Creating Game..");
-//   const authCookie = req.cookies[authCookieName];
-//   //takes a gamecode
-//   //and the username of the player, and sets them as the host
-//   //
-//   if (authCookie) {
-//   } else {
-//     res.status(401).send({ message: "User not verified." });
-//   }
-// });
-
 apiRouter.put("/game", async (req, res) => {
   console.log("Joining game...");
   const authCookie = req.cookies[authCookieName];

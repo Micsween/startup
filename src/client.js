@@ -65,6 +65,22 @@ export async function getGame(gameCode) {
   let response = await fetch(`/api/game/${gameCode}`);
   return await response.json();
 }
+
+export async function loginUser() {
+  let url = "/api/user/login";
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username: username, password: password }),
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function logoutUser() {
   let url = "/api/user/logout";
   try {
@@ -74,4 +90,15 @@ export async function logoutUser() {
     });
   } catch (error) {}
   localStorage.removeItem("username");
+}
+
+export async function getQuote() {
+  let url = "/api/quote";
+  let response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return response;
 }

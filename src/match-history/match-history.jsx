@@ -2,18 +2,20 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./match-history.css";
-
+import { getQuote } from "../client.js";
+async function fetchQuote() {
+  let response = await getQuote();
+  return await response.json();
+}
 export function MatchHistory({ username }) {
   const [quote, setQuote] = React.useState("No quote yet");
   const [quoteAuthor, setQuoteAuthor] = React.useState("idk, some dude.");
 
   React.useEffect(() => {
-    getQuote()
-      .then((response) => response.json())
-      .then((data) => {
-        setQuote(data.q);
-        setQuoteAuthor(data.a);
-      });
+    fetchQuote().then((data) => {
+      setQuote(data.q);
+      setQuoteAuthor(data.a);
+    });
   }, []);
 
   return (
@@ -36,16 +38,6 @@ export function MatchHistory({ username }) {
       </div>
     </main>
   );
-}
-async function getQuote() {
-  let url = "/api/quote";
-  let response = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  return response;
 }
 
 function listMatchHistory() {
