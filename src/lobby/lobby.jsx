@@ -5,6 +5,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./lobby.css";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+
 export function createGameCode() {
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   let newGameCode = "";

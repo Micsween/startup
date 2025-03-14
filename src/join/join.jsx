@@ -6,31 +6,15 @@ import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import { createGameCode } from "../lobby/lobby";
 
-function listGames(games) {
-  const gameList = [];
-  for (const [index, game] of games.entries()) {
-    gameList.push(
-      <tr key={index}>
-        <td>{game.gameCode}</td>
-        <td>{game.host}</td>
-        <td>{game.players.length}</td>
-      </tr>
-    );
-  }
-  return gameList;
-}
-function updateGame() {
-  //for now, this does nothing. but once I have a database it will update the database with a new player
-}
-
 export function Join({ username }) {
   const [gameCode, setGameCode] = React.useState("");
+  const [games, setGames] = React.useState([]);
   const navigate = useNavigate();
 
-  const [games, setGames] = React.useState([]);
-
   React.useEffect(() => {
-    setGames(JSON.parse(localStorage.getItem("games") ?? "[]"));
+    getGames()
+      .then((response) => response.json())
+      .then((json) => setGames(json));
   }, []);
 
   return (
@@ -57,20 +41,21 @@ export function Join({ username }) {
               value={gameCode}
               onChange={(e) => setGameCode(e.target.value)}
             />
-            {/*
-            make it so that when you click the button it gets the gameObject associated with thtat gameCode
-            You can't call the function when doing onClick(), you need to create one that will be called when its clicked*/}
             <Button
               className="btn btn-danger join-button"
               disabled={!gameCode}
-              onClick={() => {
-                navigate(`/lobby/${gameCode}`);
+              //create a functiont that checks for a valid game code
+              onClick={async () => {
+                let foundGame = await joinGame(gameCode);
+                if (foundGame) {
+                  navigate(`/lobby/${gameCode}`);
+                } else {
+                  alert("The code you entered was incorrect.");
+                }
               }}
             >
               Join Game
             </Button>
-            {/*<Button variant='primary' onClick={() => loginUser()} disabled={!userName || !password}>
-             */}
             <input
               id="join-button"
               className="btn btn-dark"
@@ -88,93 +73,50 @@ export function Join({ username }) {
   );
 }
 
-/*
-function listMatchHistory() {
+async function getUser() {
+  const url = "/api/user/";
+  let response = await fetch(url, {
+    method: "GET",
+    headers: { "Content-Type": "Application.json" },
+  });
+  console.log(response);
+  return response;
+}
 
+async function joinGame(gameCode) {
+  const url = "/api/game";
+  let response = await fetch(url, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ gameCode: gameCode }),
+  });
+  return response.ok;
+}
 
+async function getGames() {
+  //fetch request to api to get the list of active games
+  let url = "/api/games";
+  let response = await fetch(url, {
+    method: "GET",
+    headers: { "Content-Type": "Application.json" },
+  });
+  return response;
+}
 
-  const matchHistory = [];
-  if (matches.length) {
-    for (const [index, match] of matches.entries()) {
-      matchHistory.push(
-        <tbody>
-          <tr>
-            <th scope="row"> {match.gameName}</th>
-            <td id="game-win">{match.result}</td>
-            <td>{match.date}</td>
-            <td>
-              {" "}
-              <button
-                className="btn btn-warning dropdown-toggle"
-                type="button"
-                id="dropdownMenuButton1"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Opponents
-              </button>
-              <ul
-                className="dropdown-menu"
-                aria-labelledby="dropdownMenuButton1"
-              >
-                {getOpponentList(match.opponents)}
-              </ul>
-            </td>
-          </tr>
-        </tbody>
-      );
-    }
-  } else {
-    matchHistory.push(
-      <tbody>
-        <tr>
-          <td>Play a game to see your match History!</td>
-        </tr>
-      </tbody>
+function listGames(games) {
+  const gameList = [];
+  for (const [index, game] of games.entries()) {
+    gameList.push(
+      <tr key={index}>
+        <td>{game.gameCode}</td>
+        <td>{game.host}</td>
+        <td>{game.players.length}</td>
+      </tr>
     );
   }
-  return matchHistory;
+  return gameList;
 }
-*/
-/*
-setting up games in local storage
-let games = [
-  {
-        gameName: "The best Game",
-        gameCode: "GHWC",
-        host: "Username",
-        players: [
-        { 
-            username: "Autobotkilla", 
-            userID: 1980  
-          },
-          { 
-            username: "Player2's username", 
-            userID: 1234
-          },
-          { 
-            username: "Player3's username", 
-            userID: 5678
-          },
-          { 
-            username: "Player4's username", 
-            userID: 1000
-          },
-        ],
-      },
-        {
-        gameName: "Another Game",
-        gameCode: "MEEP",
-        host: "Some dude",
-        players: [
-        { 
-            username: "Some dude", 
-            userID: 1980  
-          },
-        ],
-      },
-    
-]
-localStorage.setItem('games',JSON.stringify(games));
-console.log(JSON.parse(localStorage.getItem('games')));
-*/
+
+function updateGame() {
+  //for now, this does nothing. but once I have a database it will update the database with a new player
+}

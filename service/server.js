@@ -2,13 +2,19 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import bcrypt from "bcryptjs";
 import { v4 } from "uuid";
+import { parsePath } from "react-router-dom";
 const app = express();
 const port = 4000;
 
 const bcryptjs = bcrypt;
 const authCookieName = "authCookie";
-let users = [];
-let liveGames = [];
+let user = {
+  authToken: null,
+  username: "Best",
+  userID: 6666,
+};
+let users = [user];
+
 let match = {
   result: "Win",
   date: "2/19/2025",
@@ -29,6 +35,37 @@ let match2 = {
 };
 let matches = [match, match2];
 
+let game1 = {
+  gameCode: "MEEP",
+  host: "Some dude",
+  players: [
+    {
+      username: "Some dude",
+      userID: 1980,
+    },
+  ],
+};
+
+let game2 = {
+  gameCode: "GHWC",
+  host: "My guy",
+  players: [
+    {
+      username: "My guy",
+      userID: 2003,
+    },
+    {
+      username: "other",
+      userID: 1999,
+    },
+    {
+      username: "potato",
+      userID: 1777,
+    },
+  ],
+};
+let games = [game1, game2];
+
 app.use(express.json());
 app.use(cookieParser());
 let apiRouter = express.Router();
@@ -39,6 +76,7 @@ apiRouter.post("/user/create", async (req, res) => {
   if (!findUser("username", req.body.username)) {
     const user = createUser(req.body.username, req.body.password);
     setCookie(res, user.authToken);
+    users.push(user);
     res.send(user);
   } else {
     res.status(401).send({ msg: "User already exists" });
@@ -56,7 +94,22 @@ apiRouter.post("/user/login", async (req, res) => {
     res.status(401).send({ message: "User not verified." });
   }
 });
-//make a function that finds a user by the authToken
+
+apiRouter.get("/user", async (req, res) => {
+  console.log("Retrieving User..");
+  const authCookie = req.cookies[authCookieName];
+  if (authCookie) {
+    let user = users.find((user) => user.authToken == authCookie);
+    console.log(user);
+    if (user) {
+      res.send(user);
+    } else {
+      res.status(404).send({ message: "User not found" });
+    }
+  } else {
+    res.status(401).send({ message: "User not verified." });
+  }
+});
 
 apiRouter.delete("/user/logout", async (req, res) => {
   console.log("Logging out...");
@@ -72,16 +125,14 @@ apiRouter.delete("/user/logout", async (req, res) => {
 
 apiRouter.get("/matches", async (req, res) => {
   console.log("Loading matches..");
-  //verify the user
-  //get match history, which for now is stored on the server
   const authCookie = req.cookies[authCookieName];
-  //add a function that checks if the authtoken is valid
   if (authCookie) {
     res.send(matches);
   } else {
     res.status(401).send({ message: "User not verified." });
   }
 });
+
 apiRouter.get("/quote", async (req, res) => {
   let url = "https://zenquotes.io/api/random";
   let response = await fetch(url, {
@@ -92,6 +143,45 @@ apiRouter.get("/quote", async (req, res) => {
   });
   let quoteData = await response.json();
   res.send(quoteData[0]);
+});
+
+// apiRouter.post("/game", async (req, res) => {
+//   console.log("Creating Game..");
+//   const authCookie = req.cookies[authCookieName];
+//   //takes a gamecode
+//   //and the username of the player, and sets them as the host
+//   //
+//   if (authCookie) {
+//   } else {
+//     res.status(401).send({ message: "User not verified." });
+//   }
+// });
+
+apiRouter.put("/game", async (req, res) => {
+  console.log("Joining game...");
+  const authCookie = req.cookies[authCookieName];
+  if (authCookie) {
+    let user = users.find((user) => user.authToken == authCookie);
+    let game = games.find((game) => game.gameCode == req.body.gameCode);
+    if (game) {
+      game.players.push({ username: user.username, userID: user.userID });
+      res.send(game);
+    } else {
+      res.status(404).send({ message: "Game not found" });
+    }
+  } else {
+    res.status(401).send({ message: "User not verified." });
+  }
+});
+
+apiRouter.get("/games", async (req, res) => {
+  console.log("Getting games...");
+  const authCookie = req.cookies[authCookieName];
+  if (authCookie) {
+    res.send(games);
+  } else {
+    res.status(401).send({ message: "User not verified." });
+  }
 });
 
 app.use(`/api`, apiRouter);
