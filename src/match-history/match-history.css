@@ -8,10 +8,10 @@
     padding-left: 1em;
     overflow:auto;
 } 
-#game-win{
+#Win{
     color: green;
 }
-#game-loss{
+#Lose{
     color: red;
 }
 #quote{

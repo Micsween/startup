@@ -91,7 +91,7 @@ apiRouter.get("/quote", async (req, res) => {
     },
   });
   let quoteData = await response.json();
-  res.send(quoteData);
+  res.send(quoteData[0]);
 });
 
 app.use(`/api`, apiRouter);

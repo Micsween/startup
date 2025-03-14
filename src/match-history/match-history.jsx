@@ -3,16 +3,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./match-history.css";
 
-async function getQuote() {
-  let url = "/api/quote";
-  let response = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  return response;
-}
 export function MatchHistory({ username }) {
   const [quote, setQuote] = React.useState("No quote yet");
   const [quoteAuthor, setQuoteAuthor] = React.useState("idk, some dude.");
@@ -47,6 +37,16 @@ export function MatchHistory({ username }) {
     </main>
   );
 }
+async function getQuote() {
+  let url = "/api/quote";
+  let response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return response;
+}
 
 function listMatchHistory() {
   const [matches, setMatches] = React.useState([]);
@@ -65,9 +65,10 @@ function listMatchHistory() {
   const matchHistory = [];
   if (matches) {
     for (const [index, match] of matches.entries()) {
+      let result = match.result;
       matchHistory.push(
         <tr key={index}>
-          <td id="game-win">{match.result}</td>
+          <td id={result}>{match.result}</td>
           <td>{match.date}</td>
           <td>
             {" "}
