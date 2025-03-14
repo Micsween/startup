@@ -47,3 +47,12 @@ export async function joinGame(gameCode) {
   });
   return response.ok;
 }
+
+export async function getGames() {
+  let url = "/api/games";
+  let response = await fetch(url, {
+    method: "GET",
+    headers: { "Content-Type": "Application.json" },
+  });
+  return response;
+}

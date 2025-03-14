@@ -5,7 +5,12 @@ import "./join.css";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import { createGameCode } from "../lobby/lobby";
-import { joinGame } from "../client.js";
+import { joinGame, getGames } from "../client.js";
+
+async function fetchGames() {
+  let response = await getGames();
+  return await response.json();
+}
 
 export function Join({ username }) {
   const [gameCode, setGameCode] = React.useState("");
@@ -13,9 +18,7 @@ export function Join({ username }) {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    getGames()
-      .then((response) => response.json())
-      .then((json) => setGames(json));
+    fetchGames().then((games) => setGames(games));
   }, []);
 
   return (
@@ -74,14 +77,15 @@ export function Join({ username }) {
   );
 }
 
-async function getGames() {
-  let url = "/api/games";
-  let response = await fetch(url, {
-    method: "GET",
-    headers: { "Content-Type": "Application.json" },
-  });
-  return response;
-}
+// async function getGames() {
+//   //fetch request to api to get the list of active games
+//   let url = "/api/games";
+//   let response = await fetch(url, {
+//     method: "GET",
+//     headers: { "Content-Type": "Application.json" },
+//   });
+//   return response;
+// }
 
 function listGames(games) {
   const gameList = [];
