@@ -1,0 +1,26 @@
+{
+  "name": "startup",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "The best game of UNO ever.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://github.com/Micsween/startup#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "bootstrap": "^5.3.3",
+    "cookie-parser": "^1.4.7",
+    "express": "^4.21.2",
+    "uuid": "^11.1.0",
+  },
+  "devDependencies": {
+    "vite-plugin-node-polyfills": "^0.23.0"
+  }
+}
