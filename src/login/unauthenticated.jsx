@@ -9,17 +9,6 @@ export function getUser() {
   return localStorage.getItem("username");
 }
 
-export async function logoutUser() {
-  let url = "/api/user/logout";
-  try {
-    const response = await fetch(url, {
-      method: "DELETE",
-      body: JSON.stringify({ username: "username", password: "password" }),
-    });
-  } catch (error) {}
-  localStorage.removeItem("username");
-}
-
 export function Unauthenticated({ onLogin }) {
   const navigate = useNavigate();
   const [username, setUsername] = React.useState("");

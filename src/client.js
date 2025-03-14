@@ -65,3 +65,13 @@ export async function getGame(gameCode) {
   let response = await fetch(`/api/game/${gameCode}`);
   return await response.json();
 }
+export async function logoutUser() {
+  let url = "/api/user/logout";
+  try {
+    const response = await fetch(url, {
+      method: "DELETE",
+      body: JSON.stringify({ username: "username", password: "password" }),
+    });
+  } catch (error) {}
+  localStorage.removeItem("username");
+}

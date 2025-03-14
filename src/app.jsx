@@ -13,7 +13,8 @@ import { Join } from "./join/join";
 import { Lobby } from "./lobby/lobby";
 import { Login } from "./login/login";
 import { MatchHistory } from "./match-history/match-history";
-import { getUser, logoutUser } from "./login/unauthenticated";
+import { getUser } from "./login/unauthenticated";
+import { logoutUser } from "./client.js";
 import Button from "react-bootstrap/Button";
 
 export default function App() {
