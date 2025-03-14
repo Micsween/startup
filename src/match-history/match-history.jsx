@@ -2,11 +2,8 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./match-history.css";
-import { getQuote } from "../client.js";
-async function fetchQuote() {
-  let response = await getQuote();
-  return await response.json();
-}
+import { getQuote, getMatches } from "../client.js";
+
 export function MatchHistory({ username }) {
   const [quote, setQuote] = React.useState("No quote yet");
   const [quoteAuthor, setQuoteAuthor] = React.useState("idk, some dude.");
@@ -40,18 +37,15 @@ export function MatchHistory({ username }) {
   );
 }
 
+async function fetchQuote() {
+  let response = await getQuote();
+  return await response.json();
+}
+
 function listMatchHistory() {
   const [matches, setMatches] = React.useState([]);
   React.useEffect(() => {
-    let url = "/api/matches";
-    const response = fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((json) => setMatches(json));
+    getMatches().then((json) => setMatches(json));
   }, []);
 
   const matchHistory = [];

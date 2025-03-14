@@ -76,6 +76,7 @@ export async function loginUser() {
       },
       body: JSON.stringify({ username: username, password: password }),
     });
+    return response;
   } catch (error) {
     console.log(error);
   }
@@ -101,4 +102,15 @@ export async function getQuote() {
     },
   });
   return response;
+}
+
+export async function getMatches() {
+  let url = "/api/matches";
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return await response.json();
 }
