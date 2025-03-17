@@ -154,3 +154,12 @@ Logout:
 //DELETE ENDPOINT:
 curl -X DELETE -H "Content-Type: application/json" -d '{"username":"firstuser", "password":"firstpassword"}' http://localhost:4000/api/user/logout```
 ```
+
+## MongoDB Notes
+
+```sh
+const { MongoClient } = require('mongodb');
+
+const uri = 'your_mongodb_connection_string';
+const client = new MongoClient(uri, { maxPoolSize: 150 });
+```
