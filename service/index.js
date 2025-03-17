@@ -2,7 +2,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import bcrypt from "bcryptjs";
 import { v4 } from "uuid";
-
+import { database as db } from "./database.js";
 const app = express();
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
@@ -73,12 +73,11 @@ app.use(cookieParser());
 let apiRouter = express.Router();
 
 apiRouter.post("/user/create", async (req, res) => {
-  console.log("Creating account..");
-  console.dir(req.body);
-  if (!findUser("username", req.body.username)) {
+  if (!db.getUser(req.body.username)) {
+    console.log("no duplicate user found, creating new user....");
     const user = createUser(req.body.username, req.body.password);
     setCookie(res, user.authToken);
-    users.push(user);
+    db.addUser(user);
     res.send(user);
   } else {
     res.status(401).send({ msg: "User already exists" });
@@ -90,6 +89,7 @@ apiRouter.post("/user/login", async (req, res) => {
   const user = verifyUser(req.body.username, req.body.password);
   if (user) {
     user.authToken = v4();
+    //add a line to update the authToken
     setCookie(res, user.authToken);
     res.send(user.authToken);
   } else {
@@ -101,7 +101,7 @@ apiRouter.get("/user", async (req, res) => {
   console.log("Retrieving User..");
   const authCookie = req.cookies[authCookieName];
   if (authCookie) {
-    let user = users.find((user) => user.authToken == authCookie);
+    let user = db.getUserAuth(authCookie);
     console.log(user);
     if (user) {
       res.send(user);
@@ -116,12 +116,11 @@ apiRouter.get("/user", async (req, res) => {
 apiRouter.delete("/user/logout", async (req, res) => {
   console.log("Logging out...");
   const authCookie = req.cookies[authCookieName];
-  users.forEach((registeredUser) => {
-    if (registeredUser.authToken == authCookie) {
-      res.clearCookie(authCookieName);
-      registeredUser.authToken = null;
-    }
-  });
+  let user = db.getUserAuth(authCookie);
+  if (user) {
+    res.clearCookie(authCookieName);
+    //add method to update authToken
+  }
   res.send(users);
 });
 
@@ -266,6 +265,7 @@ function createUser(username, password) {
   users.push(user);
   return user;
 }
+
 function setCookie(res, authToken) {
   res.cookie(authCookieName, authToken, {
     //httpOnly: true;
@@ -274,13 +274,8 @@ function setCookie(res, authToken) {
   });
 }
 
-function findUser(field, value) {
-  return !value ? null : users.find((u) => u[field] === value);
-}
-
-//verifies a user and returns the user that was found
-function verifyUser(username, password) {
-  const user = findUser("username", username);
+async function verifyUser(username, password) {
+  const user = await db.getUser(username);
   return user && user.password == password ? user : null;
 }
 
