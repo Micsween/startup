@@ -156,7 +156,8 @@ curl -X DELETE -H "Content-Type: application/json" -d '{"username":"firstuser", 
 ```
 
 ## MongoDB Notes
-
+MongoDB does automatic connection pooling! So its best to create one client to be used in all operations.
+I've decided it would be best to put this in my index.js file (my backend)
 ```sh
 const { MongoClient } = require('mongodb');
 
