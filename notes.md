@@ -154,3 +154,13 @@ Logout:
 //DELETE ENDPOINT:
 curl -X DELETE -H "Content-Type: application/json" -d '{"username":"firstuser", "password":"firstpassword"}' http://localhost:4000/api/user/logout```
 ```
+
+## MongoDB Notes
+MongoDB does automatic connection pooling! So its best to create one client to be used in all operations.
+I've decided it would be best to put this in my index.js file (my backend)
+```sh
+const { MongoClient } = require('mongodb');
+
+const uri = 'your_mongodb_connection_string';
+const client = new MongoClient(uri, { maxPoolSize: 150 });
+```

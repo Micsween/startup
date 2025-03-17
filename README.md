@@ -149,7 +149,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 ## 🚀 DB/Login deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
-
+My goal for this deliverable is to use connection pooling! 
 - [ ] **User registration** - I did not complete this part of the deliverable.
 - [ ] **User login and logout** - I did not complete this part of the deliverable.
 - [ ] **Stores data in MongoDB** - I did not complete this part of the deliverable.
