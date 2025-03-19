@@ -26,6 +26,7 @@ const matches = db.collection("matches"); //matches completed games and their us
     process.exit(1);
   }
 })();
+
 //user: username, password, ID, authToken
 function addUser(user) {
   users.insertOne({ user });
@@ -35,23 +36,32 @@ function getUser(username) {
   return users.findOne({ username: username });
 }
 
-function updateAuth(user) {
+function getUserAuth(authToken) {
+  return users.findOne({ authToken: authToken });
+}
+
+function updateUserAuth(user) {
   users.updateOne(
     { username: user.username },
     { $set: { authToken: user.authToken } }
   );
 }
 
-function getUserAuth(authToken) {
-  return users.findOne({ authToken: authToken });
+function clearUsers() {
+  users.deleteMany({});
 }
 
+//add end game functionality
 function addMatch(match) {
   matches.insertOne({ match });
 }
 
 function getMatches() {
   return matches.find().toArray();
+}
+
+function clearMatches() {
+  matches.deleteMany({});
 }
 
 //add updateAuth for every time a user logs in
@@ -72,6 +82,6 @@ export const database = {
   addUser,
   getUser,
   getUserAuth,
-  updateAuth,
+  updateAuth: updateUserAuth,
   getMatches,
 };
