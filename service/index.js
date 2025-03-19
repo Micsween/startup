@@ -90,6 +90,7 @@ apiRouter.post("/user/login", async (req, res) => {
   if (user) {
     user.authToken = v4();
     //add a line to update the authToken
+    db.updateAuth(user);
     setCookie(res, user.authToken);
     res.send(user.authToken);
   } else {
@@ -117,6 +118,8 @@ apiRouter.delete("/user/logout", async (req, res) => {
   console.log("Logging out...");
   const authCookie = req.cookies[authCookieName];
   let user = db.getUserAuth(authCookie);
+  user.authToken = null;
+  db.updateAuth(user);
   if (user) {
     res.clearCookie(authCookieName);
     //add method to update authToken

@@ -35,6 +35,13 @@ function getUser(username) {
   return users.findOne({ username: username });
 }
 
+function updateAuth(user) {
+  users.updateOne(
+    { username: user.username },
+    { $set: { authToken: user.authToken } }
+  );
+}
+
 function getUserAuth(authToken) {
   return users.findOne({ authToken: authToken });
 }
@@ -53,4 +60,4 @@ function getUserAuth(authToken) {
   } else {
     res.status(401).send({ msg: "User already exists" });
   } */
-export const database = { addUser, getUser, getUserAuth };
+export const database = { addUser, getUser, getUserAuth, updateAuth };
