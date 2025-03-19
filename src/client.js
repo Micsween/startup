@@ -112,5 +112,5 @@ export async function getMatches() {
       "Content-Type": "application/json",
     },
   });
-  return await response.json();
+  return response.ok ? await response.json() : [];
 }

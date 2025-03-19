@@ -18,6 +18,7 @@ let users = [user];
 let match = {
   result: "Win",
   date: "2/19/2025",
+  gameID: "1234",
   opponents: [
     { username: "Player2", userID: "1234" },
     { username: "Player3", userID: "5678" },
@@ -27,13 +28,14 @@ let match = {
 let match2 = {
   result: "Lose",
   date: "10/07/2003",
+  gameID: "1234",
   opponents: [
     { username: "username2", userID: "7777" },
     { username: "username3", userID: "8888" },
     { username: "username4", userID: "9999" },
   ],
 };
-let matches = [match, match2];
+//let matches = [match, match2];
 
 let lobby1 = {
   gameCode: "MEEP",
@@ -119,10 +121,9 @@ apiRouter.delete("/user/logout", async (req, res) => {
   const authCookie = req.cookies[authCookieName];
   let user = db.getUserAuth(authCookie);
   user.authToken = null;
-  db.updateAuth(user);
   if (user) {
     res.clearCookie(authCookieName);
-    //add method to update authToken
+    db.updateAuth(user);
   }
   res.send(users);
 });
@@ -131,6 +132,8 @@ apiRouter.get("/matches", async (req, res) => {
   console.log("Loading matches..");
   const authCookie = req.cookies[authCookieName];
   if (authCookie) {
+    //load matches from the database
+    let matches = await db.getMatches();
     res.send(matches);
   } else {
     res.status(401).send({ message: "User not verified." });

@@ -46,6 +46,14 @@ function getUserAuth(authToken) {
   return users.findOne({ authToken: authToken });
 }
 
+function addMatch(match) {
+  matches.insertOne({ match });
+}
+
+function getMatches() {
+  return matches.find().toArray();
+}
+
 //add updateAuth for every time a user logs in
 
 //start simple with just creating a user
@@ -60,4 +68,10 @@ function getUserAuth(authToken) {
   } else {
     res.status(401).send({ msg: "User already exists" });
   } */
-export const database = { addUser, getUser, getUserAuth, updateAuth };
+export const database = {
+  addUser,
+  getUser,
+  getUserAuth,
+  updateAuth,
+  getMatches,
+};
