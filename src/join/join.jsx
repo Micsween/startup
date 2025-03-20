@@ -5,20 +5,20 @@ import "./join.css";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import { createGameCode } from "../lobby/lobby";
-import { joinGame, getGames } from "../client.js";
+import { joinGame, getLobbies, createLobby } from "../client.js";
 
-async function fetchGames() {
-  let response = await getGames();
+async function fetchLobbies() {
+  let response = await getLobbies();
   return await response.json();
 }
 
 export function Join({ username }) {
   const [gameCode, setGameCode] = React.useState("");
-  const [games, setGames] = React.useState([]);
+  const [lobbies, setLobbies] = React.useState([]);
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    fetchGames().then((games) => setGames(games));
+    fetchLobbies().then((lobbies) => setLobbies(lobbies));
   }, []);
 
   return (
@@ -33,7 +33,7 @@ export function Join({ username }) {
               <th scope="col">Current Players </th>
             </tr>
           </thead>
-          <tbody>{listGames(games)}</tbody>
+          <tbody>{listLobbies(lobbies)}</tbody>
         </table>
         <form>
           <p id="username">{username}</p>
@@ -65,8 +65,10 @@ export function Join({ username }) {
               className="btn btn-dark"
               type="submit"
               value="Create Game"
-              onClick={() => {
+              onClick={async () => {
                 let newCode = createGameCode();
+                //create lobby
+                await createLobby(newCode);
                 navigate(`/lobby/${newCode}`);
               }}
             />
@@ -77,18 +79,18 @@ export function Join({ username }) {
   );
 }
 
-function listGames(games) {
-  const gameList = [];
-  for (const [index, game] of games.entries()) {
-    gameList.push(
+function listLobbies(lobbies) {
+  const lobbyList = [];
+  for (const [index, lobby] of lobbies.entries()) {
+    lobbyList.push(
       <tr key={index}>
-        <td>{game.gameCode}</td>
-        <td>{game.host}</td>
-        <td>{game.players.length}</td>
+        <td>{lobby.gameCode}</td>
+        <td>{lobby.host}</td>
+        <td>{lobby.players.length}</td>
       </tr>
     );
   }
-  return gameList;
+  return lobbyList;
 }
 
 function updateGame() {

@@ -64,6 +64,17 @@ function clearMatches() {
   matches.deleteMany({});
 }
 
+//when someone creates a game
+function getLobby(lobby) {
+  lobbies.findOne({ gameCode: lobby.gameCode });
+}
+//when created
+function addLobby(lobby) {
+  lobbies.insertOne(lobby);
+}
+// function updateLobby(lobby) {
+//   lobbies.updateLobby(lobby);
+// }
 //add updateAuth for every time a user logs in
 
 //start simple with just creating a user
@@ -82,6 +93,7 @@ export const database = {
   addUser,
   getUser,
   getUserAuth,
-  updateAuth: updateUserAuth,
+  updateUserAuth,
   getMatches,
+  addLobby,
 };

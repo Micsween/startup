@@ -5,7 +5,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./lobby.css";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { startGame, getGame } from "../client";
+import { startGame, getLobby } from "../client";
 
 export function createGameCode() {
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -43,7 +43,7 @@ export function Lobby() {
   console.log("I am here");
   const [players, setPlayers] = React.useState([]);
   React.useEffect(() => {
-    getGame(gameCode).then((game) => {
+    getLobby(gameCode).then((game) => {
       console.log(game);
       setPlayers(game.players ?? []);
     });

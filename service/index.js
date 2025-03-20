@@ -92,7 +92,7 @@ apiRouter.post("/user/login", async (req, res) => {
   if (user) {
     user.authToken = v4();
     //add a line to update the authToken
-    db.updateAuth(user);
+    db.updateUserAuth(user);
     setCookie(res, user.authToken);
     res.send(user.authToken);
   } else {
@@ -123,7 +123,7 @@ apiRouter.delete("/user/logout", async (req, res) => {
   user.authToken = null;
   if (user) {
     res.clearCookie(authCookieName);
-    db.updateAuth(user);
+    db.updateUserAuth(user);
   }
   res.send(users);
 });
@@ -173,13 +173,36 @@ apiRouter.put("/game", async (req, res) => {
   }
 });
 
-apiRouter.get("/game/:gameCode", async (req, res) => {
+apiRouter.post("/lobby/:gameCode", async (req, res) => {
+  console.log("Creating lobby...");
+  const authCookie = req.cookies[authCookieName];
+  const gameCode = req.params.gameCode;
+  if (!authCookie) {
+    res.status(401).send({ message: "User not verified." });
+    return;
+  }
+  const user = db.getUserAuth(authCookie);
+  addLobby(createLobby(user, gameCode));
+});
+
+apiRouter.get("/lobby/:gameCode", async (req, res) => {
   console.log("Getting game...");
   const authCookie = req.cookies[authCookieName];
   const gameCode = req.params.gameCode;
   let game = lobbies.find((game) => game.gameCode == gameCode);
   if (authCookie && game) {
     res.send(game);
+  } else {
+    res.status(401).send({ message: "User not verified." });
+  }
+});
+
+apiRouter.get("/lobby", async (req, res) => {
+  console.log("Getting lobbies...");
+  const authCookie = req.cookies[authCookieName];
+  if (authCookie) {
+    //getLobbies
+    res.send(lobbies);
   } else {
     res.status(401).send({ message: "User not verified." });
   }
@@ -242,16 +265,6 @@ apiRouter.post("/game/:gameCode/take-turn", async (req, res) => {
   res.send(game.state);
 });
 
-apiRouter.get("/games", async (req, res) => {
-  console.log("Getting games...");
-  const authCookie = req.cookies[authCookieName];
-  if (authCookie) {
-    res.send(lobbies);
-  } else {
-    res.status(401).send({ message: "User not verified." });
-  }
-});
-
 app.use(`/api`, apiRouter);
 
 app.use((err, req, res, next) => {
@@ -283,6 +296,14 @@ function setCookie(res, authToken) {
 async function verifyUser(username, password) {
   const user = await db.getUser(username);
   return user && user.password == password ? user : null;
+}
+
+function createLobby(user, gameCode) {
+  return {
+    gameCode: gameCode,
+    host: user,
+    players: [user],
+  };
 }
 
 export class UnoGame {

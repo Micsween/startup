@@ -48,8 +48,16 @@ export async function joinGame(gameCode) {
   return response.ok;
 }
 
-export async function getGames() {
-  let url = "/api/games";
+export async function createLobby(gameCode) {
+  let url = `/api/lobby/${gameCode}`;
+  let response = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "Application.json" },
+  });
+}
+
+export async function getLobbies() {
+  let url = "/api/lobby";
   let response = await fetch(url, {
     method: "GET",
     headers: { "Content-Type": "Application.json" },
@@ -57,12 +65,12 @@ export async function getGames() {
   return response;
 }
 
-export async function getGame(gameCode) {
+export async function getLobby(gameCode) {
   if (!gameCode || gameCode === undefined) {
     alert("Missing game Code");
     location = "/join";
   }
-  let response = await fetch(`/api/game/${gameCode}`);
+  let response = await fetch(`/api/lobby/${gameCode}`);
   return await response.json();
 }
 
