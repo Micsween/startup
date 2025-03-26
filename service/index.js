@@ -8,12 +8,6 @@ const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
 const bcryptjs = bcrypt;
 const authCookieName = "authCookie";
-let user = {
-  authToken: null,
-  username: "Best",
-  userID: 6666,
-};
-let users = [user];
 
 let match = {
   result: "Win",
@@ -48,25 +42,6 @@ let lobby1 = {
   ],
 };
 
-let lobby2 = {
-  gameCode: "GHWC",
-  host: "My guy",
-  players: [
-    {
-      username: "My guy",
-      userID: 2003,
-    },
-    {
-      username: "other",
-      userID: 1999,
-    },
-    {
-      username: "potato",
-      userID: 1777,
-    },
-  ],
-};
-let lobbies = [lobby1, lobby2];
 let games = [];
 
 app.use(express.static("public"));
@@ -75,24 +50,25 @@ app.use(cookieParser());
 let apiRouter = express.Router();
 
 apiRouter.post("/user/create", async (req, res) => {
-  if (!db.getUser(req.body.username)) {
-    console.log("no duplicate user found, creating new user....");
-    const user = createUser(req.body.username, req.body.password);
-    setCookie(res, user.authToken);
-    db.addUser(user);
-    res.send(user);
-  } else {
-    res.status(401).send({ msg: "User already exists" });
-  }
+  // if (!(await db.getUser(req.body.username))) {
+  console.log("no duplicate user found, creating new user....");
+  const user = createUser(req.body.username, req.body.password);
+  setCookie(res, user.authToken);
+  console.log(user);
+  await db.addUser(user);
+  res.send(user);
+  // } else {
+  //   res.status(401).send({ msg: "User already exists" });
+  // }
 });
 
 apiRouter.post("/user/login", async (req, res) => {
   console.log("Loggin in..");
-  const user = verifyUser(req.body.username, req.body.password);
+  const user = await verifyUser(req.body.username, req.body.password);
   if (user) {
     user.authToken = v4();
     //add a line to update the authToken
-    db.updateUserAuth(user);
+    await db.updateUserAuth(user);
     setCookie(res, user.authToken);
     res.send(user.authToken);
   } else {
@@ -123,9 +99,9 @@ apiRouter.delete("/user/logout", async (req, res) => {
   user.authToken = null;
   if (user) {
     res.clearCookie(authCookieName);
-    db.updateUserAuth(user);
+    await db.updateUserAuth(user);
   }
-  res.send(users);
+  res.send({ message: "User logged out." });
 });
 
 apiRouter.get("/matches", async (req, res) => {
@@ -156,15 +132,13 @@ apiRouter.put("/game", async (req, res) => {
   console.log("Joining game...");
   const authCookie = req.cookies[authCookieName];
   if (authCookie) {
-    let user = users.find((user) => user.authToken == authCookie);
-    let game = lobbies.find((game) => game.gameCode == req.body.gameCode);
-    if (game) {
-      if (
-        game.players.find((player) => player.username == user.username) == null
-      ) {
-        game.players.push({ username: user.username, userID: user.userID });
+    let user = await db.getUserAuth(authCookie);
+    let lobby = await db.getLobby(req.body.gameCode);
+    if (lobby) {
+      if (!lobby.players.includes(user.username)) {
+        await db.joinLobby(req.body.gameCode, user.username);
       }
-      res.send(game);
+      res.send(lobby);
     } else {
       res.status(404).send({ message: "Game not found" });
     }
@@ -181,8 +155,8 @@ apiRouter.post("/lobby/:gameCode", async (req, res) => {
     res.status(401).send({ message: "User not verified." });
     return;
   }
-  const user = db.getUserAuth(authCookie);
-  addLobby(createLobby(user, gameCode));
+  const user = await db.getUserAuth(authCookie);
+  await db.addLobby(createLobby(user, gameCode));
 });
 
 apiRouter.get("/lobby/:gameCode", async (req, res) => {
@@ -202,6 +176,7 @@ apiRouter.get("/lobby", async (req, res) => {
   const authCookie = req.cookies[authCookieName];
   if (authCookie) {
     //getLobbies
+    const lobbies = await db.getLobbies();
     res.send(lobbies);
   } else {
     res.status(401).send({ message: "User not verified." });
@@ -281,7 +256,6 @@ function createUser(username, password) {
     password: password,
     authToken: v4(),
   };
-  users.push(user);
   return user;
 }
 

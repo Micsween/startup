@@ -2,15 +2,16 @@ import { readFile } from "fs/promises";
 const config = JSON.parse(
   await readFile(new URL("./dbConfig.json", import.meta.url))
 );
+//mongodb+srv://megatron:<db_password>@cybertron.oh3gy.mongodb.net/
 
 import { MongoClient } from "mongodb";
-const url = `mongodb+srv://${config.username}:${config.password}@${config.hostname}`;
+const url = `mongodb+srv://${config.username}:${config.password}@${config.hostname}/`;
 const client = new MongoClient(url, { maxPoolSize: 100 });
 
 const db = client.db("uno");
 
-const users = db.collection("users"); //users. username & password.
-users.createIndex({ username: 1 }, { unique: true });
+const users = db.collection("users"); //username, password, authKey
+users.createIndex({ password: 1 });
 const lobbies = db.collection("lobbies"); // users awaiting a game
 const games = db.collection("games"); //users in an active game, gamestate
 const matches = db.collection("matches"); //matches completed games and their users.
@@ -27,51 +28,71 @@ const matches = db.collection("matches"); //matches completed games and their us
   }
 })();
 
-//user: username, password, ID, authToken
-function addUser(user) {
-  users.insertOne({ user });
+async function addUser(user) {
+  console.log(user.username);
+
+  await users.insertOne({
+    username: user.username,
+    password: user.password,
+    authToken: user.authToken,
+  });
 }
 
-function getUser(username) {
-  return users.findOne({ username: username });
+async function getUser(username) {
+  return await users.findOne({ username: username });
 }
 
-function getUserAuth(authToken) {
-  return users.findOne({ authToken: authToken });
+async function getUserAuth(authToken) {
+  return await users.findOne({ authToken: authToken }, { _id: 0 });
 }
 
-function updateUserAuth(user) {
-  users.updateOne(
+async function updateUserAuth(user) {
+  await users.updateOne(
     { username: user.username },
     { $set: { authToken: user.authToken } }
   );
 }
 
-function clearUsers() {
-  users.deleteMany({});
+async function clearUsers() {
+  await users.deleteMany({});
 }
 
 //add end game functionality
-function addMatch(match) {
-  matches.insertOne({ match });
+async function addMatch(match) {
+  await matches.insertOne({ match });
 }
 
-function getMatches() {
-  return matches.find().toArray();
+async function getMatches() {
+  return await matches.find().toArray();
 }
 
-function clearMatches() {
-  matches.deleteMany({});
+async function clearMatches() {
+  await matches.deleteMany({});
 }
 
+async function addLobby(lobby) {
+  await lobbies.insertOne(lobby);
+}
+async function joinLobby(gameCode, username) {
+  await lobbies.updateOne(
+    { gameCode: gameCode },
+    { $push: { players: username } }
+  );
+  //await lobbies.insertOne(lobby);
+}
 //when someone creates a game
-function getLobby(lobby) {
-  lobbies.findOne({ gameCode: lobby.gameCode });
+async function getLobby(gameCode) {
+  return await lobbies.findOne({ gameCode: gameCode });
+}
+
+async function getLobbies() {
+  return await lobbies.find().toArray();
+}
+async function addGame(game) {
+  await games.insertOne(game);
 }
 //when created
-function addLobby(lobby) {
-  lobbies.insertOne(lobby);
-}
+
 // function updateLobby(lobby) {
 //   lobbies.updateLobby(lobby);
 // }
@@ -96,4 +117,8 @@ export const database = {
   updateUserAuth,
   getMatches,
   addLobby,
+  joinLobby,
+  getLobby,
+  getLobbies,
+  addGame,
 };

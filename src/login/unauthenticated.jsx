@@ -25,6 +25,7 @@ export function Unauthenticated({ onLogin }) {
         },
         body: JSON.stringify({ username: username, password: password }),
       });
+      console.log(JSON.stringify({ username: username, password: password }));
       if (response.ok) {
         navigate("/join", { state: { username: username } });
       } else if (response.status == 401) {
@@ -45,6 +46,10 @@ export function Unauthenticated({ onLogin }) {
         },
         body: JSON.stringify({ username: username, password: password }),
       });
+      if (!response.ok) {
+        alert("Duplicate username, please try again.");
+        return;
+      }
       navigate("/join", { state: { username: username } });
       onLogin(username);
     } catch (error) {

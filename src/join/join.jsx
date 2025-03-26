@@ -67,7 +67,6 @@ export function Join({ username }) {
               value="Create Game"
               onClick={async () => {
                 let newCode = createGameCode();
-                //create lobby
                 await createLobby(newCode);
                 navigate(`/lobby/${newCode}`);
               }}
@@ -81,6 +80,7 @@ export function Join({ username }) {
 
 function listLobbies(lobbies) {
   const lobbyList = [];
+
   for (const [index, lobby] of lobbies.entries()) {
     lobbyList.push(
       <tr key={index}>
@@ -90,6 +90,7 @@ function listLobbies(lobbies) {
       </tr>
     );
   }
+  console.log(lobbyList);
   return lobbyList;
 }
 
