@@ -78,9 +78,7 @@ async function joinLobby(gameCode, username) {
     { gameCode: gameCode },
     { $push: { players: username } }
   );
-  //await lobbies.insertOne(lobby);
 }
-//when someone creates a game
 async function getLobby(gameCode) {
   return await lobbies.findOne({ gameCode: gameCode });
 }
@@ -88,28 +86,25 @@ async function getLobby(gameCode) {
 async function getLobbies() {
   return await lobbies.find().toArray();
 }
+
 async function addGame(game) {
-  await games.insertOne(game);
+  await games.insertOne({
+    gameCode: game.state.gameCode,
+    state: game.state,
+  });
 }
-//when created
 
-// function updateLobby(lobby) {
-//   lobbies.updateLobby(lobby);
-// }
-//add updateAuth for every time a user logs in
+async function getGame(gameCode) {
+  return await games.findOne({ gameCode: gameCode });
+}
 
-//start simple with just creating a user
-//replace the code that accesses locally stored data in file index.js
-//  with code that accesses the database
-/*
-  if (!findUser("username", req.body.username)) {
-    const user = createUser(req.body.username, req.body.password);
-    setCookie(res, user.authToken);
-    users.push(user);
-    res.send(user);
-  } else {
-    res.status(401).send({ msg: "User already exists" });
-  } */
+async function updateGame(gameCode, state) {
+  return await games.updateOne(
+    { gameCode: gameCode },
+    { $set: { state: state } }
+  );
+}
+
 export const database = {
   addUser,
   getUser,
@@ -121,4 +116,6 @@ export const database = {
   getLobby,
   getLobbies,
   addGame,
+  getGame,
+  updateGame,
 };

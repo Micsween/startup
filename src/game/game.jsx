@@ -16,15 +16,8 @@ export function Game() {
   const [state, setState] = useState();
   const [user, setUser] = useState();
   const navigate = useNavigate();
-  const [lastCard, setLastCard] = React.useState("card-images/card-back.svg");
-  const [players, setPlayers] = React.useState([
-    "Michelle",
-    "Lauren",
-    "Eryn",
-    "James",
-  ]);
+
   const [hand, setHand] = React.useState([]);
-  const [isHovered, setIsHovered] = React.useState(false);
 
   useEffect(() => {
     //game = new UnoGame();
@@ -33,12 +26,6 @@ export function Game() {
       setState(state);
     });
     getUser().then(setUser);
-
-    // game.joinGame("Michelle");
-    // game.joinGame("Lauren");
-    // game.joinGame("Eryn");
-    // const gameState = game.startGame();
-    // setState(gameState);
   }, []);
   React.useState(() => {
     let cards = [

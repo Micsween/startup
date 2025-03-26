@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 import bcrypt from "bcryptjs";
 import { v4 } from "uuid";
 import { database as db } from "./database.js";
+import { RESPONSE } from "mongodb/lib/constants.js";
 const app = express();
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
@@ -149,7 +150,7 @@ apiRouter.post("/lobby/:gameCode", async (req, res) => {
     return;
   }
   const user = await db.getUserAuth(authCookie);
-  await db.addLobby(createLobby(user, gameCode));
+  await db.addLobby(createLobby(user.username, gameCode));
 });
 
 apiRouter.get("/lobby/:gameCode", async (req, res) => {
@@ -182,31 +183,30 @@ apiRouter.post("/game/:gameCode/start", async (req, res) => {
   console.log("Starting game...");
   const authCookie = req.cookies[authCookieName];
   const gameCode = req.params.gameCode;
-  let lobby = lobbies.find((lobby) => lobby.gameCode == gameCode);
-
-  if (authCookie && lobby) {
-    let unoGame = new UnoGame(lobby);
-    let gameState = unoGame.startGame();
-    games.push(unoGame);
-    res.send(gameState);
-  } else {
+  const lobby = await db.getLobby(gameCode);
+  if (!authCookie) {
     res.status(401).send({ message: "User not verified." });
   }
+  if (!lobby) {
+    res.status(404).send({ message: "Lobby not found." });
+  }
+  let unoGame = new UnoGame(lobby);
+  let gameState = unoGame.startGame();
+  await db.addGame(unoGame);
+  res.send(gameState);
 });
 
 apiRouter.get("/game/:gameCode/state", async (req, res) => {
-  console.log("Getting game state...");
   const authCookie = req.cookies[authCookieName];
   const gameCode = req.params.gameCode;
-
-  let game = games.find((game) => game.state.gameCode == gameCode);
-  console.log(authCookie);
-  console.log(games);
-  if (authCookie && game) {
-    res.send(game.state);
-  } else {
+  if (!authCookie) {
     res.status(401).send({ message: "User not verified." });
   }
+  const gameData = await db.getGame(gameCode);
+  if (!gameData) {
+    res.status(404).send({ message: "Game not found." });
+  }
+  res.send(gameData.state);
 });
 
 apiRouter.post("/game/:gameCode/take-turn", async (req, res) => {
@@ -218,8 +218,8 @@ apiRouter.post("/game/:gameCode/take-turn", async (req, res) => {
     res.status(401).send({ message: "User not verified." });
     return;
   }
-
-  let game = games.find((game) => game.state.gameCode == gameCode);
+  const gameData = await db.getGame(gameCode);
+  const game = new UnoGame(gameData.state);
 
   if (!game) {
     res.status(404).send({ message: "Game not found." });
@@ -228,10 +228,11 @@ apiRouter.post("/game/:gameCode/take-turn", async (req, res) => {
   let turn = req.body;
   console.log(turn);
   if (turn.action == "drawCard") {
-    game.drawCard();
+    await game.drawCard();
   } else if (turn.action == "playCard") {
-    game.playCard(turn.card);
+    await game.playCard(turn.card);
   }
+  await db.updateGame(gameCode, game.state);
   res.send(game.state);
 });
 
@@ -267,24 +268,28 @@ async function verifyUser(username, password) {
   return user && user.password == password ? user : null;
 }
 
-function createLobby(user, gameCode) {
+function createLobby(username, gameCode) {
   return {
     gameCode: gameCode,
-    host: user,
-    players: [user],
+    host: username,
+    players: [username],
   };
 }
 
 export class UnoGame {
-  constructor(lobby) {
-    this.state = {
-      gameCode: lobby.gameCode,
-      host: lobby.host,
-      players: lobby.players,
-      discardPile: [],
-      drawPile: [],
-      turn: 0,
-    };
+  constructor(game) {
+    if (game.turn == undefined) {
+      this.state = {
+        gameCode: game.gameCode,
+        host: game.host,
+        players: game.players.map((username) => ({ username })),
+        discardPile: [],
+        drawPile: [],
+        turn: 0,
+      };
+    } else {
+      this.state = game;
+    }
   }
 
   //change this to return a promise
@@ -351,9 +356,9 @@ export class UnoGame {
     let player = this.state.players[this.state.turn];
     player.hand.push(this.state.drawPile.pop());
     this.updateTurn();
-    if (drawPile.isEmpty()) {
-      drawPile.createDeck();
-      drawPile.shuffleDeck();
+    if (this.state.drawPile.length === 0) {
+      this.state.drawPile.createDeck();
+      this.state.drawPile.shuffleDeck();
     }
     return this.serializeState();
   }
@@ -376,7 +381,8 @@ export class UnoGame {
       (card) =>
         card.color !== cardToRemove.color || card.number !== cardToRemove.number
     );
-    this.state.discardPile.unshift(cardToRemove);
+    //this.state.discardPile.unshift(cardToRemove);
+    this.state.discardPile[0] = cardToRemove;
     console.log(
       `current player's hand: ${
         this.state.players[this.state.turn].hand.length
