@@ -23,13 +23,13 @@ function listPlayers(players) {
     if (playerList.length === 0) {
       playerList.push(
         <li key={index} id="host" className="list-group-item">
-          {player.username} 👑
+          {player} 👑
         </li>
       );
     } else {
       playerList.push(
         <li key={index} className="list-group-item">
-          {player.username}
+          {player}
         </li>
       );
     }
@@ -42,10 +42,11 @@ export function Lobby() {
   let { gameCode } = useParams();
   console.log("I am here");
   const [players, setPlayers] = React.useState([]);
+
   React.useEffect(() => {
-    getLobby(gameCode).then((game) => {
-      console.log(game);
-      setPlayers(game.players ?? []);
+    getLobby(gameCode).then((lobby) => {
+      console.log(lobby);
+      setPlayers(lobby.players ?? []);
     });
   }, []);
 

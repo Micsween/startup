@@ -50,16 +50,14 @@ app.use(cookieParser());
 let apiRouter = express.Router();
 
 apiRouter.post("/user/create", async (req, res) => {
-  // if (!(await db.getUser(req.body.username))) {
-  console.log("no duplicate user found, creating new user....");
+  if (await db.getUser(req.body.username)) {
+    res.status(401).send({ message: "User already exists" });
+  }
+
   const user = createUser(req.body.username, req.body.password);
   setCookie(res, user.authToken);
-  console.log(user);
   await db.addUser(user);
   res.send(user);
-  // } else {
-  //   res.status(401).send({ msg: "User already exists" });
-  // }
 });
 
 apiRouter.post("/user/login", async (req, res) => {
@@ -128,20 +126,18 @@ apiRouter.get("/quote", async (req, res) => {
 apiRouter.put("/game", async (req, res) => {
   console.log("Joining game...");
   const authCookie = req.cookies[authCookieName];
-  if (authCookie) {
-    let user = await db.getUserAuth(authCookie);
-    let lobby = await db.getLobby(req.body.gameCode);
-    if (lobby) {
-      if (!lobby.players.includes(user.username)) {
-        await db.joinLobby(req.body.gameCode, user.username);
-      }
-      res.send(lobby);
-    } else {
-      res.status(404).send({ message: "Game not found" });
-    }
-  } else {
+  if (!authCookie) {
     res.status(401).send({ message: "User not verified." });
   }
+  let user = await db.getUserAuth(authCookie);
+  let lobby = await db.getLobby(req.body.gameCode);
+  if (!lobby) {
+    res.status(404).send({ message: "Game not found" });
+  }
+  if (!lobby.players.includes(user.username)) {
+    await db.joinLobby(req.body.gameCode, user.username);
+  }
+  res.send(lobby);
 });
 
 apiRouter.post("/lobby/:gameCode", async (req, res) => {
@@ -160,12 +156,14 @@ apiRouter.get("/lobby/:gameCode", async (req, res) => {
   console.log("Getting game...");
   const authCookie = req.cookies[authCookieName];
   const gameCode = req.params.gameCode;
-  let game = lobbies.find((game) => game.gameCode == gameCode);
-  if (authCookie && game) {
-    res.send(game);
-  } else {
+  const lobby = await db.getLobby(gameCode);
+  if (!authCookie) {
     res.status(401).send({ message: "User not verified." });
   }
+  if (!lobby) {
+    res.status(404).send({ message: "Lobby not found." });
+  }
+  res.send(lobby);
 });
 
 apiRouter.get("/lobby", async (req, res) => {
