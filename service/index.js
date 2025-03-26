@@ -67,7 +67,6 @@ apiRouter.post("/user/login", async (req, res) => {
   const user = await verifyUser(req.body.username, req.body.password);
   if (user) {
     user.authToken = v4();
-    //add a line to update the authToken
     await db.updateUserAuth(user);
     setCookie(res, user.authToken);
     res.send(user.authToken);
@@ -80,8 +79,7 @@ apiRouter.get("/user", async (req, res) => {
   console.log("Retrieving User..");
   const authCookie = req.cookies[authCookieName];
   if (authCookie) {
-    let user = db.getUserAuth(authCookie);
-    console.log(user);
+    let user = await db.getUserAuth(authCookie);
     if (user) {
       res.send(user);
     } else {
@@ -93,9 +91,8 @@ apiRouter.get("/user", async (req, res) => {
 });
 
 apiRouter.delete("/user/logout", async (req, res) => {
-  console.log("Logging out...");
   const authCookie = req.cookies[authCookieName];
-  let user = db.getUserAuth(authCookie);
+  let user = await db.getUserAuth(authCookie);
   user.authToken = null;
   if (user) {
     res.clearCookie(authCookieName);
