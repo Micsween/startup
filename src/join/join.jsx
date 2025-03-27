@@ -66,9 +66,8 @@ export function Join({ username }) {
               type="submit"
               value="Create Game"
               onClick={async () => {
-                let newCode = createGameCode();
+                const newCode = createGameCode();
                 await createLobby(newCode);
-                navigate(`/lobby/${gameCode}`);
               }}
             />
           </div>

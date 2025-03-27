@@ -144,7 +144,6 @@ apiRouter.post("/lobby/:gameCode", async (req, res) => {
   const gameCode = req.params.gameCode;
   if (!authCookie) {
     res.status(401).send({ message: "User not verified." });
-    return;
   }
   const user = await db.getUserAuth(authCookie);
   await db.addLobby(createLobby(user.username, gameCode));
@@ -157,9 +156,11 @@ apiRouter.get("/lobby/:gameCode", async (req, res) => {
   const lobby = await db.getLobby(gameCode);
   if (!authCookie) {
     res.status(401).send({ message: "User not verified." });
+    return;
   }
   if (!lobby) {
     res.status(404).send({ message: "Lobby not found." });
+    return;
   }
   res.send(lobby);
 });
@@ -168,10 +169,14 @@ apiRouter.delete("/lobby/:gameCode", async (req, res) => {
   console.log("Deleting lobby...");
   const gameCode = req.params.gameCode;
   const lobby = await db.getLobby(gameCode);
+  console.log("lobby 1");
   if (!lobby) {
     res.status(404).send({ message: "Lobby not found." });
+    return;
   }
   await db.removeLobby(gameCode);
+  console.log("lobby 2");
+  res.send({ message: "Lobby deleted." });
 });
 
 apiRouter.get("/lobby", async (req, res) => {
@@ -191,15 +196,19 @@ apiRouter.post("/game/:gameCode/start", async (req, res) => {
   const authCookie = req.cookies[authCookieName];
   const gameCode = req.params.gameCode;
   const lobby = await db.getLobby(gameCode);
+  console.log("game 1" + lobby);
   if (!authCookie) {
     res.status(401).send({ message: "User not verified." });
   }
   if (!lobby) {
     res.status(404).send({ message: "Lobby not found." });
   }
+
   let unoGame = new UnoGame(lobby);
   let gameState = unoGame.startGame();
+  console.log("game 2");
   await db.addGame(unoGame);
+  console.log("game 3");
   res.send(gameState);
 });
 
@@ -223,18 +232,16 @@ apiRouter.post("/game/:gameCode/take-turn", async (req, res) => {
 
   if (!authCookie) {
     res.status(401).send({ message: "User not verified." });
-    return;
   }
   const gameData = await db.getGame(gameCode);
   const game = new UnoGame(gameData.state);
-  game.setState(gameData.state);
 
   if (!game) {
     res.status(404).send({ message: "Game not found." });
   }
-
+  game.setState(gameData.state);
   let turn = req.body;
-  console.log(turn);
+
   if (turn.action == "drawCard") {
     await game.drawCard();
   } else if (turn.action == "playCard") {

@@ -67,9 +67,13 @@ export function Lobby() {
             type="submit"
             value="Start Game"
             onClick={async () => {
-              await startGame(gameCode);
-              await deleteLobby(gameCode);
-              navigate(`/game/${gameCode}`);
+              try {
+                await startGame(gameCode);
+                await deleteLobby(gameCode);
+                navigate(`/game/${gameCode}`);
+              } catch (e) {
+                console.log(e);
+              }
             }}
           />
         </div>
