@@ -13,8 +13,7 @@ import { Join } from "./join/join";
 import { Lobby } from "./lobby/lobby";
 import { Login } from "./login/login";
 import { MatchHistory } from "./match-history/match-history";
-import { getUser } from "./login/unauthenticated";
-import { logoutUser } from "./client.js";
+import { logoutUser, getUser } from "./client.js";
 import Button from "react-bootstrap/Button";
 
 export default function App() {
@@ -28,8 +27,11 @@ export default function App() {
     location = "/";
   }
   React.useEffect(() => {
-    setUsername(getUser());
+    getUser().then((user) => {
+      setUsername(user.username);
+    });
   }, []);
+
   return (
     <BrowserRouter>
       <div>
@@ -66,13 +68,6 @@ export default function App() {
                     </Button>
                   </>
                 )}
-
-                {/*<NavLink className="nav-link" to="lobby">
-                  Lobby
-                </NavLink>
-                <NavLink className="nav-link" to="game">
-                  Game
-                </NavLink>*/}
               </div>
             </div>
           </nav>

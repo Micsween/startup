@@ -5,10 +5,6 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 
-export function getUser() {
-  return localStorage.getItem("username");
-}
-
 export function Unauthenticated({ onLogin }) {
   const navigate = useNavigate();
   const [username, setUsername] = React.useState("");
