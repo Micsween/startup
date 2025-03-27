@@ -43,8 +43,6 @@ let lobby1 = {
   ],
 };
 
-let games = [];
-
 app.use(express.static("public"));
 app.use(express.json());
 app.use(cookieParser());
@@ -104,7 +102,6 @@ apiRouter.get("/matches", async (req, res) => {
   console.log("Loading matches..");
   const authCookie = req.cookies[authCookieName];
   if (authCookie) {
-    //load matches from the database
     let matches = await db.getMatches();
     res.send(matches);
   } else {
@@ -167,6 +164,16 @@ apiRouter.get("/lobby/:gameCode", async (req, res) => {
   res.send(lobby);
 });
 
+apiRouter.delete("/lobby/:gameCode", async (req, res) => {
+  console.log("Deleting lobby...");
+  const gameCode = req.params.gameCode;
+  const lobby = await db.getLobby(gameCode);
+  if (!lobby) {
+    res.status(404).send({ message: "Lobby not found." });
+  }
+  await db.removeLobby(gameCode);
+});
+
 apiRouter.get("/lobby", async (req, res) => {
   console.log("Getting lobbies...");
   const authCookie = req.cookies[authCookieName];
@@ -220,6 +227,7 @@ apiRouter.post("/game/:gameCode/take-turn", async (req, res) => {
   }
   const gameData = await db.getGame(gameCode);
   const game = new UnoGame(gameData.state);
+  game.setState(gameData.state);
 
   if (!game) {
     res.status(404).send({ message: "Game not found." });
@@ -278,21 +286,20 @@ function createLobby(username, gameCode) {
 
 export class UnoGame {
   constructor(game) {
-    if (game.turn == undefined) {
-      this.state = {
-        gameCode: game.gameCode,
-        host: game.host,
-        players: game.players.map((username) => ({ username })),
-        discardPile: [],
-        drawPile: [],
-        turn: 0,
-      };
-    } else {
-      this.state = game;
-    }
+    this.state = {
+      gameCode: game.gameCode,
+      host: game.host,
+      players: game.players.map((username) => ({ username })),
+      discardPile: [],
+      drawPile: [],
+      turn: 0,
+    };
   }
 
-  //change this to return a promise
+  setState(state) {
+    this.state = state;
+  }
+
   serializeState() {
     return JSON.parse(JSON.stringify(this.state));
   }
@@ -352,7 +359,6 @@ export class UnoGame {
     }
   }
   drawCard() {
-    //setHand(hand.concat(drawPile[0]));
     let player = this.state.players[this.state.turn];
     player.hand.push(this.state.drawPile.pop());
     this.updateTurn();

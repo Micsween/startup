@@ -29,8 +29,6 @@ const matches = db.collection("matches"); //matches completed games and their us
 })();
 
 async function addUser(user) {
-  console.log(user.username);
-
   await users.insertOne({
     username: user.username,
     password: user.password,
@@ -83,11 +81,18 @@ async function getLobby(gameCode) {
   return await lobbies.findOne({ gameCode: gameCode });
 }
 
+async function removeLobby(gameCode) {
+  await lobbies.deleteOne({ gameCode: gameCode });
+}
+
 async function getLobbies() {
   return await lobbies.find().toArray();
 }
 
 async function addGame(game) {
+  if (await games.findOne({ gameCode: game.state.gameCode })) {
+    return;
+  }
   await games.insertOne({
     gameCode: game.state.gameCode,
     state: game.state,
@@ -118,4 +123,5 @@ export const database = {
   addGame,
   getGame,
   updateGame,
+  removeLobby,
 };

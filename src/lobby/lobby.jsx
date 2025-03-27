@@ -5,7 +5,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./lobby.css";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { startGame, getLobby } from "../client";
+import { startGame, getLobby, deleteLobby } from "../client";
 
 export function createGameCode() {
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -68,6 +68,7 @@ export function Lobby() {
             value="Start Game"
             onClick={async () => {
               await startGame(gameCode);
+              await deleteLobby(gameCode);
               navigate(`/game/${gameCode}`);
             }}
           />

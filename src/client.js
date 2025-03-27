@@ -38,6 +38,7 @@ export async function takeTurn(turn) {
   });
   return await response.json();
 }
+
 export async function joinGame(gameCode) {
   const url = "/api/game";
   let response = await fetch(url, {
@@ -53,6 +54,12 @@ export async function createLobby(gameCode) {
   let response = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "Application.json" },
+  });
+}
+
+export async function deleteLobby(gameCode) {
+  let response = await fetch(`/api/lobby/${gameCode}`, {
+    method: "DELETE",
   });
 }
 

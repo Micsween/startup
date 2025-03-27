@@ -68,7 +68,7 @@ export function Join({ username }) {
               onClick={async () => {
                 let newCode = createGameCode();
                 await createLobby(newCode);
-                navigate(`/lobby/${newCode}`);
+                navigate(`/lobby/${gameCode}`);
               }}
             />
           </div>
@@ -90,7 +90,6 @@ function listLobbies(lobbies) {
       </tr>
     );
   }
-  console.log(lobbyList);
   return lobbyList;
 }
 
