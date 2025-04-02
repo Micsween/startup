@@ -1,3 +1,5 @@
+import { io } from "socket.io-client";
+
 export async function getUser() {
   const url = "/api/user/";
   let response = await fetch(url, {
@@ -7,7 +9,7 @@ export async function getUser() {
   console.log(response);
   return await response.json();
 }
-//post("/game/:gameCode/start",
+
 export async function startGame(gameCode) {
   await fetch(`/api/game/${gameCode}/start`, {
     method: "POST",
@@ -63,12 +65,15 @@ export async function deleteLobby(gameCode) {
   });
 }
 
+//getting lobbies should instead be connecting to the websocket server
+
 export async function getLobbies() {
   let url = "/api/lobby";
   let response = await fetch(url, {
     method: "GET",
     headers: { "Content-Type": "Application.json" },
   });
+
   return response;
 }
 

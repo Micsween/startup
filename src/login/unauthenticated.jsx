@@ -4,11 +4,17 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
-
+import { getUser } from "../client.js";
 export function Unauthenticated({ onLogin }) {
   const navigate = useNavigate();
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
+
+  React.useEffect(() => {
+    getUser().then((user) => {
+      setUsername(user.username ?? "");
+    });
+  }, []);
 
   async function loginUser() {
     localStorage.setItem("username", username);

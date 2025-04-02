@@ -3,45 +3,35 @@ import cookieParser from "cookie-parser";
 import bcrypt from "bcryptjs";
 import { v4 } from "uuid";
 import { database as db } from "./database.js";
-import { RESPONSE } from "mongodb/lib/constants.js";
+import { Server } from "socket.io";
+import http from "http";
+
 const app = express();
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
+const httpServer = http.createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST", "PUT"], // Specify allowed HTTP methods
+    credentials: true, // Allow cookies or credentials if needed
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("a user connected");
+});
+//io.listen(4000);
+// io.on("connection", (socket) => {
+//   console.log("Client connected to websocket server");
+//   socket.on("message", (message) => {
+//     console.log("Received message:", message);
+
+//     socket.emit("message", message);
+//   });
+// });
 
 const bcryptjs = bcrypt;
 const authCookieName = "authCookie";
-
-let match = {
-  result: "Win",
-  date: "2/19/2025",
-  gameID: "1234",
-  opponents: [
-    { username: "Player2", userID: "1234" },
-    { username: "Player3", userID: "5678" },
-    { username: "Player4", userID: "91011" },
-  ],
-};
-let match2 = {
-  result: "Lose",
-  date: "10/07/2003",
-  gameID: "1234",
-  opponents: [
-    { username: "username2", userID: "7777" },
-    { username: "username3", userID: "8888" },
-    { username: "username4", userID: "9999" },
-  ],
-};
-//let matches = [match, match2];
-
-let lobby1 = {
-  gameCode: "MEEP",
-  host: "Some dude",
-  players: [
-    {
-      username: "Some dude",
-      userID: 1980,
-    },
-  ],
-};
 
 app.use(express.static("public"));
 app.use(express.json());
@@ -257,7 +247,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: err.message });
 });
 
-app.listen(port, () => {
+httpServer.listen(port, () => {
   console.log(`App is listening on port ${port}`);
 });
 
@@ -310,6 +300,7 @@ export class UnoGame {
   serializeState() {
     return JSON.parse(JSON.stringify(this.state));
   }
+
   deserializeJSON(jsonString) {
     try {
       return JSON.parse(jsonString);
@@ -318,6 +309,7 @@ export class UnoGame {
       return null;
     }
   }
+
   joinGame(username) {
     let player = {
       position,
@@ -407,24 +399,3 @@ export class UnoGame {
     return this.serializeState();
   }
 }
-
-//you can use fetch requests to get the gamestate
-//   type Card {
-//       color: string,
-//       number: number;
-//   }
-//
-//  type Player {
-//      username: string,
-//      hand: Card[],
-//  }
-//
-//  type GameState {
-//    gameCode: string,
-//    host: string,
-//    players: Player[],
-//    discardPile: Card[],
-//    drawPile: Card[],
-//    turn: number,
-//  }
-//
