@@ -164,3 +164,54 @@ const { MongoClient } = require('mongodb');
 const uri = 'your_mongodb_connection_string';
 const client = new MongoClient(uri, { maxPoolSize: 150 });
 ```
+
+## Websocket
+
+So websocket takes a server and creates a Websocket Server
+Which from my understanding creates two types of connections. 1. for normal http requests and a second one for websocket.
+clients are all the people connected to websocket
+
+Example from https://www.npmjs.com/package/ws#usage-examples
+# External HTTP/S server
+```sh
+import { createServer } from 'https';
+import { readFileSync } from 'fs';
+import { WebSocketServer } from 'ws';
+
+const server = createServer({
+  cert: readFileSync('/path/to/cert.pem'),
+  key: readFileSync('/path/to/key.pem')
+});
+const wss = new WebSocketServer({ server });
+
+wss.on('connection', function connection(ws) {
+  ws.on('error', console.error);
+
+  ws.on('message', function message(data) {
+    console.log('received: %s', data);
+  });
+
+  ws.send('something');
+});
+
+server.listen(8080);
+```
+
+# A client WebSocket broadcasting to every other connected WebSocket clients, excluding itself.
+``` sh
+import WebSocket, { WebSocketServer } from 'ws';
+
+const wss = new WebSocketServer({ port: 8080 });
+
+wss.on('connection', function connection(ws) {
+  ws.on('error', console.error);
+
+  ws.on('message', function message(data, isBinary) {
+    wss.clients.forEach(function each(client) {
+      if (client !== ws && client.readyState === WebSocket.OPEN) {
+        client.send(data, { binary: isBinary });
+      }
+    });
+  });
+});
+```
