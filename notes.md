@@ -215,3 +215,5 @@ wss.on('connection', function connection(ws) {
   });
 });
 ```
+
+ curl "http://localhost:4000/socket.io/?EIO=4&transport=polling"
