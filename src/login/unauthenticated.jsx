@@ -5,9 +5,6 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import { getUser } from "../client.js";
-import { GameClient } from "../socket.js";
-
-let gameClient;
 
 export function Unauthenticated({ onLogin }) {
   const navigate = useNavigate();
@@ -21,9 +18,6 @@ export function Unauthenticated({ onLogin }) {
   }, []);
 
   async function loginUser() {
-    gameClient = new GameClient();
-    gameClient.sendMessage("Hello from the client!");
-
     localStorage.setItem("username", username);
     let url = "/api/user/login";
     try {

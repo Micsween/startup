@@ -67,6 +67,7 @@ export function Join({ username }) {
               value="Create Game"
               onClick={async () => {
                 const newCode = createGameCode();
+
                 await createLobby(newCode);
               }}
             />

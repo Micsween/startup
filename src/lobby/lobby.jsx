@@ -6,6 +6,9 @@ import "./lobby.css";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { startGame, getLobby, deleteLobby } from "../client";
+import { GameClient } from "../socket.js";
+
+let gameClient;
 
 export function createGameCode() {
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -43,11 +46,23 @@ export function Lobby() {
   console.log("I am here");
   const [players, setPlayers] = React.useState([]);
 
+  // function loadPlayers(gameCode) {
+  //   getLobby(gameCode).then((lobby) => {
+  //     console.log(lobby);
+  //     setPlayers(lobby.players ?? []);
+  //   });
+  // }
+  function loadPlayers(lobby) {
+    setPlayers(lobby.players ?? []);
+  }
+
   React.useEffect(() => {
-    getLobby(gameCode).then((lobby) => {
-      console.log(lobby);
-      setPlayers(lobby.players ?? []);
+    gameClient = new GameClient();
+    gameClient.socket.on("join lobby", (lobby) => {
+      console.log("join lobby", lobby);
+      loadPlayers(lobby);
     });
+    gameClient.joinLobby(gameCode, loadPlayers);
   }, []);
 
   return (

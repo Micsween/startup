@@ -12,6 +12,14 @@ export class GameClient {
     this.socket.send(message);
   }
 
+  joinLobby(lobbyCode) {
+    this.socket.emit("join lobby", lobbyCode);
+  }
+
+  leaveLobby(lobbyCode) {
+    this.socket.emit("leave lobby", lobbyCode);
+  }
+
   onMessage(callback) {
     this.socket.on("message", callback);
   }

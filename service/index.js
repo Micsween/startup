@@ -10,6 +10,7 @@ const app = express();
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
+  //DELETE THIS
   cors: {
     origin: "*",
     methods: ["GET", "POST", "PUT"], // Specify allowed HTTP methods
@@ -25,7 +26,17 @@ io.on("connection", (socket) => {
     io.emit("message", `Server received: ${msg}`);
   });
 
-  console.log("a user connected");
+  //a room is different from a lobby object
+  socket.on("join lobby", (lobbyCode) => {
+    console.log(`Lobby joined: ${lobbyCode}`);
+    socket.join(lobbyCode);
+    db.getLobby(lobbyCode).then((lobby) => {
+      io.to(lobbyCode).emit("join lobby", lobby);
+
+      //callback(lobby);
+    });
+    //callback function  that will update the usestate a list of all current players in the lobby
+  });
 });
 //io.listen(4000);
 // io.on("connection", (socket) => {
