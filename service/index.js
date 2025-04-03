@@ -15,9 +15,16 @@ const io = new Server(httpServer, {
     methods: ["GET", "POST", "PUT"], // Specify allowed HTTP methods
     credentials: true, // Allow cookies or credentials if needed
   },
+  path: "/ws",
 });
 
 io.on("connection", (socket) => {
+  console.log("Client connected to websocket server");
+  socket.on("message", (msg) => {
+    console.log(`Message received: ${msg}`);
+    io.emit("message", `Server received: ${msg}`);
+  });
+
   console.log("a user connected");
 });
 //io.listen(4000);

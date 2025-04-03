@@ -1,5 +1,3 @@
-import { io } from "socket.io-client";
-
 export async function getUser() {
   const url = "/api/user/";
   let response = await fetch(url, {

@@ -9,11 +9,11 @@ import { Login } from "./login/login";
 import { MatchHistory } from "./match-history/match-history";
 import { logoutUser, getUser } from "./client.js";
 import Button from "react-bootstrap/Button";
-import { socket } from "./socket";
+// import { socket } from "./socket";
 
 export default function App() {
   //var socket = io();
-  const [isConnected, setIsConnected] = React.useState(socket.connected);
+  // const [isConnected, setIsConnected] = React.useState(socket.connected);
 
   const [username, setUsername] = React.useState("");
   function onLogin(username) {
@@ -25,30 +25,26 @@ export default function App() {
     location = "/";
   }
   React.useEffect(() => {
-    function onConnect() {
-      setIsConnected(true);
-    }
-    function onDisconnect() {
-      setIsConnected(false);
-    }
+    // function onConnect() {
+    //   setIsConnected(true);
+    // }
+    // function onDisconnect() {
+    //   setIsConnected(false);
+    // }
 
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
-
-    socket.on("message", (message) => {
-      console.log(message);
-    });
+    // socket.on("connect", onConnect);
+    // socket.on("disconnect", onDisconnect);
 
     getUser().then((user) => {
       setUsername(user.username);
     });
 
     return () => {
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
-      socket.off("message", (message) => {
-        console.log(message);
-      });
+      // socket.off("connect", onConnect);
+      // socket.off("disconnect", onDisconnect);
+      // socket.off("message", (message) => {
+      //   console.log(message);
+      // });
     };
   }, []);
 
@@ -73,7 +69,6 @@ export default function App() {
                 {!username && (
                   <NavLink className="nav-link" to="/">
                     Login
-                    {isConnected}
                   </NavLink>
                 )}
                 {username && (
@@ -92,7 +87,6 @@ export default function App() {
               </div>
             </div>
           </nav>
-          <p>State: {"" + isConnected}</p>
         </header>
         <Routes>
           <Route path="/" element={<Login onLogin={onLogin} />} exact />
