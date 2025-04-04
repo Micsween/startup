@@ -11,6 +11,8 @@ async function fetchLobbies() {
   let response = await getLobbies();
   return await response.json();
 }
+/*CREATE A WEBSOCKET CONNECTION FOR THE LIST OF LOBBIES 
+SO THAT IT LIVE UPDATES WHEN PEOPLE JOIN/A NEW LOBBY IS CREATED */
 
 export function Join({ username }) {
   const [gameCode, setGameCode] = React.useState("");

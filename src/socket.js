@@ -16,16 +16,16 @@ export class GameClient {
     this.socket.emit("join lobby", lobbyCode);
   }
 
-  leaveLobby(lobbyCode) {
-    this.socket.emit("leave lobby", lobbyCode);
+  leaveLobby(lobbyCode, username) {
+    this.socket.emit("leave lobby", lobbyCode, username);
   }
 
   onMessage(callback) {
     this.socket.on("message", callback);
   }
+  close() {
+    this.socket.off("connect");
+    this.socket.off("join lobby");
+    this.socket.off("leave lobby");
+  }
 }
-
-// socket.send("Hello from the client!");
-// socket.on("message", (message) => {
-//   console.log(message);
-// });

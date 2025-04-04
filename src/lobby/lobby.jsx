@@ -5,10 +5,8 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./lobby.css";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { startGame, getLobby, deleteLobby } from "../client";
+import { startGame, getUser, deleteLobby } from "../client";
 import { GameClient } from "../socket.js";
-
-let gameClient;
 
 export function createGameCode() {
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -39,30 +37,32 @@ function listPlayers(players) {
   });
   return playerList;
 }
-
+let gameClient;
 export function Lobby() {
   const navigate = useNavigate();
   let { gameCode } = useParams();
   console.log("I am here");
   const [players, setPlayers] = React.useState([]);
 
-  // function loadPlayers(gameCode) {
-  //   getLobby(gameCode).then((lobby) => {
-  //     console.log(lobby);
-  //     setPlayers(lobby.players ?? []);
-  //   });
-  // }
   function loadPlayers(lobby) {
+    if (lobby == null) {
+      navigate("/join");
+      return;
+    }
     setPlayers(lobby.players ?? []);
   }
 
   React.useEffect(() => {
     gameClient = new GameClient();
     gameClient.socket.on("join lobby", (lobby) => {
-      console.log("join lobby", lobby);
       loadPlayers(lobby);
     });
-    gameClient.joinLobby(gameCode, loadPlayers);
+
+    gameClient.socket.on("leave lobby", (lobby) => {
+      console.log("leave lobby", lobby);
+      loadPlayers(lobby);
+    });
+    gameClient.joinLobby(gameCode);
   }, []);
 
   return (
@@ -76,10 +76,29 @@ export function Lobby() {
             listPlayers(players)
           )}
         </ul>
-        <div id="start-button">
+
+        <div id="start-leave">
+          <input
+            className="btn btn-dark"
+            id="start"
+            type="submit"
+            value="Leave Game"
+            onClick={() => {
+              try {
+                getUser().then((user) => {
+                  console.log("retrieved user:", user.username);
+                  gameClient.leaveLobby(gameCode, user.username);
+                });
+              } catch (e) {
+                console.log(e);
+              }
+              navigate("/join");
+            }}
+          />
           <input
             className="btn btn-danger"
             type="submit"
+            id="start"
             value="Start Game"
             onClick={async () => {
               try {

@@ -32,21 +32,18 @@ io.on("connection", (socket) => {
     socket.join(lobbyCode);
     db.getLobby(lobbyCode).then((lobby) => {
       io.to(lobbyCode).emit("join lobby", lobby);
-
-      //callback(lobby);
     });
-    //callback function  that will update the usestate a list of all current players in the lobby
+
+    socket.on("leave lobby", async (lobbyCode, username) => {
+      await db.leaveLobby(lobbyCode, username);
+      socket.leave(lobbyCode);
+      db.getLobby(lobbyCode).then((lobby) => {
+        console.log("Lobby after leaving: ", lobby);
+        io.to(lobbyCode).emit("leave lobby", lobby);
+      });
+    });
   });
 });
-//io.listen(4000);
-// io.on("connection", (socket) => {
-//   console.log("Client connected to websocket server");
-//   socket.on("message", (message) => {
-//     console.log("Received message:", message);
-
-//     socket.emit("message", message);
-//   });
-// });
 
 const bcryptjs = bcrypt;
 const authCookieName = "authCookie";
@@ -83,6 +80,8 @@ apiRouter.post("/user/login", async (req, res) => {
 apiRouter.get("/user", async (req, res) => {
   console.log("Retrieving User..");
   const authCookie = req.cookies[authCookieName];
+  console.log("authCookie: ", authCookie);
+
   if (authCookie) {
     let user = await db.getUserAuth(authCookie);
     if (user) {

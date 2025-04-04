@@ -71,6 +71,15 @@ async function clearMatches() {
 async function addLobby(lobby) {
   await lobbies.insertOne(lobby);
 }
+
+async function leaveLobby(lobbyCode, username) {
+  await lobbies.updateOne(
+    { gameCode: lobbyCode },
+    { $pull: { players: username } }
+  );
+  await lobbies.deleteOne({ gameCode: lobbyCode, host: username });
+}
+
 async function joinLobby(gameCode, username) {
   await lobbies.updateOne(
     { gameCode: gameCode },
@@ -118,6 +127,7 @@ export const database = {
   getMatches,
   addLobby,
   joinLobby,
+  leaveLobby,
   getLobby,
   getLobbies,
   addGame,

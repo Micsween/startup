@@ -29,7 +29,12 @@
 #player-list > #host{
     color: yellow !important;
 }
-#start-button{
+#start-leave{
     text-align: right;
     margin-right: 55%;
+    margin-bottom: 1em;
+}
+#start {
+    margin-top: .5em;
+    margin-right: 1em;
 }
