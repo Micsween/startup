@@ -13,13 +13,15 @@ async function fetchLobbies() {
 }
 /*CREATE A WEBSOCKET CONNECTION FOR THE LIST OF LOBBIES 
 SO THAT IT LIVE UPDATES WHEN PEOPLE JOIN/A NEW LOBBY IS CREATED */
-
+//let gameClient;
 export function Join({ username }) {
   const [gameCode, setGameCode] = React.useState("");
   const [lobbies, setLobbies] = React.useState([]);
   const navigate = useNavigate();
 
   React.useEffect(() => {
+    // gameClient = new GameClient();
+    // gameClient.socket.on("lobby update", (lobby) => {});
     fetchLobbies().then((lobbies) => setLobbies(lobbies));
   }, []);
 

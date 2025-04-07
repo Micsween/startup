@@ -20,9 +20,20 @@ export class GameClient {
     this.socket.emit("leave lobby", lobbyCode, username);
   }
 
-  onMessage(callback) {
-    this.socket.on("message", callback);
+  loadState(gameCode) {
+    this.socket.emit("load state", gameCode);
   }
+
+  playCard(gameCode, card) {
+    this.socket.emit("play card", gameCode, card);
+  }
+  drawCard(gameCode) {
+    this.socket.emit("draw card", gameCode);
+  }
+  startGame(gameCode) {
+    this.socket.emit("start game", gameCode);
+  }
+
   close() {
     this.socket.off("connect");
     this.socket.off("join lobby");

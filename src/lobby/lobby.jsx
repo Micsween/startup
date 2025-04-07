@@ -37,11 +37,10 @@ function listPlayers(players) {
   });
   return playerList;
 }
-let gameClient;
+export let gameClient;
 export function Lobby() {
   const navigate = useNavigate();
   let { gameCode } = useParams();
-  console.log("I am here");
   const [players, setPlayers] = React.useState([]);
 
   function loadPlayers(lobby) {
@@ -62,6 +61,12 @@ export function Lobby() {
       console.log("leave lobby", lobby);
       loadPlayers(lobby);
     });
+
+    gameClient.socket.on("start game", (gameCode) => {
+      console.log("start game", gameCode);
+      navigate(`/game/${gameCode}`);
+    });
+
     gameClient.joinLobby(gameCode);
   }, []);
 
@@ -102,9 +107,11 @@ export function Lobby() {
             value="Start Game"
             onClick={async () => {
               try {
-                await startGame(gameCode);
-                await deleteLobby(gameCode);
-                navigate(`/game/${gameCode}`);
+                //switch to websocket
+                gameClient.startGame(gameCode);
+                //await startGame(gameCode);
+                //await deleteLobby(gameCode);
+                //xnavigate(`/game/${gameCode}`);
               } catch (e) {
                 console.log(e);
               }

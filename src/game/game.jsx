@@ -8,67 +8,24 @@ import { UnoGame } from "./uno-game.js";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getUser, getGameState, drawCard, playCard } from "../client.js";
-let game;
-//LATER YOU NEED TO UPDATE THIS SO THAT
+import { gameClient } from "../lobby/lobby.jsx";
 
 export function Game() {
-  let { gameCode } = useParams();
+  const { gameCode } = useParams();
   const [state, setState] = useState();
   const [user, setUser] = useState();
-  const navigate = useNavigate();
 
-  const [hand, setHand] = React.useState([]);
+  //const [hand, setHand] = React.useState([]);
 
   useEffect(() => {
-    //game = new UnoGame();
-    getGameState(gameCode).then((state) => {
-      console.log(state);
+    gameClient.socket.on("load state", (state) => {
+      console.log("load state", state);
       setState(state);
     });
+    gameClient.loadState(gameCode);
     getUser().then(setUser);
   }, []);
-  React.useState(() => {
-    let cards = [
-      "card-images/blue-cards/1.png",
-      "card-images/blue-cards/7.png",
-      "card-images/green-cards/3.png",
-      "card-images/yellow-cards/8.png",
-    ];
-    setHand(cards);
-  }, []);
 
-  const [enemyHand, setEnemyHand] = React.useState([]);
-  React.useState(() => {
-    let cards = [
-      ,
-      "card-images/card-back.svg",
-      "card-images/card-back.svg",
-      "card-images/card-back.svg",
-      "card-images/card-back.svg",
-    ];
-    let newHand = [];
-    cards.forEach((card, index) => {
-      newHand.push(<img key={index} src={card} className="playing-card" />);
-    });
-    setEnemyHand(newHand);
-  });
-
-  const [enemySideHand, setEnemySideHand] = React.useState([]);
-  React.useState(() => {
-    let cards = [
-      "card-images",
-      "card-images/card-back.svg",
-      "card-images/card-back.svg",
-      "card-images/card-back.svg",
-    ];
-    let newHand = [];
-    cards.forEach((card, index) => {
-      newHand.push(
-        <img key={index} src={card} className="playing-card" id="card-back" />
-      );
-    });
-    setEnemySideHand(newHand);
-  });
   if (!state || !user) {
     return <div>Loading...</div>;
   }
@@ -92,10 +49,7 @@ export function Game() {
                   key={index}
                   card={card}
                   onCardClick={async () => {
-                    // console.log("I am being clicked!!!");
-                    // console.log(card);
-                    console.log(gameCode);
-                    setState(await playCard(gameCode, card));
+                    gameClient.playCard(gameCode, card);
                   }}
                   isTurn={thisPlayer.position === state.turn}
                 />
@@ -106,16 +60,7 @@ export function Game() {
             <div className={`grid-item ${playerPosition(index)}`}>
               <div className="player-hand top-user">
                 {player.hand.map((card, index) => (
-                  <Card
-                    key={index}
-                    card={card}
-                    onCardClick={async () => {
-                      console.log("I am being clicked!!!");
-                      console.log(card);
-                      setState(await playCard(gameCode, card));
-                    }}
-                    isTurn={player.position === state.turn}
-                  />
+                  <EnemyCard key={index} card={card} />
                 ))}
               </div>
               <PlayerInfo player={player} />
@@ -125,8 +70,7 @@ export function Game() {
             <DrawPile
               drawPile={state.drawPile}
               onDrawCard={async () => {
-                //when i have a server add async
-                setState(await drawCard(gameCode));
+                gameClient.drawCard(gameCode);
               }}
             />
             <DiscardPile discardPile={state.discardPile} />
@@ -174,6 +118,17 @@ export function Card({ card, onCardClick, isTurn }) {
       className="playing-card user-card"
       onClick={isTurn ? onCardClick : undefined}
       style={{ cursor: isTurn ? "pointer" : "not-allowed" }}
+    />
+  );
+}
+
+export function EnemyCard({ card }) {
+  return (
+    <img
+      color={`${card.color}`}
+      number={`${card.number}`}
+      src={`/card-images/uno-card-back.png`}
+      className="playing-card user-card"
     />
   );
 }
