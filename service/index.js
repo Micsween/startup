@@ -50,6 +50,7 @@ io.on("connection", (socket) => {
     const lobby = await db.getLobby(gameCode);
     const game = new UnoGame(lobby);
     await game.startGame();
+    //await db.removeLobby(gameCode);
     db.addGame(game).then(() => {
       io.to(gameCode).emit("start game", gameCode);
     });
@@ -86,6 +87,31 @@ io.on("connection", (socket) => {
     });
   });
 });
+
+function getDate() {
+  const date = new Date();
+  const hours = date.getHours();
+  let period = hours >= 12 ? "PM" : "AM";
+  let standardHour = hours % 12 || 12;
+
+  return `${date.getMonth()}/${date.getDate()} ${standardHour}:${date.getMinutes()} ${period}`;
+}
+
+async function endGame(gameCode, winner) {
+  let game = await db.getGame(gameCode);
+  //const names = objArray.map(obj => obj.name);
+
+  await db.addMatch({
+    winner: winner,
+    players: game.state.players.map((player) => player.username),
+    date: getDate(),
+  });
+
+  await db.removeLobby(gameCode);
+  await db.removeGame(gameCode).then(() => {
+    io.to(gameCode).emit("end game", winner);
+  });
+}
 
 const bcryptjs = bcrypt;
 const authCookieName = "authCookie";
@@ -192,6 +218,7 @@ apiRouter.get("/quote", async (req, res) => {
   res.send(quoteData[0]);
 });
 
+//ADD A FEATURE THAT LETS PEOPLE JOIN ACTIVE GAMES
 apiRouter.put("/game", async (req, res) => {
   const authCookie = req.cookies[authCookieName];
   if (!authCookie) {
@@ -249,7 +276,6 @@ apiRouter.delete("/lobby/:gameCode", async (req, res) => {
 apiRouter.get("/lobby", async (req, res) => {
   const authCookie = req.cookies[authCookieName];
   if (authCookie) {
-    //getLobbies
     const lobbies = await db.getLobbies();
     res.send(lobbies);
   } else {
@@ -333,6 +359,7 @@ function createLobby(username, gameCode) {
 export class UnoGame {
   constructor(game) {
     this.state = {
+      winner: null,
       gameCode: game.gameCode,
       host: game.host,
       players: game.players.map((username) => ({ username })),
@@ -419,10 +446,17 @@ export class UnoGame {
 
   deal() {
     this.state.players.forEach((player) => {
-      player.hand = this.state.drawPile.splice(0, 7);
+      player.hand = this.state.drawPile.splice(0, 1); //update to include more cards
     });
 
     this.state.discardPile = this.state.drawPile.splice(0, 1);
+  }
+
+  gameWon() {
+    if (this.state.players[this.state.turn].hand.length === 0) {
+      this.state.winner = this.state.players[this.state.turn].username;
+      return true;
+    } else return false;
   }
 
   playCard(cardToRemove) {
@@ -433,6 +467,11 @@ export class UnoGame {
     );
     //this.state.discardPile.unshift(cardToRemove);
     this.state.discardPile[0] = cardToRemove;
+    if (this.gameWon()) {
+      console.log("game won!");
+      endGame(this.state.gameCode, this.state.winner);
+    }
+
     this.updateTurn();
     return this.serializeState();
   }

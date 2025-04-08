@@ -4,27 +4,44 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./game.css";
 import { useNavigate } from "react-router-dom";
 import { PlayerInfo, UserInfo } from "./player-info";
-import { UnoGame } from "./uno-game.js";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getUser, getGameState, drawCard, playCard } from "../client.js";
 import { gameClient } from "../lobby/lobby.jsx";
+import Alert from "react-bootstrap/Alert";
+import Button from "react-bootstrap/Button";
 
 export function Game() {
   const { gameCode } = useParams();
   const [state, setState] = useState();
   const [user, setUser] = useState();
+  const [gameWon, setGameWon] = useState(false);
+  const [winner, setWinner] = useState("none yet");
+  const navigate = useNavigate();
 
   //const [hand, setHand] = React.useState([]);
-
+  //the end game notifier should happen on server side, not client side. the second the game ends,
+  //websocket should send a message to all players, and the client should handle it by showing the alert
   useEffect(() => {
     gameClient.socket.on("load state", (state) => {
       console.log("load state", state);
       setState(state);
+      // if (state.winner != null && gameWon == false) {
+      //   console.log("Game ended, winner: " + state.winner);
+      //   gameClient.endGame(gameCode, state.winner);
+      // }
     });
     gameClient.loadState(gameCode);
     getUser().then(setUser);
   }, []);
+
+  gameClient.socket.on("end game", (winner) => {
+    //gameClient.loadState(gameCode);
+    console.log("game ended, winner:", winner);
+    console.log("winner:", winner);
+    setGameWon(true);
+    setWinner(winner);
+  });
 
   if (!state || !user) {
     return <div>Loading...</div>;
@@ -39,10 +56,11 @@ export function Game() {
 
   return (
     <main>
+      {gameWon && <GameWonAlert winner={winner} />}
       <div id="game">
         <div id="grid-container">
           <div className="grid-item main-user">
-            <UserInfo user={user} />
+            <UserInfo user={user} isTurn={thisPlayer.position === state.turn} />
             <div className="player-hand top-user">
               {thisPlayer.hand.map((card, index) => (
                 <Card
@@ -63,7 +81,10 @@ export function Game() {
                   <EnemyCard key={index} card={card} />
                 ))}
               </div>
-              <PlayerInfo player={player} />
+              <PlayerInfo
+                player={player}
+                isTurn={player.position === state.turn}
+              />
             </div>
           ))}
           <div className="grid-item draw-discard-piles">
@@ -130,5 +151,25 @@ export function EnemyCard({ card }) {
       src={`/card-images/uno-card-back.png`}
       className="playing-card user-card"
     />
+  );
+}
+
+function GameWonAlert({ winner }) {
+  const navigate = useNavigate();
+  return (
+    <Alert variant="light">
+      {" "}
+      <Alert.Heading>{`${winner} has won the game!`}</Alert.Heading>
+      <div className="d-flex justify-content-end">
+        <Button
+          onClick={() => {
+            navigate("/join");
+          }}
+          variant="warning"
+        >
+          Quit
+        </Button>
+      </div>
+    </Alert>
   );
 }

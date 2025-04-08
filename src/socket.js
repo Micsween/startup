@@ -33,6 +33,9 @@ export class GameClient {
   startGame(gameCode) {
     this.socket.emit("start game", gameCode);
   }
+  endGame(gameCode, winner) {
+    this.socket.emit("end game", gameCode, winner);
+  }
 
   close() {
     this.socket.off("connect");

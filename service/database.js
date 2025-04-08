@@ -57,7 +57,11 @@ async function clearUsers() {
 
 //add end game functionality
 async function addMatch(match) {
-  await matches.insertOne({ match });
+  await matches.insertOne({
+    winner: match.winner,
+    players: match.players,
+    date: match.date,
+  });
 }
 
 async function getMatches() {
@@ -118,12 +122,16 @@ async function updateGame(gameCode, state) {
     { $set: { state: state } }
   );
 }
+async function removeGame(gameCode) {
+  return await games.deleteOne({ gameCode: gameCode });
+}
 
 export const database = {
   addUser,
   getUser,
   getUserAuth,
   updateUserAuth,
+  addMatch,
   getMatches,
   addLobby,
   joinLobby,
@@ -131,6 +139,7 @@ export const database = {
   getLobby,
   getLobbies,
   addGame,
+  removeGame,
   getGame,
   updateGame,
   removeLobby,

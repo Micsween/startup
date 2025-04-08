@@ -107,8 +107,7 @@
     transform: rotate(90deg) translateY(-50%);
     transform-origin: center center;
 }
-
-@media (max-width: 600px) {
-  
-
-  }
+#turn{
+     box-shadow: 0 0 40px rgba(99, 72, 255, 0.7);
+    transition: box-shadow 0.3s;
+}
