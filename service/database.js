@@ -64,8 +64,8 @@ async function addMatch(match) {
   });
 }
 
-async function getMatches() {
-  return await matches.find().toArray();
+async function getMatches(username) {
+  return await matches.find({ players: { $in: [username] } }).toArray();
 }
 
 async function clearMatches() {

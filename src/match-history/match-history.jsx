@@ -2,13 +2,20 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./match-history.css";
-import { getQuote, getMatches } from "../client.js";
-
-export function MatchHistory({ username }) {
+import { getQuote, getMatches, getUser } from "../client.js";
+import Button from "react-bootstrap/Button";
+export function MatchHistory() {
   const [quote, setQuote] = React.useState("No quote yet");
   const [quoteAuthor, setQuoteAuthor] = React.useState("idk, some dude.");
+  const [username, setUsername] = React.useState("Player");
+  const [matches, setMatches] = React.useState([]);
 
   React.useEffect(() => {
+    getUser().then((user) => {
+      setUsername(user.username);
+      getMatches(user.username).then((matches) => setMatches(matches));
+    });
+
     fetchQuote().then((data) => {
       setQuote(data.q);
       setQuoteAuthor(data.a);
@@ -20,7 +27,7 @@ export function MatchHistory({ username }) {
       <div id="content">
         <h1>{username}'s Match History</h1>
         <table id="match-history" className="table table-striped ">
-          <tbody>{listMatchHistory()}</tbody>
+          <tbody>{listMatchHistory(matches, username)}</tbody>
         </table>
         <div id="quote" className="card">
           <div className="card-body">
@@ -42,19 +49,15 @@ async function fetchQuote() {
   return await response.json();
 }
 
-function listMatchHistory() {
-  const [matches, setMatches] = React.useState([]);
-  React.useEffect(() => {
-    getMatches().then((json) => setMatches(json));
-  }, []);
-
+function listMatchHistory(matches, username) {
   const matchHistory = [];
   if (matches) {
     for (const [index, match] of matches.entries()) {
-      let result = match.result;
+      let winner = match.winner;
+      let outcome = winner === username ? "Won" : "Lost";
       matchHistory.push(
         <tr key={index}>
-          <td id={result}>{match.result}</td>
+          <td id={outcome}>{outcome}</td>
           <td>{match.date}</td>
           <td>
             {" "}
@@ -68,7 +71,7 @@ function listMatchHistory() {
               Opponents
             </button>
             <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              {getOpponentList(match.opponents)}
+              {getOpponentList(match.players)}
             </ul>
           </td>
         </tr>
@@ -91,9 +94,7 @@ function getOpponentList(opponents) {
     for (const [index, opponent] of opponents.entries()) {
       opponentList.push(
         <li key={index}>
-          <a className="dropdown-item" href="#">
-            {opponent.username}
-          </a>
+          <Button className="dropdown-item">{opponent}</Button>
         </li>
       );
     }

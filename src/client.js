@@ -122,8 +122,19 @@ export async function getQuote() {
   return response;
 }
 
-export async function getMatches() {
-  let url = "/api/matches";
+// export async function getMatches() {
+//   let url = "/api/matches";
+//   const response = await fetch(url, {
+//     method: "GET",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//   });
+//   return response.ok ? await response.json() : [];
+// }
+
+export async function getMatches(username) {
+  let url = `/api/matches/${username}`;
   const response = await fetch(url, {
     method: "GET",
     headers: {

@@ -91,10 +91,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Login onLogin={onLogin} />} exact />
           <Route path="/join" element={<Join username={username} />} exact />
-          <Route
-            path="/match-history"
-            element={<MatchHistory username={username} />}
-          />
+          <Route path="/match-history" element={<MatchHistory />} />
           <Route path="/lobby" element={<Join username={username} />} />
           <Route path="/lobby/:gameCode" element={<Lobby />} />
           <Route path="/game/:gameCode" element={<Game />} />

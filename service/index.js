@@ -196,14 +196,21 @@ apiRouter.delete("/user/logout", async (req, res) => {
   res.send({ message: "User logged out." });
 });
 
-apiRouter.get("/matches", async (req, res) => {
-  const authCookie = req.cookies[authCookieName];
-  if (authCookie) {
-    let matches = await db.getMatches();
-    res.send(matches);
-  } else {
-    res.status(401).send({ message: "User not verified." });
-  }
+// apiRouter.get("/matches", async (req, res) => {
+//   const authCookie = req.cookies[authCookieName];
+//   if (authCookie) {
+//     let matches = await db.getMatches();
+//     res.send(matches);
+//   } else {
+//     res.status(401).send({ message: "User not verified." });
+//   }
+// });
+
+apiRouter.get("/matches/:username", async (req, res) => {
+  console.log("getting matches..", req.params.username);
+  const username = req.params.username;
+  let matches = await db.getMatches(username);
+  res.send(matches);
 });
 
 apiRouter.get("/quote", async (req, res) => {
