@@ -26,6 +26,9 @@ export function Join({ username }) {
       console.log("lobbies have been updated ", lobbies);
       setLobbies(lobbies);
     });
+    gameClient.socket.on("join lobby", () => {
+      gameClient.getLobbies();
+    });
     gameClient.getLobbies();
 
     //fetchLobbies().then((lobbies) => setLobbies(lobbies));

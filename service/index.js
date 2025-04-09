@@ -31,7 +31,7 @@ io.on("connection", (socket) => {
     console.log(`Lobby joined: ${lobbyCode}`);
     socket.join(lobbyCode);
     db.getLobby(lobbyCode).then((lobby) => {
-      io.to(lobbyCode).emit("join lobby", lobby);
+      io.emit("join lobby", lobby);
     });
   });
 
