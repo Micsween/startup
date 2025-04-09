@@ -135,30 +135,30 @@ app.use(express.json());
 app.use(cookieParser());
 let apiRouter = express.Router();
 
-apiRouter.post("/game/:gameCode/take-turn", async (req, res) => {
-  const authCookie = req.cookies[authCookieName];
-  const gameCode = req.params.gameCode;
+// apiRouter.post("/game/:gameCode/take-turn", async (req, res) => {
+//   const authCookie = req.cookies[authCookieName];
+//   const gameCode = req.params.gameCode;
 
-  if (!authCookie) {
-    res.status(401).send({ message: "User not verified." });
-  }
-  const gameData = await db.getGame(gameCode);
-  const game = new UnoGame(gameData.state);
+//   if (!authCookie) {
+//     res.status(401).send({ message: "User not verified." });
+//   }
+//   const gameData = await db.getGame(gameCode);
+//   const game = new UnoGame(gameData.state);
 
-  if (!game) {
-    res.status(404).send({ message: "Game not found." });
-  }
-  game.setState(gameData.state);
-  let turn = req.body;
+//   if (!game) {
+//     res.status(404).send({ message: "Game not found." });
+//   }
+//   game.setState(gameData.state);
+//   let turn = req.body;
 
-  if (turn.action == "drawCard") {
-    await game.drawCard();
-  } else if (turn.action == "playCard") {
-    await game.playCard(turn.card);
-  }
-  await db.updateGame(gameCode, game.state);
-  res.send(game.state);
-});
+//   if (turn.action == "drawCard") {
+//     await game.drawCard();
+//   } else if (turn.action == "playCard") {
+//     await game.playCard(turn.card);
+//   }
+//   await db.updateGame(gameCode, game.state);
+//   res.send(game.state);
+// });
 
 apiRouter.post("/user/create", async (req, res) => {
   if (await db.getUser(req.body.username)) {
@@ -243,87 +243,6 @@ apiRouter.put("/game", async (req, res) => {
     await db.joinLobby(req.body.gameCode, user.username);
   }
   res.send(lobby);
-});
-
-apiRouter.post("/lobby/:gameCode", async (req, res) => {
-  const authCookie = req.cookies[authCookieName];
-  const gameCode = req.params.gameCode;
-  if (!authCookie) {
-    res.status(401).send({ message: "User not verified." });
-  }
-  const user = await db.getUserAuth(authCookie);
-  await db.addLobby(createLobby(user.username, gameCode));
-});
-
-apiRouter.get("/lobby/:gameCode", async (req, res) => {
-  console.log("Getting game...");
-  const authCookie = req.cookies[authCookieName];
-  const gameCode = req.params.gameCode;
-  const lobby = await db.getLobby(gameCode);
-  if (!authCookie) {
-    res.status(401).send({ message: "User not verified." });
-    return;
-  }
-  if (!lobby) {
-    res.status(404).send({ message: "Lobby not found." });
-    return;
-  }
-  res.send(lobby);
-});
-
-apiRouter.delete("/lobby/:gameCode", async (req, res) => {
-  console.log("Deleting lobby...");
-  const gameCode = req.params.gameCode;
-  const lobby = await db.getLobby(gameCode);
-  if (!lobby) {
-    res.status(404).send({ message: "Lobby not found." });
-    return;
-  }
-  await db.removeLobby(gameCode);
-  res.send({ message: "Lobby deleted." });
-});
-
-apiRouter.get("/lobby", async (req, res) => {
-  const authCookie = req.cookies[authCookieName];
-  if (authCookie) {
-    const lobbies = await db.getLobbies();
-    res.send(lobbies);
-  } else {
-    res.status(401).send({ message: "User not verified." });
-  }
-});
-
-// apiRouter.post("/game/:gameCode/start", async (req, res) => {
-//   console.log("Starting game...");
-//   const authCookie = req.cookies[authCookieName];
-//   const gameCode = req.params.gameCode;
-//   const lobby = await db.getLobby(gameCode);
-//   console.log("game 1" + lobby);
-//   if (!authCookie) {
-//     res.status(401).send({ message: "User not verified." });
-//   }
-//   if (!lobby) {
-//     res.status(404).send({ message: "Lobby not found." });
-//   }
-
-//   let unoGame = new UnoGame(lobby);
-//   let gameState = unoGame.startGame();
-
-//   await db.addGame(unoGame);
-//   res.send(gameState);
-// });
-
-apiRouter.get("/game/:gameCode/state", async (req, res) => {
-  const authCookie = req.cookies[authCookieName];
-  const gameCode = req.params.gameCode;
-  if (!authCookie) {
-    res.status(401).send({ message: "User not verified." });
-  }
-  const gameData = await db.getGame(gameCode);
-  if (!gameData) {
-    res.status(404).send({ message: "Game not found." });
-  }
-  res.send(gameData.state);
 });
 
 app.use(`/api`, apiRouter);

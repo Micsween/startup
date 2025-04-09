@@ -1,5 +1,4 @@
 import { io } from "socket.io-client";
-//('http://localhost', {path: '/nodejs/socket.io'})
 export class GameClient {
   constructor() {
     this.socket = io("/", {
