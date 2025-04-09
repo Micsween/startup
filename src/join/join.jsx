@@ -5,24 +5,30 @@ import "./join.css";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import { createGameCode } from "../lobby/lobby";
-import { joinGame, getLobbies, createLobby } from "../client.js";
-
-async function fetchLobbies() {
-  let response = await getLobbies();
-  return await response.json();
-}
+import { joinGame } from "../client.js";
+import { GameClient } from "../socket.js";
+// async function fetchLobbies() {
+//   let response = await getLobbies();
+//   return await response.json();
+// }
 /*CREATE A WEBSOCKET CONNECTION FOR THE LIST OF LOBBIES 
 SO THAT IT LIVE UPDATES WHEN PEOPLE JOIN/A NEW LOBBY IS CREATED */
 //let gameClient;
+export let gameClient;
 export function Join({ username }) {
   const [gameCode, setGameCode] = React.useState("");
   const [lobbies, setLobbies] = React.useState([]);
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    // gameClient = new GameClient();
-    // gameClient.socket.on("lobby update", (lobby) => {});
-    fetchLobbies().then((lobbies) => setLobbies(lobbies));
+    gameClient = new GameClient();
+    gameClient.socket.on("lobby update", (lobbies) => {
+      console.log("lobbies have been updated ", lobbies);
+      setLobbies(lobbies);
+    });
+    gameClient.getLobbies();
+
+    //fetchLobbies().then((lobbies) => setLobbies(lobbies));
   }, []);
 
   return (
@@ -64,17 +70,15 @@ export function Join({ username }) {
             >
               Join Game
             </Button>
-            <input
-              id="join-button"
+            <Button
               className="btn btn-dark"
-              type="submit"
-              value="Create Game"
               onClick={async () => {
                 const newCode = createGameCode();
-
-                await createLobby(newCode);
+                gameClient.createLobby(newCode, username);
               }}
-            />
+            >
+              Create Game
+            </Button>
           </div>
         </form>
       </div>

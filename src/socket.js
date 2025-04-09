@@ -12,6 +12,15 @@ export class GameClient {
     this.socket.send(message);
   }
 
+  createLobby(lobbyCode, username) {
+    this.socket.emit("create lobby", lobbyCode, username);
+  }
+
+  getLobbies() {
+    console.log("getting lobbies");
+    this.socket.emit("get lobbies");
+  }
+
   joinLobby(lobbyCode) {
     this.socket.emit("join lobby", lobbyCode);
   }

@@ -5,7 +5,6 @@ import { v4 } from "uuid";
 import { database as db } from "./database.js";
 import { Server } from "socket.io";
 import http from "http";
-import { Db } from "mongodb";
 
 const app = express();
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
@@ -86,7 +85,34 @@ io.on("connection", (socket) => {
       io.to(gameCode).emit("load state", game.state);
     });
   });
+
+  socket.on("create lobby", async (lobbyCode, username) => {
+    console.log("Creating lobby: ", lobbyCode);
+    console.log("Username: ", username);
+
+    await db.addLobby(createLobby(username, lobbyCode));
+    db.getLobbies().then((lobbies) => {
+      console.log("Lobbies: ", lobbies);
+      io.emit("lobby update", lobbies);
+    });
+  });
+
+  socket.on("get lobbies", () => {
+    console.log("Getting lobbies...");
+    db.getLobbies().then((lobbies) => {
+      io.emit("lobby update", lobbies);
+    });
+  });
 });
+// //apiRouter.post("/lobby/:gameCode", async (req, res) => {
+//   const authCookie = req.cookies[authCookieName];
+//   const gameCode = req.params.gameCode;
+//   if (!authCookie) {
+//     res.status(401).send({ message: "User not verified." });
+//   }
+//   const user = await db.getUserAuth(authCookie);
+//   await db.addLobby(createLobby(user.username, gameCode));
+// });
 
 function getDate() {
   const date = new Date();

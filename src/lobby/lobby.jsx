@@ -5,8 +5,8 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./lobby.css";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { startGame, getUser, deleteLobby } from "../client";
-import { GameClient } from "../socket.js";
+import { getUser } from "../client";
+import { gameClient } from "../join/join";
 
 export function createGameCode() {
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -37,7 +37,6 @@ function listPlayers(players) {
   });
   return playerList;
 }
-export let gameClient;
 export function Lobby() {
   const navigate = useNavigate();
   let { gameCode } = useParams();
@@ -52,7 +51,6 @@ export function Lobby() {
   }
 
   React.useEffect(() => {
-    gameClient = new GameClient();
     gameClient.socket.on("join lobby", (lobby) => {
       loadPlayers(lobby);
     });

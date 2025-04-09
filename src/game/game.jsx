@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { PlayerInfo, UserInfo } from "./player-info";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getUser, getGameState, drawCard, playCard } from "../client.js";
-import { gameClient } from "../lobby/lobby.jsx";
+import { getUser } from "../client.js";
+import { gameClient } from "../join/join";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 
@@ -17,7 +17,6 @@ export function Game() {
   const [user, setUser] = useState();
   const [gameWon, setGameWon] = useState(false);
   const [winner, setWinner] = useState("none yet");
-  const navigate = useNavigate();
 
   //const [hand, setHand] = React.useState([]);
   //the end game notifier should happen on server side, not client side. the second the game ends,
