@@ -26,7 +26,6 @@ io.on("connection", (socket) => {
     io.emit("message", `Server received: ${msg}`);
   });
 
-  //a room is different from a lobby object
   socket.on("join lobby", (lobbyCode) => {
     console.log(`Lobby joined: ${lobbyCode}`);
     socket.join(lobbyCode);
@@ -49,7 +48,6 @@ io.on("connection", (socket) => {
     const lobby = await db.getLobby(gameCode);
     const game = new UnoGame(lobby);
     await game.startGame();
-    //await db.removeLobby(gameCode);
     db.addGame(game).then(() => {
       io.to(gameCode).emit("start game", gameCode);
     });
@@ -104,15 +102,6 @@ io.on("connection", (socket) => {
     });
   });
 });
-// //apiRouter.post("/lobby/:gameCode", async (req, res) => {
-//   const authCookie = req.cookies[authCookieName];
-//   const gameCode = req.params.gameCode;
-//   if (!authCookie) {
-//     res.status(401).send({ message: "User not verified." });
-//   }
-//   const user = await db.getUserAuth(authCookie);
-//   await db.addLobby(createLobby(user.username, gameCode));
-// });
 
 function getDate() {
   const date = new Date();
@@ -125,7 +114,6 @@ function getDate() {
 
 async function endGame(gameCode, winner) {
   let game = await db.getGame(gameCode);
-  //const names = objArray.map(obj => obj.name);
 
   await db.addMatch({
     winner: winner,
@@ -222,16 +210,6 @@ apiRouter.delete("/user/logout", async (req, res) => {
   res.send({ message: "User logged out." });
 });
 
-// apiRouter.get("/matches", async (req, res) => {
-//   const authCookie = req.cookies[authCookieName];
-//   if (authCookie) {
-//     let matches = await db.getMatches();
-//     res.send(matches);
-//   } else {
-//     res.status(401).send({ message: "User not verified." });
-//   }
-// });
-
 apiRouter.get("/matches/:username", async (req, res) => {
   console.log("getting matches..", req.params.username);
   const username = req.params.username;
@@ -251,7 +229,6 @@ apiRouter.get("/quote", async (req, res) => {
   res.send(quoteData[0]);
 });
 
-//ADD A FEATURE THAT LETS PEOPLE JOIN ACTIVE GAMES
 apiRouter.put("/game", async (req, res) => {
   const authCookie = req.cookies[authCookieName];
   if (!authCookie) {

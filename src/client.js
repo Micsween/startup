@@ -8,37 +8,6 @@ export async function getUser() {
   return await response.json();
 }
 
-export async function startGame(gameCode) {
-  await fetch(`/api/game/${gameCode}/start`, {
-    method: "POST",
-  });
-}
-export async function getGameState(gameCode) {
-  let response = await fetch(`/api/game/${gameCode}/state`);
-  return await response.json();
-}
-
-export async function playCard(gameCode, card) {
-  let turn = { action: "playCard", gameCode, card };
-  return await takeTurn(turn);
-}
-
-export async function drawCard(gameCode) {
-  let turn = { action: "drawCard", gameCode };
-  return await takeTurn(turn);
-}
-
-export async function takeTurn(turn) {
-  let response = await fetch(`/api/game/${turn.gameCode}/take-turn`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(turn),
-  });
-  return await response.json();
-}
-
 export async function joinGame(gameCode) {
   const url = "/api/game";
   let response = await fetch(url, {
@@ -55,33 +24,6 @@ export async function createLobby(gameCode) {
     method: "POST",
     headers: { "Content-Type": "Application.json" },
   });
-}
-
-export async function deleteLobby(gameCode) {
-  let response = await fetch(`/api/lobby/${gameCode}`, {
-    method: "DELETE",
-  });
-}
-
-//getting lobbies should instead be connecting to the websocket server
-
-export async function getLobbies() {
-  let url = "/api/lobby";
-  let response = await fetch(url, {
-    method: "GET",
-    headers: { "Content-Type": "Application.json" },
-  });
-
-  return response;
-}
-
-export async function getLobby(gameCode) {
-  if (!gameCode || gameCode === undefined) {
-    alert("Missing game Code");
-    location = "/join";
-  }
-  let response = await fetch(`/api/lobby/${gameCode}`);
-  return await response.json();
 }
 
 export async function loginUser() {
@@ -121,17 +63,6 @@ export async function getQuote() {
   });
   return response;
 }
-
-// export async function getMatches() {
-//   let url = "/api/matches";
-//   const response = await fetch(url, {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//   });
-//   return response.ok ? await response.json() : [];
-// }
 
 export async function getMatches(username) {
   let url = `/api/matches/${username}`;
