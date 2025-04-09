@@ -329,6 +329,7 @@ export class UnoGame {
       this.state.turn = 0;
     }
   }
+
   drawCard() {
     let player = this.state.players[this.state.turn];
     player.hand.push(this.state.drawPile.pop());
@@ -342,32 +343,49 @@ export class UnoGame {
 
   deal() {
     this.state.players.forEach((player) => {
-      player.hand = this.state.drawPile.splice(0, 1); //update to include more cards
+      player.hand = this.state.drawPile.splice(0, 7);
     });
 
     this.state.discardPile = this.state.drawPile.splice(0, 1);
   }
 
-  gameWon() {
+  gameIsWon() {
     if (this.state.players[this.state.turn].hand.length === 0) {
       this.state.winner = this.state.players[this.state.turn].username;
       return true;
     } else return false;
   }
 
-  playCard(cardToRemove) {
-    let currentHand = this.state.players[this.state.turn].hand;
+  canPlay(card) {
+    return (
+      this.state.discardPile[0].color == card.color ||
+      this.state.discardPile[0].number == card.number
+    );
+  }
+
+  removeCard(currentHand, cardToRemove) {
     this.state.players[this.state.turn].hand = currentHand.filter(
       (card) =>
         card.color !== cardToRemove.color || card.number !== cardToRemove.number
     );
-    this.state.discardPile[0] = cardToRemove;
-    if (this.gameWon()) {
-      console.log("game won!");
+  }
+
+  discard(card) {
+    this.state.discardPile[0] = card;
+  }
+
+  playCard(cardToRemove) {
+    let currentHand = this.state.players[this.state.turn].hand;
+    if (this.canPlay(cardToRemove)) {
+      this.removeCard(currentHand, cardToRemove);
+      this.discard(cardToRemove);
+      this.updateTurn();
+    }
+
+    if (this.gameIsWon()) {
       endGame(this.state.gameCode, this.state.winner);
     }
 
-    this.updateTurn();
     return this.serializeState();
   }
 }
