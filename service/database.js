@@ -2,7 +2,6 @@ import { readFile } from "fs/promises";
 const config = JSON.parse(
   await readFile(new URL("./dbConfig.json", import.meta.url))
 );
-//mongodb+srv://megatron:<db_password>@cybertron.oh3gy.mongodb.net/
 
 import { MongoClient } from "mongodb";
 const url = `mongodb+srv://${config.username}:${config.password}@${config.hostname}/`;
@@ -10,15 +9,15 @@ const client = new MongoClient(url, { maxPoolSize: 100 });
 
 const db = client.db("uno");
 
-const users = db.collection("users"); //username, password, authKey
+const users = db.collection("users");
 users.createIndex({ password: 1 });
-const lobbies = db.collection("lobbies"); // users awaiting a game
-const games = db.collection("games"); //users in an active game, gamestate
-const matches = db.collection("matches"); //matches completed games and their users.
+const lobbies = db.collection("lobbies");
+const games = db.collection("games");
+const matches = db.collection("matches");
 
 (async function testConnection() {
   try {
-    await db.command({ ping: 1 }); //ping: 1 literally only tests the connection.
+    await db.command({ ping: 1 });
     console.log(`Connect to database`);
   } catch (ex) {
     console.log(
@@ -55,7 +54,6 @@ async function clearUsers() {
   await users.deleteMany({});
 }
 
-//add end game functionality
 async function addMatch(match) {
   await matches.insertOne({
     winner: match.winner,

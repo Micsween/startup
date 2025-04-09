@@ -10,12 +10,6 @@ const app = express();
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
-  //DELETE THIS
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST", "PUT"], // Specify allowed HTTP methods
-    credentials: true, // Allow cookies or credentials if needed
-  },
   path: "/ws",
 });
 
@@ -135,31 +129,6 @@ app.use(express.json());
 app.use(cookieParser());
 let apiRouter = express.Router();
 
-// apiRouter.post("/game/:gameCode/take-turn", async (req, res) => {
-//   const authCookie = req.cookies[authCookieName];
-//   const gameCode = req.params.gameCode;
-
-//   if (!authCookie) {
-//     res.status(401).send({ message: "User not verified." });
-//   }
-//   const gameData = await db.getGame(gameCode);
-//   const game = new UnoGame(gameData.state);
-
-//   if (!game) {
-//     res.status(404).send({ message: "Game not found." });
-//   }
-//   game.setState(gameData.state);
-//   let turn = req.body;
-
-//   if (turn.action == "drawCard") {
-//     await game.drawCard();
-//   } else if (turn.action == "playCard") {
-//     await game.playCard(turn.card);
-//   }
-//   await db.updateGame(gameCode, game.state);
-//   res.send(game.state);
-// });
-
 apiRouter.post("/user/create", async (req, res) => {
   if (await db.getUser(req.body.username)) {
     res.status(401).send({ message: "User already exists" });
@@ -266,8 +235,6 @@ function createUser(username, password) {
 
 function setCookie(res, authToken) {
   res.cookie(authCookieName, authToken, {
-    //httpOnly: true;
-    //secure: true
     sameSite: "strict",
   });
 }
@@ -394,7 +361,6 @@ export class UnoGame {
       (card) =>
         card.color !== cardToRemove.color || card.number !== cardToRemove.number
     );
-    //this.state.discardPile.unshift(cardToRemove);
     this.state.discardPile[0] = cardToRemove;
     if (this.gameWon()) {
       console.log("game won!");

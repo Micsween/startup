@@ -18,24 +18,16 @@ export function Game() {
   const [gameWon, setGameWon] = useState(false);
   const [winner, setWinner] = useState("none yet");
 
-  //const [hand, setHand] = React.useState([]);
-  //the end game notifier should happen on server side, not client side. the second the game ends,
-  //websocket should send a message to all players, and the client should handle it by showing the alert
   useEffect(() => {
     gameClient.socket.on("load state", (state) => {
       console.log("load state", state);
       setState(state);
-      // if (state.winner != null && gameWon == false) {
-      //   console.log("Game ended, winner: " + state.winner);
-      //   gameClient.endGame(gameCode, state.winner);
-      // }
     });
     gameClient.loadState(gameCode);
     getUser().then(setUser);
   }, []);
 
   gameClient.socket.on("end game", (winner) => {
-    //gameClient.loadState(gameCode);
     console.log("game ended, winner:", winner);
     console.log("winner:", winner);
     setGameWon(true);

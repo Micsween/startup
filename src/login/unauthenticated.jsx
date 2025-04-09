@@ -58,7 +58,6 @@ export function Unauthenticated({ onLogin }) {
     } catch (error) {
       console.error(error.message);
     }
-    //localStorage.setItem("username", username);
   }
   return (
     <div id="login-form">

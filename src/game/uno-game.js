@@ -10,7 +10,6 @@ export class UnoGame {
     };
   }
 
-  //change this to return a promise
   serializeState() {
     return JSON.parse(JSON.stringify(this.state));
   }
@@ -66,7 +65,6 @@ export class UnoGame {
     }
   }
   drawCard() {
-    //setHand(hand.concat(drawPile[0]));
     let player = this.state.players[this.state.turn];
     player.hand.push(this.state.drawPile.pop());
     this.updateTurn();
@@ -103,7 +101,7 @@ export class UnoGame {
     );
 
     this.updateTurn();
-    console.log(`current turn: ${this.state.turn}`); //add the card to the TOP of the discard pile
+    console.log(`current turn: ${this.state.turn}`);
     return this.serializeState();
   }
 }

@@ -7,13 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { createGameCode } from "../lobby/lobby";
 import { joinGame } from "../client.js";
 import { GameClient } from "../socket.js";
-// async function fetchLobbies() {
-//   let response = await getLobbies();
-//   return await response.json();
-// }
-/*CREATE A WEBSOCKET CONNECTION FOR THE LIST OF LOBBIES 
-SO THAT IT LIVE UPDATES WHEN PEOPLE JOIN/A NEW LOBBY IS CREATED */
-//let gameClient;
+
 export let gameClient;
 export function Join({ username }) {
   const [gameCode, setGameCode] = React.useState("");
@@ -30,8 +24,6 @@ export function Join({ username }) {
       gameClient.getLobbies();
     });
     gameClient.getLobbies();
-
-    //fetchLobbies().then((lobbies) => setLobbies(lobbies));
   }, []);
 
   return (
@@ -61,7 +53,6 @@ export function Join({ username }) {
             <Button
               className="btn btn-danger join-button"
               disabled={!gameCode}
-              //create a functiont that checks for a valid game code
               onClick={async () => {
                 let foundGame = await joinGame(gameCode);
                 if (foundGame) {
@@ -102,8 +93,4 @@ function listLobbies(lobbies) {
     );
   }
   return lobbyList;
-}
-
-function updateGame() {
-  //for now, this does nothing. but once I have a database it will update the database with a new player
 }

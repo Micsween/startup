@@ -1,4 +1,3 @@
-//I need a use client and not usinng promises
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
@@ -105,11 +104,7 @@ export function Lobby() {
             value="Start Game"
             onClick={async () => {
               try {
-                //switch to websocket
                 gameClient.startGame(gameCode);
-                //await startGame(gameCode);
-                //await deleteLobby(gameCode);
-                //xnavigate(`/game/${gameCode}`);
               } catch (e) {
                 console.log(e);
               }
