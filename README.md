@@ -150,18 +150,18 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 My goal for this deliverable is to use connection pooling! 
-- [ ] **User registration** - I did not complete this part of the deliverable.
-- [ ] **User login and logout** - I did not complete this part of the deliverable.
-- [ ] **Stores data in MongoDB** - I did not complete this part of the deliverable.
-- [ ] **Stores credentials in MongoDB** - I did not complete this part of the deliverable.
-- [ ] **Restricts functionality based on authentication** - I did not complete this part of the deliverable.
+- [x] **User registration** - Super easy. Also super fun
+- [x] **User login and logout** - Added an authtoken that was saved in the database and set to null when a user logs out
+- [x] **Stores data in MongoDB** - I had way too many problems with  this but I got it working.
+- [x] **Stores credentials in MongoDB** - Yep
+- [x] **Restricts functionality based on authentication** -You can't access other pages if you're not logged in.
 
 ## 🚀 WebSocket deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Backend listens for WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Frontend makes WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Data sent over WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **WebSocket data displayed** - I did not complete this part of the deliverable.
-- [ ] **Application is fully functional** - I did not complete this part of the deliverable.
+- [x] **Backend listens for WebSocket connection** - I used socket.io, which is a library for websocket.
+- [x] **Frontend makes WebSocket connection** - Using socket.io made making rooms so much easier.
+- [x] **Data sent over WebSocket connection** -This was actually so fun. I loved this part.
+- [x] **WebSocket data displayed** - Playing cards updates in real-time, and so does the number of players in a game.
+- [x] **Application is fully functional** - Yep! Now you can play uno with your friends! Yay!
